@@ -2,6 +2,7 @@ import Header from "./Header";
 import FooterTab from "./FooterTab";
 import { currentSubscriptions } from "../utils/data";
 import { FaChevronRight } from "react-icons/fa";
+import HomeChart from "./HomeChart";
 
 const totaSummary = (
   <div className="summary-header">
@@ -46,7 +47,7 @@ const currentSubscriptionsList = (
             </div>
           </div>
           <div className="sub-right">
-            <span className="sub-price">{sub.price}</span>
+            <span className="sub-price">{"₹" + sub.price}</span>
             <FaChevronRight size={20} />
           </div>
         </div>
@@ -60,6 +61,7 @@ const Home = () => {
     <div class="viewport">
       <Header />
       {totaSummary}
+      {/* <HomeChart /> */}
       {currentSubscriptionsList}
       <FooterTab />
     </div>

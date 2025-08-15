@@ -15,11 +15,11 @@ const streamingApps = [
 ];
 
 const musicApps = [
-    { name: 'Spotify', icon: '/icons/spotify.svg' },
-    { name: 'Apple Music', icon: '/icons/apple_music.png' },
-    { name: 'Amazon Music', icon: '/icons/amazon_music.png' },
-    { name: 'YouTube Music', icon: '/icons/youtube_music.png' }
-    // Add more as needed
+  { name: "Spotify", icon: "/icons/spotify.svg" },
+  { name: "Apple Music", icon: "/icons/apple_music.png" },
+  { name: "Amazon Music", icon: "/icons/amazon_music.png" },
+  { name: "YouTube Music", icon: "/icons/youtube_music.png" },
+  // Add more as needed
 ];
 
 const gameApps = [
@@ -36,7 +36,7 @@ const currentSubscriptions = [
     logo: "/icons/netflix.png",
     daysLeft: 30,
     renewDate: "September 14, 2025",
-    price: "₹ 649.00",
+    price: "649.00",
   },
   {
     id: 2,
@@ -44,7 +44,7 @@ const currentSubscriptions = [
     logo: "/icons/youtube.png",
     daysLeft: 30,
     renewDate: "September 14, 2025",
-    price: "₹ 199.00",
+    price: "199.00",
   },
   {
     id: 3,
@@ -52,22 +52,34 @@ const currentSubscriptions = [
     logo: "/icons/prime.webp",
     daysLeft: 170,
     renewDate: "February 1, 2026",
-    price: "₹ 1,500.00",
+    price: "1,500.00",
   },
 ];
 
 const categories = [
-    'Streaming',
-    'Music',
-    'Gaming',
-    'Entertainment',
-    'News',
-    'Education',
-    'Productivity',
-    'Health & Fitness',
-    'Lifestyle',
-    'Finance'
+  "Streaming",
+  "Music",
+  "Gaming",
+  "Entertainment",
+  "News",
+  "Education",
+  "Productivity",
+  "Health & Fitness",
+  "Lifestyle",
+  "Finance",
 ];
 
-const durations = {day: 'Every day', week: 'Every week', month: 'Every month', year: 'Every year'};
-export  {streamingApps, musicApps, gameApps, categories, currentSubscriptions, durations};
+const durations = {
+  day: "Every day",
+  week: "Every week",
+  month: "Every month",
+  year: "Every year",
+};
+export {
+  streamingApps,
+  musicApps,
+  gameApps,
+  categories,
+  currentSubscriptions,
+  durations,
+};
