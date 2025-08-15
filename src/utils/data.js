@@ -1,16 +1,17 @@
+
 const streamingApps = [
     { name: 'Netflix', icon: '/icons/netflix.png' },
     { name: 'YouTube', icon: '/icons/youtube.png' },
-    { name: 'Amazon Prime', icon: '/icons/prime.png' },
-    { name: 'Disney+', icon: '/icons/disney.png' },
-    { name: 'Hulu', icon: '/icons/hulu.png' },
-    { name: 'HBO Max', icon: '/icons/hbo.png' },
-    { name: 'Apple TV+', icon: '/icons/appletv.png' },
-    { name: 'Paramount+', icon: '/icons/paramount.png' },
-    { name: 'Peacock TV', icon: '/icons/peacock.png' },
-    { name: 'Discovery', icon: '/icons/discovery.png' },
-    { name: 'Crunchyroll', icon: '/icons/crunchyroll.png' },
-    { name: 'ESPN+', icon: '/icons/espn.png' },
+    { name: 'Amazon Prime', icon: '/icons/prime.webp' },
+    { name: 'JioHotstar', icon: '/icons/jiohotstar.png' },
+    { name: 'Hulu', icon: '/icons/appletv.webp' },
+    { name: 'HBO Max', icon: '/icons/appletv.webp' },
+    { name: 'Apple TV+', icon: '/icons/appletv.webp' },
+    { name: 'Paramount+', icon: '/icons/appletv.webp' },
+    { name: 'Peacock TV', icon: '/icons/appletv.webp' },
+    { name: 'Discovery', icon: '/icons/appletv.webp' },
+    { name: 'Crunchyroll', icon: '/icons/appletv.webp' },
+    { name: 'ESPN+', icon: '/icons/appletv.webp' },
     // Add more as needed
 ];
 
@@ -31,4 +32,4 @@ const gameApps = [
     // Add more as needed
 ];
 
-export default [...streamingApps, ...musicApps, ...gameApps];
+export  {streamingApps, musicApps, gameApps};
