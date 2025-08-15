@@ -15,13 +15,11 @@ const streamingApps = [
 ];
 
 const musicApps = [
-  { name: "Spotify", icon: "/icons/spotify.png" },
-  { name: "Apple Music", icon: "/icons/applemusic.png" },
-  { name: "Amazon Music", icon: "/icons/amazonmusic.png" },
-  { name: "YouTube Music", icon: "/icons/youtubemusic.png" },
-  { name: "Tidal", icon: "/icons/tidal.png" },
-  { name: "Pandora", icon: "/icons/pandora.png" },
-  // Add more as needed
+    { name: 'Spotify', icon: '/icons/spotify.svg' },
+    { name: 'Apple Music', icon: '/icons/apple_music.png' },
+    { name: 'Amazon Music', icon: '/icons/amazon_music.png' },
+    { name: 'YouTube Music', icon: '/icons/youtube_music.png' }
+    // Add more as needed
 ];
 
 const gameApps = [
@@ -58,4 +56,18 @@ const currentSubscriptions = [
   },
 ];
 
-export { streamingApps, musicApps, gameApps, currentSubscriptions };
+const categories = [
+    'Streaming',
+    'Music',
+    'Gaming',
+    'Entertainment',
+    'News',
+    'Education',
+    'Productivity',
+    'Health & Fitness',
+    'Lifestyle',
+    'Finance'
+];
+
+const durations = {day: 'Every day', week: 'Every week', month: 'Every month', year: 'Every year'};
+export  {streamingApps, musicApps, gameApps, categories, currentSubscriptions, durations};
