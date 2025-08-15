@@ -2,10 +2,7 @@ import Header from "./Header";
 import FooterTab from "./FooterTab";
 import { FaChevronRight } from "react-icons/fa";
 import HomeChart from "./HomeChart";
-
 import { useState, useEffect } from "react";
-
-
 
 const Home = () => {
   const [subscriptions, setSubscriptions] = useState([]);
@@ -66,7 +63,9 @@ const Home = () => {
         <span className="stats-icon">🔥</span>
         <div className="stats-text">
           <div className="stats-label">Active</div>
-          <div className="stats-value">{subscriptions.length.toString().padStart(2, "0")}</div>
+          <div className="stats-value">
+            {subscriptions.length.toString().padStart(2, "0")}
+          </div>
         </div>
       </div>
     </div>

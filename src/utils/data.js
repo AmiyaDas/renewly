@@ -3,14 +3,14 @@ const streamingApps = [
   { name: "YouTube", icon: "/icons/youtube.png" },
   { name: "Amazon Prime", icon: "/icons/prime.webp" },
   { name: "JioHotstar", icon: "/icons/jiohotstar.png" },
-  { name: "Hulu", icon: "/icons/appletv.webp" },
-  { name: "HBO Max", icon: "/icons/appletv.webp" },
+  { name: "Zee5", icon: "/icons/zee5_icon.jpeg" },
+  { name: "Sony Liv", icon: "/icons/sony_liv.png" },
+  { name: "Hulu", icon: "/icons/hulu-icon.webp" },
+  { name: "HBO Max", icon: "/icons/hbo_max.webp" },
   { name: "Apple TV+", icon: "/icons/appletv.webp" },
-  { name: "Paramount+", icon: "/icons/appletv.webp" },
-  { name: "Peacock TV", icon: "/icons/appletv.webp" },
-  { name: "Discovery", icon: "/icons/appletv.webp" },
-  { name: "Crunchyroll", icon: "/icons/appletv.webp" },
-  { name: "ESPN+", icon: "/icons/appletv.webp" },
+  { name: "Discovery", icon: "/icons/discovery_icon.jpeg" },
+  { name: "Crunchyroll", icon: "/icons/crunchyroll_logo.webp" },
+  { name: "ESPN+", icon: "/icons/espn_icon.webp" },
   // Add more as needed
 ];
 
