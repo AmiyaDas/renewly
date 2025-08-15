@@ -69,17 +69,5 @@ const categories = [
   "Finance",
 ];
 
-const durations = {
-  day: "Every day",
-  week: "Every week",
-  month: "Every month",
-  year: "Every year",
-};
-export {
-  streamingApps,
-  musicApps,
-  gameApps,
-  categories,
-  currentSubscriptions,
-  durations,
-};
+const durations = [{key:'day', value:'Every day'}, {key:'week', value:'Every week'}, {key:'month', value:'Every month'}, {key:'year', value:'Every year'}];
+export  {streamingApps, musicApps, gameApps, categories, currentSubscriptions, durations};

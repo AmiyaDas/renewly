@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-import { categories } from "../utils/data";
+import { categories, durations } from "../utils/data";
 
 const SubscriptionDetails = () => {
   const { name } = useParams();
@@ -11,6 +11,26 @@ const SubscriptionDetails = () => {
   const [startDate, setStartDate] = useState('2025-08-15');
   const [billingCycle, setBillingCycle] = useState('Every month');
   const [category, setCategory] = useState('Streaming');
+  const [notificationDays, setNotificationDays] = useState('1 day before');
+  const [notificationTime, setNotificationTime] = useState('09:00');
+    const [price, setPrice] = useState('');
+  const [renewalDate, setRenewalDate] = useState('');
+
+  const handleSave = () => {
+    const subscriptionData = {
+      name,
+      icon: app.icon,
+      startDate,
+      billingCycle,
+      category,
+      notificationDays,
+      notificationTime,
+      price,
+      renewalDate,
+    };
+    localStorage.setItem(`subscription_${name}`, JSON.stringify(subscriptionData));
+    navigate('/');
+  };
 
   return (
     <div className="w-screen h-screen bg-[#f8f4f1] flex flex-col">
@@ -18,7 +38,7 @@ const SubscriptionDetails = () => {
       <div className="flex items-center justify-between p-4 bg-[#f8f4f1]">
         <button onClick={() => navigate(-1)} className="text-xl">&#8592;</button>
         <h2 className="text-lg font-semibold">Add Subscription</h2>
-        <button className="bg-black text-white px-4 py-1 rounded-lg">Save</button>
+        <button onClick={handleSave} className="bg-black text-white px-4 py-1 rounded-lg">Save</button>
       </div>
 
       {/* App Info */}
@@ -46,17 +66,17 @@ const SubscriptionDetails = () => {
             <input
               type="number"
               placeholder="0.00"
-              className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
+              className="bg-gray-100 px-3 py-1 rounded-lg text-sm" value={price}
+              onChange={(e) => setPrice(e.target.value)}
             />
           </div>
           <div className="flex justify-between items-center py-2 border-b border-gray-200">
             <span>Renewal Date</span>
             <input
               type="date"
-              className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
+              className="bg-gray-100 px-3 py-1 rounded-lg text-sm" value={renewalDate}
+              onChange={(e) => setRenewalDate(e.target.value)}
             />
-          </div>
-          <div className="flex justify-between items-center py-2 border-b border-gray-200">
           </div>
           <div className="flex justify-between items-center py-2 border-b border-gray-200">
             <span>Billing Cycle</span>
@@ -65,10 +85,11 @@ const SubscriptionDetails = () => {
               value={billingCycle}
               onChange={(e) => setBillingCycle(e.target.value)}
             >
-              <option>Every month</option>
-              <option>Every year</option>
-              <option>Every week</option>
-              <option>Every day</option>
+                {durations.map((duration) => (
+                <option key={duration.key} value={duration.value}>
+                    {duration.value}
+                </option>
+                ))}
             </select>
           </div>
           <div className="flex justify-between items-center py-2">
@@ -95,11 +116,26 @@ const SubscriptionDetails = () => {
           </div>
           <div className="flex justify-between items-center py-2 border-b border-gray-200">
             <span>Notifications</span>
-            <span className="flex items-center gap-1">1 day before ▼</span>
+                        <select
+              className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
+              value={notificationDays}
+              onChange={(e) => setNotificationDays(e.target.value)}
+            >
+              <option value="1 day before">1 day before</option>
+              <option value="2 days before">2 days before</option>
+              <option value="3 days before">3 days before</option>
+              <option value="1 week before">1 week before</option>
+              <option value="On the day">On the day</option>
+            </select>
           </div>
           <div className="flex justify-between items-center py-2">
             <span>Notification Time</span>
-            <button className="bg-gray-100 px-3 py-1 rounded-lg text-sm">9:00 AM</button>
+                        <input
+              type="time"
+              className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
+              value={notificationTime}
+              onChange={(e) => setNotificationTime(e.target.value)}
+            />
           </div>
         </div>
 
