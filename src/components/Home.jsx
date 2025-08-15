@@ -1,4 +1,5 @@
 import Header from "./Header";
+import FooterTab from "./FooterTab";
 
 const Home = () => {
   return (
@@ -8,6 +9,7 @@ const Home = () => {
       <p>Your journey to a sustainable lifestyle starts here.</p>
 
       <h1 class="text-3xl font-bold underline">Hello world!</h1>
+      <FooterTab />
     </div>
   );
 };

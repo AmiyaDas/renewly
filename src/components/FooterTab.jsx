@@ -1,0 +1,21 @@
+import { GoHomeFill } from "react-icons/go";
+import { FaPlus } from "react-icons/fa";
+import { FaRegCalendarCheck } from "react-icons/fa";
+
+const FooterTab = () => {
+  return (
+    <footer className="footer">
+      <div className="footer-icon active">
+        <GoHomeFill />
+      </div>
+      <div className="plus-btn">
+        <FaPlus size={28} strokeWidth={2.5} color="white" />
+      </div>
+      <div className="footer-icon">
+        <FaRegCalendarCheck />
+      </div>
+    </footer>
+  );
+};
+
+export default FooterTab;

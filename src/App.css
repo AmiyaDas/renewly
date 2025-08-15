@@ -1,3 +1,4 @@
+/* header */
 .header {
   display: flex;
   align-items: center;
@@ -20,5 +21,48 @@
 
 .icon {
   stroke-width: 2;
+  cursor: pointer;
+}
+
+/* footer */
+.footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.8rem 0;
+  background-color: #faf9f7; /* matches light background */
+  border-top: 1px solid #eaeaea;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+.footer-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  color: black;
+}
+
+.footer-icon.active::after {
+  content: "";
+  width: 16px;
+  height: 2px;
+  background-color: black;
+  border-radius: 1px;
+  position: absolute;
+  bottom: -6px;
+}
+
+.plus-btn {
+  background-color: black;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
