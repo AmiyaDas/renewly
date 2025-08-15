@@ -1,10 +1,14 @@
+.viewport {
+  background: linear-gradient(to bottom, var(--color-background), white);
+  height: 100%;
+}
 /* header */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  background-color: #f6f0ea; /* matches beige tone */
+  background-color: var(--color-background); /* matches beige tone */
   font-size: 22pt;
 }
 
@@ -24,13 +28,53 @@
   cursor: pointer;
 }
 
+/* summary */
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fdfaf7;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin: 1rem;
+}
+
+.stats-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stats-icon {
+  font-size: 1.5rem;
+}
+
+.stats-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-label {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #555;
+  gap: 0.2rem;
+}
+
+.stats-value {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
 /* footer */
 .footer {
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 0.8rem 0;
-  background-color: #faf9f7; /* matches light background */
+  background-color: var(--color-background); /* matches light background */
   border-top: 1px solid #eaeaea;
   position: fixed;
   width: 100%;
@@ -65,4 +109,91 @@
   justify-content: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+}
+
+/* subscriptions */
+.subscriptions {
+  padding: 1rem;
+  font-family: sans-serif;
+}
+
+.subscriptions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.subscriptions-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.subscriptions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.subscription-card {
+  display: flex;
+  border: 1px solid #ddd;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 228, 228, 0.4)
+  );
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+}
+
+.sub-left {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.logo-wrapper {
+  background-color: white;
+  border-radius: 10px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-wrapper img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.sub-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.sub-info {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.sub-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sub-price {
+  font-weight: 600;
+  font-size: 0.9rem;
 }
