@@ -1,20 +1,36 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { streamingApps, musicApps, gameApps } from "../utils/data";
+import { streamingApps, musicApps, gameApps, otherApps } from "../utils/data";
 
 const allApps = [...streamingApps, ...musicApps, ...gameApps];
 
-const filterSubscriptions = (text) => {
-  setSearch(text);
-};
-
 const AddSubscription = () => {
   const [search, setSearch] = useState("");
+  const [streamingAppsList, setStreamingAppsList] = useState(streamingApps);
+  const [musicAppsList, setMusicAppsList] = useState(musicApps);
+  const [gameAppsList, setGameAppsList] = useState(gameApps);
+  const [otherAppsList, setOtherAppsList] = useState(otherApps);
   const navigate = useNavigate();
 
-  const filteredApps = allApps.filter((app) =>
-    app.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filterSubscriptions = (searchText) => {
+    setSearch(searchText);
+    const filteredStreaming = streamingApps.filter((app) =>
+      app.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    const filteredMusic = musicApps.filter((app) =>
+      app.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    const filteredGames = gameApps.filter((app) =>
+      app.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    const filteredOthers = otherApps.filter((app) =>
+      app.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setOtherAppsList(filteredOthers);
+    setStreamingAppsList(filteredStreaming);
+    setMusicAppsList(filteredMusic);
+    setGameAppsList(filteredGames);
+  };
 
   const handleSelect = (app) => {
     // Navigate to another component/page, passing app data
@@ -64,9 +80,14 @@ const AddSubscription = () => {
 
       {/* List (scrollable) */}
       <div className="flex-1 overflow-y-auto pb-6">
-        {renderList("Streaming", streamingApps)}
-        {renderList("Music Apps", musicApps)}
-        {renderList("Game Apps", gameApps)}
+        {streamingAppsList.length ? (
+          renderList("Streaming", streamingAppsList)
+        ) : (
+          <></>
+        )}
+        {musicAppsList.length ? renderList("Music Apps", musicAppsList) : <></>}
+        {gameAppsList.length ? renderList("Game Apps", gameAppsList) : <></>}
+        {otherAppsList.length ? renderList("Game Apps", otherAppsList) : <></>}
       </div>
     </div>
   );

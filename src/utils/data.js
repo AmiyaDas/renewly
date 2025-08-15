@@ -23,10 +23,22 @@ const musicApps = [
 ];
 
 const gameApps = [
-  { name: "Xbox Game Pass", icon: "/icons/xbox.png" },
-  { name: "PlayStation Plus", icon: "/icons/playstation.png" },
-  { name: "Nintendo Switch Online", icon: "/icons/nintendo.png" },
+  { name: "Xbox Game Pass", icon: "/icons/xbox_logo.png" },
+  { name: "PlayStation Plus", icon: "/icons/playstation_logo.png" },
+  { name: "Nintendo Switch Online", icon: "/icons/nintendo_icon.png" },
   // Add more as needed
+];
+
+const otherApps = [
+  { name: "Adobe Creative Cloud", icon: "/icons/adobe_cc.png" },
+  { name: "Microsoft 365", icon: "/icons/microsoft_365.png" },
+  { name: "Canva Pro", icon: "/icons/canva_pro.png" },
+  { name: "Dropbox", icon: "/icons/dropbox.png" },
+  { name: "Evernote Premium", icon: "/icons/evernote_premium.png" },
+  { name: "Slack", icon: "/icons/slack.png" },
+  { name: "Zoom Pro", icon: "/icons/zoom_pro.png" },
+  { name: "Google One", icon: "/icons/google_one.png" },
+  { name: "NordVPN", icon: "/icons/nordvpn.png" },
 ];
 
 const currentSubscriptions = [
@@ -69,5 +81,18 @@ const categories = [
   "Finance",
 ];
 
-const durations = [{key:'day', value:'Every day'}, {key:'week', value:'Every week'}, {key:'month', value:'Every month'}, {key:'year', value:'Every year'}];
-export  {streamingApps, musicApps, gameApps, categories, currentSubscriptions, durations};
+const durations = [
+  { key: "day", value: "Every day" },
+  { key: "week", value: "Every week" },
+  { key: "month", value: "Every month" },
+  { key: "year", value: "Every year" },
+];
+export {
+  streamingApps,
+  musicApps,
+  gameApps,
+  otherApps,
+  categories,
+  currentSubscriptions,
+  durations,
+};
