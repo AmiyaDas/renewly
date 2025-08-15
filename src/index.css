@@ -12,8 +12,21 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --color-primary: #000;
+  --color-primary-hover: #000;
+  --color-secondary: #eaeaea;
+  --color-secondary-hover: #d4d4d4;
+  --color-background: #f6f0ea; /* matches beige tone */
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 a {
   font-weight: 500;
   color: #646cff;

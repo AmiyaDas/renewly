@@ -1,6 +1,9 @@
+import Header from "./Header";
+
 const Home = () => {
   return (
     <div>
+      <Header />
       <h1>Welcome to Renewly</h1>
       <p>Your journey to a sustainable lifestyle starts here.</p>
 
