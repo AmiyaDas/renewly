@@ -10,26 +10,26 @@ const NoData = () => {
         <div className="flex flex-wrap justify-center gap-4 max-w-[220px]">
           {/* Example icons (replace with actual logos or <img />) */}
           <div className="w-12 h-12 rounded-full object-cover">
-            <img src="/icons/youtube.png" alt="YouTube" />
+            <img src="/renewly/icons/youtube.png" alt="YouTube" />
           </div>
           <div className="w-12 h-12 rounded-full object-cover">
-            <img src="/icons/netflix.png" alt="Netflix" />
+            <img src="/renewly/icons/netflix.png" alt="Netflix" />
           </div>
           <div className="w-12 h-12 rounded-full object-cover">
-            <img src="/icons/youtube_music.png" alt="YouTube Music" />
+            <img src="/renewly/icons/youtube_music.png" alt="YouTube Music" />
           </div>
           <div className="w-12 h-12 rounded-full object-cover">
-            <img src="/icons/jiohotstar.png" alt="Jio Hotstar" />
+            <img src="/renewly/icons/jiohotstar.png" alt="Jio Hotstar" />
           </div>
           <div className="w-12 h-12 rounded-full object-cover">
-            <img src="/icons/appletv.webp" alt="Apple TV" />
+            <img src="/renewly/icons/appletv.webp" alt="Apple TV" />
           </div>
           <div className="w-12 h-12 rounded-full object-cover">
-            <img src="/icons/crunchyroll_logo.webp" alt="CrunchyRoll" />
+            <img src="/renewly/icons/crunchyroll_logo.webp" alt="CrunchyRoll" />
           </div>
 
           <div className="w-18 h-18 rounded-full object-cover">
-            <img src="/icons/prime.webp" alt="Amazon Prime" />
+            <img src="/renewly/icons/prime.webp" alt="Amazon Prime" />
           </div>
         </div>
 
