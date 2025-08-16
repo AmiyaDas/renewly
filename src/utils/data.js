@@ -87,6 +87,9 @@ const durations = [
   { key: "month", value: "Every month" },
   { key: "year", value: "Every year" },
 ];
+
+const languages = ["English", "Spanish", "French", "German"];
+const currencies = ["USD", "EUR", "INR", "GBP"];
 export {
   streamingApps,
   musicApps,
@@ -95,4 +98,6 @@ export {
   categories,
   currentSubscriptions,
   durations,
+  languages,
+  currencies
 };
