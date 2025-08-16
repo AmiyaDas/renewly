@@ -9,21 +9,30 @@
   justify-content: space-between;
   padding: 0.5rem 1rem;
   background-color: var(--color-background); /* matches beige tone */
-  font-size: 22pt;
+  font-size: 18pt;
+}
+.header .center.title {
+  font-weight: 600;
+  flex: 3;
+  text-align: center;
+  /* font-size: 22pt; */
 }
 
-.left {
+.header .left {
   display: flex;
+  flex: 1;
   align-items: center;
 }
 
-.right {
+.header .right {
+  flex: 1;
+}
+
+.header .icons {
   display: flex;
   align-items: center;
+  justify-content: end;
   gap: 1rem;
-}
-
-.icon {
   stroke-width: 2;
   cursor: pointer;
 }

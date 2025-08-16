@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { streamingApps, musicApps, gameApps, otherApps } from "../utils/data";
+import Header from "./Header";
 
 const allApps = [...streamingApps, ...musicApps, ...gameApps];
 
@@ -62,10 +63,11 @@ const AddSubscription = () => {
 
   return (
     <div className="w-screen h-screen bg-[#f8f4f1] flex flex-col">
-      {/* Header */}
+      {/* Header
       <div className="p-4 bg-white shadow">
         <h2 className="text-center text-xl font-bold">Add Subscription</h2>
-      </div>
+      </div> */}
+      <Header showNavBack={true} title="Add Subscription" />
 
       {/* Search */}
       <div className="p-4">
