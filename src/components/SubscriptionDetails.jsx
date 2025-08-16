@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { categories, durations } from "../utils/data";
+import Header from "./Header";
 
 const SubscriptionDetails = () => {
   const { name } = useParams();
@@ -8,13 +9,13 @@ const SubscriptionDetails = () => {
   const navigate = useNavigate();
 
   const app = location.state;
-  const [startDate, setStartDate] = useState('2025-08-15');
-  const [billingCycle, setBillingCycle] = useState('Every month');
-  const [category, setCategory] = useState('Streaming');
-  const [notificationDays, setNotificationDays] = useState('1 day before');
-  const [notificationTime, setNotificationTime] = useState('09:00');
-    const [price, setPrice] = useState('');
-  const [renewalDate, setRenewalDate] = useState('');
+  const [startDate, setStartDate] = useState("2025-08-15");
+  const [billingCycle, setBillingCycle] = useState("Every month");
+  const [category, setCategory] = useState("Streaming");
+  const [notificationDays, setNotificationDays] = useState("1 day before");
+  const [notificationTime, setNotificationTime] = useState("09:00");
+  const [price, setPrice] = useState("");
+  const [renewalDate, setRenewalDate] = useState("");
 
   const handleSave = () => {
     const subscriptionData = {
@@ -28,22 +29,25 @@ const SubscriptionDetails = () => {
       price,
       renewalDate,
     };
-    localStorage.setItem(`subscription_${name}`, JSON.stringify(subscriptionData));
-    navigate('/');
+    localStorage.setItem(
+      `subscription_${name}`,
+      JSON.stringify(subscriptionData)
+    );
+    navigate("/");
   };
 
   return (
     <div className="w-screen h-screen bg-[#f8f4f1] flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 bg-[#f8f4f1]">
-        <button onClick={() => navigate(-1)} className="text-xl">&#8592;</button>
-        <h2 className="text-lg font-semibold">Add Subscription</h2>
-        <button onClick={handleSave} className="bg-black text-white px-4 py-1 rounded-lg">Save</button>
-      </div>
+      <Header showNavBack={true} title="Add Subscription" />
 
       {/* App Info */}
       <div className="flex items-center gap-4 p-4">
-        <img src={app.icon} alt={name} className="w-14 h-14 rounded-full shadow" />
+        <img
+          src={app.icon}
+          alt={name}
+          className="w-14 h-14 rounded-full shadow"
+        />
         <span className="text-lg font-medium">{name}</span>
       </div>
 
@@ -66,7 +70,8 @@ const SubscriptionDetails = () => {
             <input
               type="number"
               placeholder="0.00"
-              className="bg-gray-100 px-3 py-1 rounded-lg text-sm" value={price}
+              className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
+              value={price}
               onChange={(e) => setPrice(e.target.value)}
             />
           </div>
@@ -74,7 +79,8 @@ const SubscriptionDetails = () => {
             <span>Renewal Date</span>
             <input
               type="date"
-              className="bg-gray-100 px-3 py-1 rounded-lg text-sm" value={renewalDate}
+              className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
+              value={renewalDate}
               onChange={(e) => setRenewalDate(e.target.value)}
             />
           </div>
@@ -85,11 +91,11 @@ const SubscriptionDetails = () => {
               value={billingCycle}
               onChange={(e) => setBillingCycle(e.target.value)}
             >
-                {durations.map((duration) => (
+              {durations.map((duration) => (
                 <option key={duration.key} value={duration.value}>
-                    {duration.value}
+                  {duration.value}
                 </option>
-                ))}
+              ))}
             </select>
           </div>
           <div className="flex justify-between items-center py-2">
@@ -107,16 +113,16 @@ const SubscriptionDetails = () => {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}    
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex justify-between items-center py-2 border-b border-gray-200">
             <span>Notifications</span>
-                        <select
+            <select
               className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
               value={notificationDays}
               onChange={(e) => setNotificationDays(e.target.value)}
@@ -130,7 +136,7 @@ const SubscriptionDetails = () => {
           </div>
           <div className="flex justify-between items-center py-2">
             <span>Notification Time</span>
-                        <input
+            <input
               type="time"
               className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
               value={notificationTime}
@@ -148,6 +154,12 @@ const SubscriptionDetails = () => {
           </p>
         </div>
       </div>
+      <button
+        onClick={handleSave}
+        className="bg-black text-white px-4 py-1 rounded-lg save-button"
+      >
+        Save
+      </button>
     </div>
   );
 };

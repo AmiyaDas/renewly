@@ -18,6 +18,10 @@
   /* font-size: 22pt; */
 }
 
+.header .center.title.app-title {
+  font-family: fantasy;
+}
+
 .header .left {
   display: flex;
   flex: 1;
@@ -205,4 +209,11 @@
 .sub-price {
   font-weight: 600;
   font-size: 0.9rem;
+}
+
+/* add subscriptions */
+.save-button {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }

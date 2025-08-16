@@ -103,7 +103,7 @@ const Home = () => {
 
   return (
     <div className="w-screen min-h-screen viewport">
-      <Header showIcons={true} />
+      <Header showIcons={true} title="Renewly" isAppTitle={true} />
       {totaSummary}
       {/* <HomeChart /> */}
       {currentSubscriptionsList}
