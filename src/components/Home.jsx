@@ -3,6 +3,7 @@ import FooterTab from "./FooterTab";
 import { FaChevronRight } from "react-icons/fa";
 import HomeChart from "./HomeChart";
 import { useState, useEffect } from "react";
+import NoData from "./NoData";
 
 const Home = () => {
   const [subscriptions, setSubscriptions] = useState([]);
@@ -103,11 +104,12 @@ const Home = () => {
 
   return (
     <div className="w-screen min-h-screen viewport">
-      <Header showIcons={true} title="Renewly" isAppTitle={true} />
-      {totaSummary}
+      <NoData />
+      {/* <Header showIcons={true} title="Renewly" isAppTitle={true} />
+      {totaSummary} */}
       {/* <HomeChart /> */}
-      {currentSubscriptionsList}
-      <FooterTab />
+      {/* {currentSubscriptionsList}
+      <FooterTab /> */}
     </div>
   );
 };

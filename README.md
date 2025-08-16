@@ -24,3 +24,12 @@ If you are developing a production application, we recommend using TypeScript wi
 - edit subscription
 - Settings
 - analytics
+
+## Tasks
+
+- Charts
+- Calendar
+- View Subs
+- Edit subs
+- Some animation for home
+- Settings
