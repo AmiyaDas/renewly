@@ -9,6 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import Header from "./Header";
 
 const Analytics = () => {
   const navigate = useNavigate();
@@ -50,10 +51,7 @@ const Analytics = () => {
         weekEnd.setDate(weekEnd.getDate() + 7);
         if (d >= weekStart && d < weekEnd) {
           // Use sub.startDate's day of week as label
-          const label =
-            labels[
-              (d.getDay() + 6) % 7
-            ]; // Make 0=Sun go to last (Sun), 1=Mon to 0, etc.
+          const label = labels[(d.getDay() + 6) % 7]; // Make 0=Sun go to last (Sun), 1=Mon to 0, etc.
           if (label) {
             labelMap[label] += parseFloat(sub.price) || 0;
           }
@@ -67,7 +65,10 @@ const Analytics = () => {
         const d = new Date(sub.startDate);
         const curr = new Date(now);
         // Only count if in current month
-        if (d.getFullYear() === curr.getFullYear() && d.getMonth() === curr.getMonth()) {
+        if (
+          d.getFullYear() === curr.getFullYear() &&
+          d.getMonth() === curr.getMonth()
+        ) {
           // Determine week of month (0-3)
           const week = Math.floor((d.getDate() - 1) / 7);
           const label = labels[week];
@@ -78,8 +79,18 @@ const Analytics = () => {
       });
     } else if (period === "Yearly") {
       labels = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
       ];
       labels.forEach((label) => (labelMap[label] = 0));
       subscriptions.forEach((sub) => {
@@ -127,7 +138,11 @@ const Analytics = () => {
         if (d >= weekStart && d < weekEnd) inPeriod = true;
       } else if (period === "Monthly") {
         const curr = new Date(now);
-        if (d.getFullYear() === curr.getFullYear() && d.getMonth() === curr.getMonth()) inPeriod = true;
+        if (
+          d.getFullYear() === curr.getFullYear() &&
+          d.getMonth() === curr.getMonth()
+        )
+          inPeriod = true;
       } else if (period === "Yearly") {
         const curr = new Date(now);
         if (d.getFullYear() === curr.getFullYear()) inPeriod = true;
@@ -152,24 +167,18 @@ const Analytics = () => {
   return (
     <div className="w-screen aspect-2/3 min-h-screen bg-[#f8f4f1] flex flex-col">
       {/* Header */}
-        <div className="flex items-center justify-between p-4 bg-[#f8f4f1] shadow sticky top-0 z-10">
-        <button onClick={() => navigate(-1)} className="text-xl">
-          ←
-        </button>
-        <h2 className="text-lg font-semibold">Analytics</h2>
-        <div />
-      </div>
+      <Header showNavBack={true} title="Analytics" />
 
       {/* Tabs */}
-        <div className="flex bg-white rounded-xl mx-4 mt-4 overflow-hidden shadow">
+      <div className="flex rounded-xl mx-4 mt-4 overflow-hidden">
         {["Weekly", "Monthly", "Yearly"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`flex-1 py-2 mr-2 text-sm font-medium ${
               activeTab === tab
-                ? "bg-black text-white "
-                : "bg-white text-gray-500"
+                ? "text-black border-b-2 border-black"
+                : "text-gray-400"
             } transition-colors duration-200 hover:bg-gray-200`}
           >
             {tab}
@@ -178,7 +187,7 @@ const Analytics = () => {
       </div>
 
       {/* Average */}
-        <div className="flex justify-between items-center px-4 mt-4 bg-white rounded-lg shadow-sm py-2">
+      <div className="flex justify-between items-center px-4 mt-4 bg-white rounded-lg shadow-sm py-2">
         <p>
           Average: <span className="font-bold">₹ {average.toFixed(2)}</span>
         </p>
@@ -194,19 +203,19 @@ const Analytics = () => {
       </div>
 
       {/* Chart */}
-        <div className="px-4 py-4 bg-white rounded-lg shadow mt-4 mx-4">
-          <div className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="amount" fill="#000" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+      <div className="px-4 py-4 bg-white rounded-lg shadow mt-4 mx-4">
+        <div className="h-64">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="amount" fill="#000" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
+      </div>
 
       {/* Subscriptions List */}
       <div className="mt-4 px-4">
@@ -232,20 +241,27 @@ const Analytics = () => {
       </div>
 
       {/* Extra Analytics */}
-        <div className="mt-6 mx-4 px-4 py-4 bg-white rounded-lg shadow">
+      <div className="mt-6 mx-4 px-4 py-4 bg-white rounded-lg shadow">
         <h3 className="text-base font-semibold mb-4 border-b pb-2">
           Top 3 Subscriptions by Cost
         </h3>
         {topSubscriptions.map((sub, index) => (
           <div
             key={sub.name}
-            className={`flex justify-between items-center text-sm py-2 ${index !== topSubscriptions.length - 1 ? "border-b" : ""}`}
+            className={`flex justify-between items-center text-sm py-2 ${
+              index !== topSubscriptions.length - 1 ? "border-b" : ""
+            }`}
           >
             <span className="flex items-center">
               <span className="w-2 h-2 rounded-full bg-gray-400 mr-2"></span>
               {sub.name}
             </span>
-            <span>₹ {sub.totalSpend ? sub.totalSpend.toFixed(2) : (parseFloat(sub.price)||0).toFixed(2)}</span>
+            <span>
+              ₹{" "}
+              {sub.totalSpend
+                ? sub.totalSpend.toFixed(2)
+                : (parseFloat(sub.price) || 0).toFixed(2)}
+            </span>
           </div>
         ))}
       </div>

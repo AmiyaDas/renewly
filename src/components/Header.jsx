@@ -22,8 +22,10 @@ const Header = ({
       <div className="right">
         {showIcons && (
           <div className="icons">
-            <FiBarChart />
-             <Link to="/settings">
+            <Link to="/analytics">
+              <FiBarChart />
+            </Link>
+            <Link to="/settings">
               <IoSettingsOutline />
             </Link>
           </div>

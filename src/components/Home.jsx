@@ -4,6 +4,8 @@ import { FaChevronRight } from "react-icons/fa";
 import HomeChart from "./HomeChart";
 import { useState, useEffect } from "react";
 import NoData from "./NoData";
+import { Link } from "react-router-dom";
+import SubscriptionCard from "./SubscriptionCard";
 
 const Home = () => {
   const [subscriptions, setSubscriptions] = useState([]);
@@ -74,29 +76,22 @@ const Home = () => {
 
   const currentSubscriptionsList = (
     <div className="subscriptions">
-      <div className="subscriptions-header">
-        <h2>All Subscriptions</h2>
-        <FaChevronRight size={20} />
-      </div>
+      <Link to="/subscriptions" className="subscriptions-header-link">
+        <div className="subscriptions-header">
+          <h2>All Subscriptions</h2>
+          <FaChevronRight size={20} />
+        </div>
+      </Link>
       <div className="subscriptions-list">
         {subscriptions.map((sub) => (
-          <div className="subscription-card" key={sub.id}>
-            <div className="sub-left">
-              <div className="logo-wrapper">
-                <img src={sub.icon} alt={sub.name} />
-              </div>
-              <div className="sub-details">
-                <span className="sub-name">{sub.name}</span>
-                <span className="sub-info">
-                  Renew in next {sub.daysLeft} days | {sub.renewDate}
-                </span>
-              </div>
-            </div>
-            <div className="sub-right">
-              <span className="sub-price">{sub.price}</span>
-              <FaChevronRight size={20} />
-            </div>
-          </div>
+          <SubscriptionCard
+            key={sub.id}
+            name={sub.name}
+            renewDate={sub.renewDate}
+            daysLeft={sub.daysLeft}
+            icon={sub.icon}
+            price={sub.price}
+          />
         ))}
       </div>
     </div>
@@ -112,6 +107,7 @@ const Home = () => {
           {totaSummary}
           {/* <HomeChart /> */}
           {currentSubscriptionsList}
+
           <FooterTab />
         </>
       )}
