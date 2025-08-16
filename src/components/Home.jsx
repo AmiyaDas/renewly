@@ -104,12 +104,17 @@ const Home = () => {
 
   return (
     <div className="w-screen min-h-screen viewport">
-      <NoData />
-      {/* <Header showIcons={true} title="Renewly" isAppTitle={true} />
-      {totaSummary} */}
-      {/* <HomeChart /> */}
-      {/* {currentSubscriptionsList}
-      <FooterTab /> */}
+      {subscriptions?.length == 0 ? (
+        <NoData />
+      ) : (
+        <>
+          <Header showIcons={true} title="Renewly" isAppTitle={true} />
+          {totaSummary}
+          {/* <HomeChart /> */}
+          {currentSubscriptionsList}
+          <FooterTab />
+        </>
+      )}
     </div>
   );
 };

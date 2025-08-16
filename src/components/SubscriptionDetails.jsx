@@ -9,6 +9,7 @@ const SubscriptionDetails = () => {
   const navigate = useNavigate();
 
   const app = location.state;
+  const [id, setId] = useState(app.id || Date.now());
   const [startDate, setStartDate] = useState("2025-08-15");
   const [billingCycle, setBillingCycle] = useState("Every month");
   const [category, setCategory] = useState("Streaming");
@@ -19,6 +20,7 @@ const SubscriptionDetails = () => {
 
   const handleSave = () => {
     const subscriptionData = {
+      id,
       name,
       icon: app.icon,
       startDate,

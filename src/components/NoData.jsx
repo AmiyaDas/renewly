@@ -1,6 +1,8 @@
 import { FaPlus } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const NoData = () => {
+  const navigate = useNavigate();
   return (
     <div className="no-data-container">
       <div className="w-80 rounded-2xl border border-orange-200 bg-peach-50 shadow-md p-6 flex flex-col items-center space-y-6">
@@ -37,7 +39,10 @@ const NoData = () => {
         </p>
 
         {/* Button */}
-        <button className="w-full flex items-center justify-center space-x-2 rounded-xl bg-black text-white py-3 font-medium">
+        <button
+          className="w-full flex items-center justify-center space-x-2 rounded-xl bg-black text-white py-3 font-medium"
+          onClick={() => navigate("/add")}
+        >
           <FaPlus size={20} />
           <span>Add Subscription</span>
         </button>

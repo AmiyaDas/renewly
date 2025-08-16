@@ -63,10 +63,6 @@ const AddSubscription = () => {
 
   return (
     <div className="w-screen h-screen bg-[#f8f4f1] flex flex-col">
-      {/* Header
-      <div className="p-4 bg-white shadow">
-        <h2 className="text-center text-xl font-bold">Add Subscription</h2>
-      </div> */}
       <Header showNavBack={true} title="Add Subscription" />
 
       {/* Search */}
