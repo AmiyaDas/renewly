@@ -1,7 +1,7 @@
 import { FiBarChart } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaChevronLeft } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Header = ({
   showNavBack = false,
@@ -23,7 +23,9 @@ const Header = ({
         {showIcons && (
           <div className="icons">
             <FiBarChart />
-            <IoSettingsOutline />
+             <Link to="/settings">
+              <IoSettingsOutline />
+            </Link>
           </div>
         )}
       </div>
