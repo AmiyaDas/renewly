@@ -6,9 +6,11 @@ import { useState, useEffect } from "react";
 import NoData from "./NoData";
 import { Link } from "react-router-dom";
 import SubscriptionCard from "./SubscriptionCard";
+import SubscriptionModal from "./SubscriptionModal";
 
 const Home = () => {
   const [subscriptions, setSubscriptions] = useState([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const subs = [];
@@ -91,6 +93,7 @@ const Home = () => {
             daysLeft={sub.daysLeft}
             icon={sub.icon}
             price={sub.price}
+            onClick={() => setOpen(true)}
           />
         ))}
       </div>
@@ -111,6 +114,7 @@ const Home = () => {
           <FooterTab />
         </>
       )}
+      <SubscriptionModal isOpen={open} onClose={() => setOpen(false)} />
     </div>
   );
 };

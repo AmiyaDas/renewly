@@ -1,8 +1,15 @@
 import { FaChevronRight } from "react-icons/fa";
 
-const SubscriptionCard = ({ name, renewDate, daysLeft, icon, price }) => {
+const SubscriptionCard = ({
+  name,
+  renewDate,
+  daysLeft,
+  icon,
+  price,
+  onClick,
+}) => {
   return (
-    <div className="subscription-card">
+    <div className="subscription-card" onClick={onClick}>
       <div className="sub-left">
         <div className="logo-wrapper">
           <img src={icon} alt={name} />
