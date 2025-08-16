@@ -1,11 +1,13 @@
 import "./App.css";
+import React from "react";
 import AddSubscription from "./components/AddSubscription";
 import Home from "./components/Home";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import SubscriptionDetails from "./components/SubscriptionDetails";
 import Settings from "./components/Settings";
-import Analytics from "./components/Analytics";
 import AllSubscriptions from "./components/AllSubscriptions";
+
+const Analytics = React.lazy(() => import("./components/Analytics"));
 
 function App() {
   return (

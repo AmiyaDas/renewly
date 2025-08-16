@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import {
   BarChart,
   Bar,
@@ -12,7 +11,6 @@ import {
 import Header from "./Header";
 
 const Analytics = () => {
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Weekly");
   const [subscriptions, setSubscriptions] = useState([]);
 
