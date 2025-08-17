@@ -4,8 +4,6 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
   font-synthesis: none;
@@ -15,8 +13,6 @@
 
   --color-primary: #000;
   --color-primary-hover: #000;
-  --color-secondary: #eaeaea;
-  --color-secondary-hover: #d4d4d4;
   --color-background: #f6f0ea; /* matches beige tone */
 }
 
