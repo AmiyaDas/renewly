@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
+import i18n from "../i18n";
 
 export const PreferencesContext = createContext();
 
@@ -31,12 +32,16 @@ export const PreferencesProvider = ({ children }) => {
 
   // Save preferences to localStorage whenever they change
   useEffect(() => {
+    i18n.changeLanguage(preferences.language);
     localStorage.setItem("preferences", JSON.stringify(preferences));
   }, [preferences]);
 
   // Single function to update any preference
   const updatePreference = useCallback((key, value) => {
     if (!preferences.hasOwnProperty(key)) return;
+    if (key === "language") {
+      i18n.changeLanguage(value);
+    }
     setPreferences((prev) => ({ ...prev, [key]: value }));
   }, [preferences]);
 

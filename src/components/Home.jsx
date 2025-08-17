@@ -8,8 +8,10 @@ import SubscriptionCard from "./SubscriptionCard";
 import SubscriptionModal from "./SubscriptionModal";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
+  const { t } = useTranslation();
   const { currency } = useContext(PreferencesContext);
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
   const [subscriptions, setSubscriptions] = useState([]);
@@ -110,7 +112,7 @@ const Home = () => {
       <div className="stats-item">
         <span className="stats-icon">💰</span>
         <div className="stats-text">
-          <div className="stats-label">Total Yearly</div>
+          <div className="stats-label">{t("total_yearly")}</div>
           <div className="stats-value">{totalYearlyFormatted}</div>
         </div>
       </div>
@@ -118,7 +120,7 @@ const Home = () => {
       <div className="stats-item">
         <span className="stats-icon">🔥</span>
         <div className="stats-text">
-          <div className="stats-label">Active</div>
+          <div className="stats-label">{t("active")}</div>
           <div className="stats-value">
             {subscriptions.length.toString().padStart(2, "0")}
           </div>
@@ -128,22 +130,22 @@ const Home = () => {
   );
 
   const renderRenewInfo = (renewDate) => {
-    if (!renewDate) return "No renewal date";
+    if (!renewDate) return t("no_renewal_date");
     const renew = new Date(renewDate);
-    if (isNaN(renew)) return "Invalid date";
+    if (isNaN(renew)) return t("invalid_date");
     const today = new Date();
     const diffTime = renew - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const options = { year: "numeric", month: "short", day: "numeric" };
     const dateStr = renew.toLocaleDateString(undefined, options);
-    return `Renews on ${dateStr} (${diffDays >= 0 ? diffDays + " days left" : "Expired"})`;
+    return t("renews_on", { date: dateStr, daysLeft: diffDays >= 0 ? diffDays + " days left" : "Expired" });
   };
 
   const currentSubscriptionsList = (
     <div className="subscriptions">
       <Link to="/subscriptions" className="subscriptions-header-link">
         <div className="subscriptions-header">
-          <h2>All Subscriptions</h2>
+          <h2>{t("all_subscriptions")}</h2>
           <FaChevronRight size={20} />
         </div>
       </Link>
@@ -185,7 +187,7 @@ const Home = () => {
         <NoData />
       ) : (
         <>
-          <Header showIcons={true} title="Renewly" isAppTitle={true} />
+          <Header showIcons={true} title={t("renewly")} isAppTitle={true} />
           {totaSummary}
           <div className="overflow-x-auto whitespace-nowrap px-4 py-2">
             <div className="flex space-x-4">
@@ -209,7 +211,7 @@ const Home = () => {
           </div>
 
           <div className="px-4 py-4">
-            <h3 className="text-lg font-semibold mb-3">💸 Most Expensive</h3>
+            <h3 className="text-lg font-semibold mb-3">{t("most_expensive")}</h3>
             <div className="grid gap-4">
               {subscriptions
                 .slice()

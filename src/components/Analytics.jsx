@@ -10,8 +10,10 @@ import {
 } from "recharts";
 import Header from "./Header";
 import { PreferencesContext } from "../context/PreferencesContext";
+import { useTranslation } from "react-i18next";
 
 const Analytics = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("Weekly");
   const [subscriptions, setSubscriptions] = useState([]);
   const { currency } = useContext(PreferencesContext);
@@ -76,7 +78,7 @@ const Analytics = () => {
     let now = new Date();
 
     if (period === "Weekly") {
-      labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+      labels = [t("weekly_mon"), t("weekly_tue"), t("weekly_wed"), t("weekly_thu"), t("weekly_fri"), t("weekly_sat"), t("weekly_sun")];
       labels.forEach((label) => (labelMap[label] = 0));
       subscriptions.forEach((sub) => {
         if (!sub.startDate || !sub.price) return;
@@ -93,7 +95,7 @@ const Analytics = () => {
         }
       });
     } else if (period === "Monthly") {
-      labels = ["Week 1", "Week 2", "Week 3", "Week 4"];
+      labels = [t("monthly_week1"), t("monthly_week2"), t("monthly_week3"), t("monthly_week4")];
       labels.forEach((label) => (labelMap[label] = 0));
       subscriptions.forEach((sub) => {
         if (!sub.startDate || !sub.price) return;
@@ -107,8 +109,8 @@ const Analytics = () => {
       });
     } else if (period === "Yearly") {
       labels = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        t("yearly_jan"), t("yearly_feb"), t("yearly_mar"), t("yearly_apr"), t("yearly_may"), t("yearly_jun"),
+        t("yearly_jul"), t("yearly_aug"), t("yearly_sep"), t("yearly_oct"), t("yearly_nov"), t("yearly_dec")
       ];
       labels.forEach((label) => (labelMap[label] = 0));
       subscriptions.forEach((sub) => {
@@ -145,18 +147,20 @@ const Analytics = () => {
     <div className="w-screen min-h-screen bg-[#f8f4f1] flex flex-col">
       {/* Header */}
       <div className="sticky top-0 z-30 bg-[#f8f4f1]">
-        <Header showNavBack={true} title="Analytics" />
+        <Header showNavBack={true} title={t("analytics")} />
       </div>
 
       <div className="flex-1">
         {/* Tabs */}
         <div className="flex bg-white rounded-xl mx-4 mt-3 overflow-hidden sticky top-14 z-20">
-          {["Weekly", "Monthly", "Yearly"].map((tab) => (
+          {[t("weekly"), t("monthly"), t("yearly")].map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => setActiveTab(
+                tab === t("weekly") ? "Weekly" : tab === t("monthly") ? "Monthly" : "Yearly"
+              )}
               className={`flex-1 py-2 mr-2 text-sm font-medium ${
-                activeTab === tab
+                activeTab === (tab === t("weekly") ? "Weekly" : tab === t("monthly") ? "Monthly" : "Yearly")
                   ? "text-black border-b-2 border-black"
                   : "text-gray-400"
               } transition-colors duration-200 hover:bg-gray-200`}
@@ -169,15 +173,15 @@ const Analytics = () => {
         {/* Average */}
         <div className="flex justify-between items-center px-4 mx-4 mt-4 bg-white rounded-lg shadow-sm py-2">
           <p>
-            Average: <span className="font-bold">{currencySymbol}{average.toFixed(2)}</span>
+            {t("average")}: <span className="font-bold">{currencySymbol}{average.toFixed(2)}</span>
           </p>
           <select className="text-sm border rounded px-2">
             <option>
               {activeTab === "Weekly"
-                ? "Current week"
+                ? t("current_week")
                 : activeTab === "Monthly"
-                ? "Current month"
-                : "Current year"}
+                ? t("current_month")
+                : t("current_year")}
             </option>
           </select>
         </div>
@@ -190,7 +194,7 @@ const Analytics = () => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="day" />
                 <YAxis tickFormatter={(val) => `${currencySymbol}${val}`} />
-                <Tooltip formatter={(value) => [`${currencySymbol}${value}`, "Amount"]} />
+                <Tooltip formatter={(value) => [`${currencySymbol}${value}`, t("amount")]} />
                 <Bar dataKey="amount" fill="#000" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -219,7 +223,7 @@ const Analytics = () => {
         {/* Top Subscriptions */}
         <div className="mt-6 mx-4 px-4 py-4 bg-white rounded-lg shadow">
           <h3 className="text-base font-semibold mb-4 border-b pb-2">
-            Top 3 Subscriptions by Cost
+            {t("top_subscriptions_by_cost")}
           </h3>
           {topSubscriptions.map((sub, index) => (
             <div

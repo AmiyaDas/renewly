@@ -1,8 +1,10 @@
 import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const NoData = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return (
     <div className="no-data-container">
       <div className="w-80 rounded-2xl border border-orange-200 bg-peach-50 shadow-md p-6 flex flex-col items-center space-y-6">
@@ -35,7 +37,7 @@ const NoData = () => {
 
         {/* Text */}
         <p className="text-center text-gray-700 text-sm">
-          Get started and watch <br /> the magic organise itself.
+          {t("no_data_message")}
         </p>
 
         {/* Button */}
@@ -44,7 +46,7 @@ const NoData = () => {
           onClick={() => navigate("/add")}
         >
           <FaPlus size={20} />
-          <span>Add Subscription</span>
+          <span>{t("add_subscription")}</span>
         </button>
       </div>
     </div>

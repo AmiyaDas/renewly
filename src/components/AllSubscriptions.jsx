@@ -1,8 +1,10 @@
 import Header from "./Header";
 import { useState, useEffect } from "react";
 import SubscriptionCard from "./SubscriptionCard";
+import { useTranslation } from "react-i18next";
 
 const AllSubscriptions = () => {
+  const { t } = useTranslation();
   const [subscriptions, setSubscriptions] = useState([]);
   useEffect(() => {
     const subs = [];
@@ -36,7 +38,7 @@ const AllSubscriptions = () => {
   );
   return (
     <div className="w-screen min-h-screen viewport">
-      <Header showNavBack={true} title="All Subscriptions" showIcons={true} />
+      <Header showNavBack={true} title={t("all_subscriptions")} showIcons={true} />
       <div className="subscriptions">{allSubs}</div>
     </div>
   );

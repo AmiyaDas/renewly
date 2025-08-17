@@ -8,15 +8,16 @@ const SubscriptionDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const app = location.state || {};
+  // Get subscription from location.state.subscription if present
+  const app = location.state?.subscription || location.state || {};
   const [id, setId] = useState(app.id || Date.now());
-  const [startDate, setStartDate] = useState("2025-08-15");
-  const [billingCycle, setBillingCycle] = useState("Every month");
-  const [category, setCategory] = useState("Streaming");
-  const [notificationDays, setNotificationDays] = useState("1 day before");
-  const [notificationTime, setNotificationTime] = useState("09:00");
-  const [price, setPrice] = useState("");
-  const [renewalDate, setRenewalDate] = useState("");
+  const [startDate, setStartDate] = useState(app.startDate || "2025-08-15");
+  const [billingCycle, setBillingCycle] = useState(app.billingCycle || "Every month");
+  const [category, setCategory] = useState(app.category || "Streaming");
+  const [notificationDays, setNotificationDays] = useState(app.notificationDays || "1 day before");
+  const [notificationTime, setNotificationTime] = useState(app.notificationTime || "09:00");
+  const [price, setPrice] = useState(app.price || "");
+  const [renewalDate, setRenewalDate] = useState(app.renewalDate || "");
 
   const handleSave = () => {
     const subscriptionData = {
@@ -38,6 +39,7 @@ const SubscriptionDetails = () => {
     navigate("/");
   };
 
+  
   return (
     <div className="w-screen h-screen bg-[#f8f4f1] flex flex-col">
       {/* Header */}
@@ -45,7 +47,7 @@ const SubscriptionDetails = () => {
 
       {/* App Info */}
       <div className="flex items-center gap-4 p-4">
-        {app.icon && (
+        {app?.icon && (
           <img
             src={app.icon}
             alt={name}

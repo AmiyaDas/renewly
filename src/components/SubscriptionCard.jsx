@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { FaChevronRight } from "react-icons/fa";
 
 const SubscriptionCard = ({
@@ -8,6 +9,7 @@ const SubscriptionCard = ({
   price,
   onClick,
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="subscription-card" onClick={onClick}>
       <div className="sub-left">
@@ -17,7 +19,7 @@ const SubscriptionCard = ({
         <div className="sub-details">
           <span className="sub-name">{name}</span>
           <span className="sub-info">
-            Renew in next {daysLeft} days | {renewDate}
+            {t("renew_info", { daysLeft, renewDate })}
           </span>
         </div>
       </div>

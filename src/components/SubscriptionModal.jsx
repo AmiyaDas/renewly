@@ -1,17 +1,23 @@
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoCreate } from "react-icons/io5";
 import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { PreferencesContext } from "../context/PreferencesContext";
+import { useNavigate } from "react-router-dom";
 
 export default function SubscriptionModal({ isOpen, onClose, subscription }) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const { currency } = useContext(PreferencesContext);
   const currencySymbols = { USD: "$", EUR: "€", INR: "₹", GBP: "£" };
+  const navigate = useNavigate();
   if (!isOpen || !subscription) return null;
 
   const onDeleteSubscription = () => {
     localStorage.removeItem(`subscription_${subscription.name}`);
     onClose();
+  };
+
+  const onEditSubscription = () => {
+    navigate(`/subscription/${subscription.name}`, { state: { subscription } });
   };
 
   const deletConfirmBox = (
@@ -41,7 +47,13 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white w-[90%] max-w-md rounded-2xl shadow-xl relative p-6">
-        {/* Close button */}
+        <button
+          onClick={onEditSubscription}
+          aria-label="Edit Subscription"
+          className="absolute top-4 right-12 text-gray-500 hover:text-gray-800"
+        >
+          <IoCreate size={24} />
+        </button>
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"

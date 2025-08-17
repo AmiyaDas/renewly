@@ -30,12 +30,13 @@ If you are developing a production application, we recommend using TypeScript wi
 - Charts ✅
   - chart center ✅
 - Calendar ✅
-  - make events and remonders
+  - make events and reminders
 - View Subs ✅
-- Edit subs 
+- Edit subs ✅
 - Some animation for home ✅
 - Settings ✅
 - text color ✅
 - make app logo
 - make placeholder logo for custom subscriptions
-- logic for cancellation
+- logic for cancellation 
+- Language JSON update for all keywords
