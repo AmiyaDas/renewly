@@ -11,21 +11,25 @@ export default function SubscriptionModal({ isOpen, onClose, modalData }) {
   };
 
   const deletConfirmBox = (
-    <div className="bg-white p-4 rounded-lg text-lg shadow-xl border border-gray-200 z-10 position-fixed">
-      <p>Are you sure you want to delete this subscription?</p>
-      <div className="flex justify-between">
-        <button
-          onClick={onDeleteSubscription}
-          className="mt-2 bg-red-600 text-white px-4 py-2 rounded-lg"
-        >
-          Yes, Delete
-        </button>
-        <button
-          onClick={() => setShowConfirmDelete(false)}
-          className="mt-2 bg-black text-white px-4 py-2 rounded-lg"
-        >
-          Cancel
-        </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="bg-white p-6 rounded-xl text-lg shadow-2xl border border-gray-200 w-[90%] max-w-sm">
+        <p className="mb-4 text-center">
+          Are you sure you want to delete this subscription?
+        </p>
+        <div className="flex justify-between">
+          <button
+            onClick={onDeleteSubscription}
+            className="mt-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+          >
+            Yes, Delete
+          </button>
+          <button
+            onClick={() => setShowConfirmDelete(false)}
+            className="mt-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );
