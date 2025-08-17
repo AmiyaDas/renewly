@@ -203,7 +203,11 @@ const Analytics = () => {
       {/* Chart */}
       <div className="px-4 py-4 bg-white rounded-lg shadow mt-4 mx-4">
         <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+            className="charts-container"
+          >
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />

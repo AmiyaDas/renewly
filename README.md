@@ -28,8 +28,9 @@ If you are developing a production application, we recommend using TypeScript wi
 ## Tasks
 
 - Charts ✅
-  - chart center
-- Calendar
+  - chart center ✅
+- Calendar ✅
+  - make events and remonders
 - View Subs ✅
 - Edit subs
 - Some animation for home
