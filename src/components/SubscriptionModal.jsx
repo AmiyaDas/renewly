@@ -1,12 +1,12 @@
 import { IoClose } from "react-icons/io5";
 import { useState, useEffect } from "react";
 
-export default function SubscriptionModal({ isOpen, onClose, modalData }) {
+export default function SubscriptionModal({ isOpen, onClose, subscription }) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  if (!isOpen) return null;
+  if (!isOpen || !subscription) return null;
 
   const onDeleteSubscription = () => {
-    localStorage.removeItem(`subscription_${modalData.name}`);
+    localStorage.removeItem(`subscription_${subscription.name}`);
     onClose();
   };
 
@@ -48,13 +48,13 @@ export default function SubscriptionModal({ isOpen, onClose, modalData }) {
         {/* Header */}
         <div className="flex items-center space-x-3 mb-6">
           <img
-            src={modalData.icon}
-            alt="Netflix"
+            src={subscription.icon}
+            alt={subscription.name}
             className="w-12 h-12 rounded-full"
           />
           <div>
-            <h2 className="text-xl font-semibold">{modalData.name}</h2>
-            <p className="text-green-600 text-lg">{`₹` + modalData.price}</p>
+            <h2 className="text-xl font-semibold">{subscription.name}</h2>
+            <p className="text-green-600 text-lg">{`₹` + subscription.price}</p>
           </div>
         </div>
 
@@ -62,19 +62,19 @@ export default function SubscriptionModal({ isOpen, onClose, modalData }) {
         <div className="space-y-3 text-sm">
           <div className="flex justify-between">
             <span className="text-gray-500">Billing Cycle</span>
-            <span className="font-medium">{modalData.billingCycle}</span>
+            <span className="font-medium">{subscription.billingCycle}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Next Payment</span>
-            <span className="font-medium">{modalData.renewalDate}</span>
+            <span className="font-medium">{subscription.renewalDate}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Subscribed</span>
-            <span className="font-medium">{modalData.startDate}</span>
+            <span className="font-medium">{subscription.startDate}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Category</span>
-            <span className="font-medium">{modalData.category}</span>
+            <span className="font-medium">{subscription.category}</span>
           </div>
         </div>
         {/* Confirmation box */}

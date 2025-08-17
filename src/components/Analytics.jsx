@@ -27,6 +27,52 @@ const Analytics = () => {
     setSubscriptions(subs);
   }, []);
 
+  const parsePrice = (price) => {
+    const p = parseFloat(price);
+    return isNaN(p) ? 0 : p;
+  };
+
+  const advanceByCycle = (date, cycle) => {
+    const newDate = new Date(date);
+    if (cycle === "Weekly") {
+      newDate.setDate(newDate.getDate() + 7);
+    } else if (cycle === "Monthly") {
+      newDate.setMonth(newDate.getMonth() + 1);
+    } else if (cycle === "Yearly") {
+      newDate.setFullYear(newDate.getFullYear() + 1);
+    }
+    return newDate;
+  };
+
+  const getOccurrences = (sub, periodStart, periodEnd) => {
+    const occurrences = [];
+    if (!sub?.startDate) return occurrences;
+    const amount = parsePrice(sub.price);
+    const cycleRaw = sub.billingCycle || "Monthly";
+    const cycle = ["Weekly", "Monthly", "Yearly"].includes(cycleRaw)
+      ? cycleRaw
+      : "Monthly";
+
+    let current = new Date(sub.startDate);
+    if (isNaN(current)) return occurrences;
+    current.setHours(0, 0, 0, 0);
+
+    // Move to the first occurrence that is on/after periodStart
+    let guard = 0;
+    while (current < periodStart && guard < 1000) {
+      current = advanceByCycle(current, cycle);
+      guard++;
+    }
+    if (guard >= 1000) return occurrences; // safety
+
+    while (current >= periodStart && current < periodEnd && guard < 2000) {
+      occurrences.push({ date: new Date(current), amount });
+      current = advanceByCycle(current, cycle);
+      guard++;
+    }
+    return occurrences;
+  };
+
   // Helper to get data for a period
   function getDataForPeriod(period) {
     let labels = [];
@@ -163,12 +209,15 @@ const Analytics = () => {
   const topSubscriptions = getTopSubscriptions(activeTab);
 
   return (
-    <div className="w-screen aspect-2/3 min-h-screen bg-[#f8f4f1] flex flex-col">
+    <div className="w-screen min-h-screen bg-[#f8f4f1] flex flex-col">
       {/* Header */}
-      <Header showNavBack={true} title="Analytics" />
+      <div className="sticky top-0 z-30 bg-[#f8f4f1]">
+        <Header showNavBack={true} title="Analytics" />
+      </div>
+      <div className="flex-1">
 
       {/* Tabs */}
-      <div className="flex rounded-xl mx-4 mt-4 overflow-hidden">
+      <div className="flex bg-white rounded-xl mx-4 mt-3 overflow-hidden sticky top-14 z-20">
         {["Weekly", "Monthly", "Yearly"].map((tab) => (
           <button
             key={tab}
@@ -185,7 +234,7 @@ const Analytics = () => {
       </div>
 
       {/* Average */}
-      <div className="flex justify-between items-center px-4 mt-4 bg-white rounded-lg shadow-sm py-2">
+      <div className="flex justify-between items-center px-4 mx-4 mt-4 bg-white rounded-lg shadow-sm py-2">
         <p>
           Average: <span className="font-bold">₹ {average.toFixed(2)}</span>
         </p>
@@ -266,6 +315,7 @@ const Analytics = () => {
             </span>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

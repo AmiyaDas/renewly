@@ -8,7 +8,7 @@ const SubscriptionDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const app = location.state;
+  const app = location.state || {};
   const [id, setId] = useState(app.id || Date.now());
   const [startDate, setStartDate] = useState("2025-08-15");
   const [billingCycle, setBillingCycle] = useState("Every month");
@@ -22,7 +22,7 @@ const SubscriptionDetails = () => {
     const subscriptionData = {
       id,
       name,
-      icon: app.icon,
+      icon: app.icon || "",
       startDate,
       billingCycle,
       category,
@@ -45,11 +45,13 @@ const SubscriptionDetails = () => {
 
       {/* App Info */}
       <div className="flex items-center gap-4 p-4">
-        <img
-          src={app.icon}
-          alt={name}
-          className="w-14 h-14 rounded-full shadow"
-        />
+        {app.icon && (
+          <img
+            src={app.icon}
+            alt={name}
+            className="w-14 h-14 rounded-full shadow"
+          />
+        )}
         <span className="text-lg font-medium">{name}</span>
       </div>
 
@@ -158,7 +160,7 @@ const SubscriptionDetails = () => {
       </div>
       <button
         onClick={handleSave}
-        className="bg-black text-white px-4 py-1 rounded-lg save-button"
+        className="bg-black text-white px-4 py-1 mb-4 rounded-lg save-button"
       >
         Save
       </button>
