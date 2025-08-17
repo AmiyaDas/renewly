@@ -4,7 +4,7 @@ export const PreferencesContext = createContext();
 
 export const PreferencesProvider = ({ children }) => {
   const defaultPrefs = {
-    language: "English",
+    language: "en", // default i18n code
     currency: "INR",
     notificationsEnabled: true,
   };

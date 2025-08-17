@@ -3,23 +3,30 @@ import { languages, currencies } from "../utils/data";
 import Header from "./Header";
 import { FaShareAlt, FaStar, FaEnvelope } from "react-icons/fa";
 import { PreferencesContext } from "../context/PreferencesContext";
+import { useTranslation } from "react-i18next";
 
-const supportLinks = [
-  { name: "Rate Us", icon: <FaStar />, action: "rate" },
-  { name: "Share App", icon: <FaShareAlt />, action: "share" },
-  { name: "Contact Support", icon: <FaEnvelope />, action: "contact" },
+const supportLinks = (t) => [
+  { name: t("rate_us"), icon: <FaStar />, action: "rate" },
+  { name: t("share_app"), icon: <FaShareAlt />, action: "share" },
+  { name: t("contact_support"), icon: <FaEnvelope />, action: "contact" },
 ];
 
 const Settings = () => {
+  const { t, i18n } = useTranslation();
   const { language, currency, notificationsEnabled, updatePreference } =
     useContext(PreferencesContext);
   const [saved, setSaved] = useState(false);
 
   // Save preferences
   const handleSavePreferences = () => {
-    // Actually, state updates already persist via context
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  // Change language
+  const handleLanguageChange = (langCode) => {
+    updatePreference("language", langCode); // update context
+    i18n.changeLanguage(langCode); // update i18n
   };
 
   // Support actions
@@ -38,7 +45,7 @@ const Settings = () => {
         });
       } else {
         navigator.clipboard.writeText(window.location.origin);
-        alert("App link copied to clipboard!");
+        alert(t("link_copied"));
       }
     } else if (action === "contact") {
       window.location.href =
@@ -48,24 +55,24 @@ const Settings = () => {
 
   return (
     <div className="w-screen h-screen bg-[#f8f4f1] flex flex-col">
-      <Header showNavBack={true} title="Settings" />
+      <Header showNavBack={true} title={t("settings")} />
 
       {/* Preferences */}
       <div className="aspect-3/2 p-4">
         <div className="bg-white rounded-xl p-4 shadow-sm">
-          <h3 className="text-lg font-semibold mb-2">Preferences</h3>
+          <h3 className="text-lg font-semibold mb-2">{t("preferences")}</h3>
 
           {/* Language */}
           <div className="mb-4">
-            <label className="block mb-1 text-base">Language</label>
+            <label className="block mb-1 text-base">{t("language")}</label>
             <select
               value={language}
-              onChange={(e) => updatePreference("language", e.target.value)}
+              onChange={(e) => handleLanguageChange(e.target.value)}
               className="w-full p-2 rounded-lg border border-gray-300 text-base"
             >
               {languages.map((lang) => (
-                <option key={lang} value={lang}>
-                  {lang}
+                <option key={lang.code} value={lang.code}>
+                  {t(`languages.${lang.code}`)}
                 </option>
               ))}
             </select>
@@ -73,10 +80,12 @@ const Settings = () => {
 
           {/* Currency */}
           <div className="mb-4">
-            <label className="block mb-1 text-base">Currency</label>
+            <label className="block mb-1 text-base">{t("currency")}</label>
             <select
               value={currency}
-              onChange={(e) => updatePreference("currency", e.target.value)}
+              onChange={(e) =>
+                updatePreference("currency", e.target.value)
+              }
               className="w-full p-2 rounded-lg border border-gray-300 text-base"
             >
               {currencies.map((c) => (
@@ -89,15 +98,12 @@ const Settings = () => {
 
           {/* Notifications */}
           <div className="mb-4 flex items-center">
-            <label className="text-base mr-4">Notifications</label>
+            <label className="text-base mr-4">{t("notifications")}</label>
             <input
               type="checkbox"
               checked={notificationsEnabled}
               onChange={() =>
-                updatePreference(
-                  "notificationsEnabled",
-                  !notificationsEnabled
-                )
+                updatePreference("notificationsEnabled", !notificationsEnabled)
               }
               className="w-5 h-5"
             />
@@ -107,11 +113,12 @@ const Settings = () => {
             onClick={handleSavePreferences}
             className="w-full bg-blue-500 text-white py-2 rounded-lg mt-2 font-semibold hover:bg-blue-600 transition"
           >
-            Save Preferences
+            {t("save_preferences")}
           </button>
+
           {saved && (
             <div className="text-green-600 text-center mt-2 font-medium">
-              Preferences saved!
+              {t("preferences_saved")}
             </div>
           )}
         </div>
@@ -120,9 +127,9 @@ const Settings = () => {
       {/* Support Us */}
       <div className="aspect-3/2 p-4 shadow mt-2">
         <div className="bg-white rounded-xl p-4 shadow-sm">
-          <h3 className="text-lg font-semibold mb-2">Support Us</h3>
+          <h3 className="text-lg font-semibold mb-2">{t("support_us")}</h3>
           <ul className="list-none p-0">
-            {supportLinks.map((item) => (
+            {supportLinks(t).map((item) => (
               <li
                 key={item.name}
                 className="flex items-center px-4 py-3 border-b border-gray-200 cursor-pointer hover:bg-gray-100 transition"
@@ -149,7 +156,7 @@ const Settings = () => {
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline mx-2"
           >
-            Privacy Policy
+            {t("privacy_policy")}
           </a>
           <a
             href="https://renewly.com/terms"
@@ -157,7 +164,7 @@ const Settings = () => {
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline mx-2"
           >
-            Terms of Service
+            {t("terms_of_service")}
           </a>
         </div>
       </footer>

@@ -1,0 +1,25 @@
+{
+  "settings": "Settings",
+  "preferences": "Preferences",
+  "language": "Language",
+  "currency": "Currency",
+  "notifications": "Notifications",
+  "save_preferences": "Save Preferences",
+  "preferences_saved": "Preferences saved!",
+  "support_us": "Support Us",
+  "rate_us": "Rate Us",
+  "share_app": "Share App",
+  "contact_support": "Contact Support",
+  "languages": {
+    "en": "English",
+    "es": "Spanish",
+    "fr": "French",
+    "de": "German",
+    "hi": "Hindi",
+    "zh": "Chinese",
+    "ja": "Japanese",
+    "ko": "Korean",
+    "ru": "Russian",
+    "pt": "Portuguese"
+  }
+}

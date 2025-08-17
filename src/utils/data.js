@@ -88,7 +88,18 @@ const durations = [
   { key: "year", value: "Every year" },
 ];
 
-const languages = ["English", "Spanish", "French", "German"];
+const languages = [
+  { code: "en", label: "English" },
+  { code: "es", label: "Spanish" },
+  { code: "fr", label: "French" },
+  { code: "de", label: "German" },
+  { code: "hi", label: "Hindi" },
+  { code: "zh", label: "Chinese" },
+  { code: "ja", label: "Japanese" },
+  { code: "ko", label: "Korean" },
+  { code: "ru", label: "Russian" },
+  { code: "pt", label: "Portuguese" }
+];
 const currencies = [
   { code: "USD", label: "US Dollar", symbol: "$", flag: "🇺🇸" },
   { code: "EUR", label: "Euro", symbol: "€", flag: "🇪🇺" },
