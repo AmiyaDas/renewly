@@ -1,6 +1,6 @@
 import { IoClose } from "react-icons/io5";
 
-export default function SubscriptionModal({ isOpen, onClose }) {
+export default function SubscriptionModal({ isOpen, onClose, modalData }) {
   if (!isOpen) return null;
 
   return (
@@ -22,8 +22,8 @@ export default function SubscriptionModal({ isOpen, onClose }) {
             className="w-12 h-12 rounded-full"
           />
           <div>
-            <h2 className="text-xl font-semibold">Netflix</h2>
-            <p className="text-gray-600 text-sm">₹649.00</p>
+            <h2 className="text-xl font-semibold">{modalData.name}</h2>
+            <p className="text-gray-600 text-sm">{`₹` + modalData.price}</p>
           </div>
         </div>
 
@@ -31,19 +31,19 @@ export default function SubscriptionModal({ isOpen, onClose }) {
         <div className="space-y-3 text-sm">
           <div className="flex justify-between">
             <span className="text-gray-500">Billing Cycle</span>
-            <span className="font-medium">Every month</span>
+            <span className="font-medium">{modalData.billingCycle}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Next Payment</span>
-            <span className="font-medium">September 14, 2025</span>
+            <span className="font-medium">{modalData.renewalDate}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Subscribed</span>
-            <span className="font-medium">1 day ago</span>
+            <span className="font-medium">{modalData.startDate}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Category</span>
-            <span className="font-medium">Streaming</span>
+            <span className="font-medium">{modalData.category}</span>
           </div>
         </div>
 

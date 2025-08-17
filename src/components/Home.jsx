@@ -11,6 +11,28 @@ import SubscriptionModal from "./SubscriptionModal";
 const Home = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   const [open, setOpen] = useState(false);
+  const [currentModalData, setCurrentModalData] = useState({
+    name: "",
+    renewalDate: "",
+    startDate: "",
+    billingCycle: "",
+    icon: "",
+    category: "",
+    price: "",
+  });
+
+  const openModal = (sub) => {
+    setCurrentModalData({
+      name: sub.name,
+      renewalDate: sub.renewalDate,
+      startDate: sub.startDate,
+      billingCycle: sub.billingCycle,
+      icon: sub.icon,
+      category: sub.category,
+      price: sub.price,
+    });
+    setOpen(true);
+  };
 
   useEffect(() => {
     const subs = [];
@@ -93,7 +115,7 @@ const Home = () => {
             daysLeft={sub.daysLeft}
             icon={sub.icon}
             price={sub.price}
-            onClick={() => setOpen(true)}
+            onClick={() => openModal(sub)}
           />
         ))}
       </div>
@@ -114,7 +136,11 @@ const Home = () => {
           <FooterTab />
         </>
       )}
-      <SubscriptionModal isOpen={open} onClose={() => setOpen(false)} />
+      <SubscriptionModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        modalData={currentModalData}
+      />
     </div>
   );
 };
