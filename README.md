@@ -13,23 +13,25 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Components list
 
-- get started
-- Home
-  - List of subscriptions
-  - no data home screen
-  - footer tab
-  - header
+- get started ✅
+- Home ✅
+  - List of subscriptions ✅
+  - no data home screen ✅
+  - footer tab ✅
+  - header ✅
 - calendar
-- Add subscription
+- Add subscription ✅
 - edit subscription
-- Settings
-- analytics
+- Settings ✅
+- analytics ✅
 
 ## Tasks
 
-- Charts
+- Charts ✅
+  - chart center
 - Calendar
-- View Subs
+- View Subs ✅
 - Edit subs
 - Some animation for home
 - Settings ✅
+- text color ✅
