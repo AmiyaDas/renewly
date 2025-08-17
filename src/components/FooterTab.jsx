@@ -15,7 +15,9 @@ const FooterTab = () => {
         </Link>
       </div>
       <div className="footer-icon">
-        <FaRegCalendarCheck />
+        <Link to="/calendar">
+          <FaRegCalendarCheck />
+        </Link>
       </div>
     </footer>
   );
