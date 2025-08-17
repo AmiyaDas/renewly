@@ -1,7 +1,8 @@
 import Header from "./Header";
 import FooterTab from "./FooterTab";
 import { FaChevronRight } from "react-icons/fa";
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useContext } from "react";
+import { PreferencesContext } from "../context/PreferencesContext";
 import NoData from "./NoData";
 import SubscriptionCard from "./SubscriptionCard";
 import SubscriptionModal from "./SubscriptionModal";
@@ -9,6 +10,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+  const { currency } = useContext(PreferencesContext);
   const [, forceUpdate] = useReducer((x) => x + 1, 0);
   const [subscriptions, setSubscriptions] = useState([]);
   const [open, setOpen] = useState(false);
@@ -41,6 +43,22 @@ const Home = () => {
     setOpen(false);
     // forceUpdate();
     // needs logic to refresh the subscriptions list
+  };
+
+  const formatBillingCycle = (cycle) => {
+    switch (cycle.toLowerCase()) {
+      case "monthly":
+      case "every month":
+        return "per month";
+      case "yearly":
+      case "every year":
+        return "per year";
+      case "weekly":
+      case "every week":
+        return "per week";
+      default:
+        return cycle;
+    }
   };
 
   useEffect(() => {
@@ -83,7 +101,9 @@ const Home = () => {
     return total + yearlyPrice;
   }, 0);
 
-  const totalYearlyFormatted = `₹ ${totalYearly.toFixed(2)}`;
+  // Lookup currency symbol
+  const currencySymbols = { USD: "$", EUR: "€", INR: "₹", GBP: "£" };
+  const totalYearlyFormatted = `${currencySymbols[currency] || ""} ${totalYearly.toFixed(2)}`;
 
   const totaSummary = (
     <div className="summary-header">
@@ -149,7 +169,7 @@ const Home = () => {
                 renewDate={sub.renewalDate}
                 daysLeft={daysLeft}
                 icon={sub.icon}
-                price={sub.price}
+                price={`${currencySymbols[currency] || ""}${sub.price} ${formatBillingCycle(sub.billingCycle)}`}
                 onClick={() => openModal(sub)}
               />
             </motion.div>
@@ -180,7 +200,9 @@ const Home = () => {
                     <span className="font-semibold">{sub.name}</span>
                   </div>
                   <p className="text-xs truncate max-w-[120px]">{renderRenewInfo(sub.renewalDate)}</p>
-                  <p className="text-sm font-bold mt-1">{sub.price}</p>
+                  <p className="text-sm font-bold mt-1">
+                    {currencySymbols[currency] || ""}{sub.price}
+                  </p>
                 </div>
               ))}
             </div>
@@ -192,9 +214,13 @@ const Home = () => {
               {subscriptions
                 .slice()
                 .sort((a, b) => {
-                  const priceA = parseFloat(a.price.toString().replace(/[^0-9.]/g, "")) || 0;
-                  const priceB = parseFloat(b.price.toString().replace(/[^0-9.]/g, "")) || 0;
-                  return priceB - priceA;
+                  const normalize = (sub) => {
+                    const price = parseFloat(sub.price.toString().replace(/[^0-9.]/g, "")) || 0;
+                    if (sub.billingCycle === "monthly") return price * 12;
+                    if (sub.billingCycle === "weekly") return price * 52;
+                    return price;
+                  };
+                  return normalize(b) - normalize(a);
                 })
                 .slice(0, 1)
                 .map((sub) => (
@@ -204,7 +230,10 @@ const Home = () => {
                       <p className="font-medium">{sub.name}</p>
                       <p className="text-sm text-gray-500">{renderRenewInfo(sub.renewalDate)}</p>
                     </div>
-                    <span className="font-bold">{sub.price}</span>
+                    <span className="font-bold">
+                      {currencySymbols[currency] || ""}{sub.price}
+                      <span className="ml-1 text-xs text-gray-400">/{sub.billingCycle}</span>
+                    </span>
                   </div>
                 ))}
             </div>

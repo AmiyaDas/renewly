@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { languages, currencies } from "../utils/data";
 import Header from "./Header";
 import { FaShareAlt, FaStar, FaEnvelope } from "react-icons/fa";
+import { PreferencesContext } from "../context/PreferencesContext";
 
 const supportLinks = [
   { name: "Rate Us", icon: <FaStar/>, action: "rate" },
@@ -10,14 +11,11 @@ const supportLinks = [
 ];
 
 const Settings = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
-  const [selectedCurrency, setSelectedCurrency] = useState(currencies[0]);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const { language, setLanguage, currency, setCurrency, notificationsEnabled, setNotificationsEnabled } = useContext(PreferencesContext);
   const [saved, setSaved] = useState(false);
 
   // Save preferences (simulate API/localStorage)
   const handleSavePreferences = () => {
-    localStorage.setItem("preferences", JSON.stringify({selectedLanguage, selectedCurrency, notificationsEnabled}));
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -53,8 +51,8 @@ const Settings = () => {
           <div className="mb-4">
             <label className="block mb-1 text-base">Language</label>
             <select
-              value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value)}
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
               className="w-full p-2 rounded-lg border border-gray-300 text-base"
             >
               {languages.map((lang) => (
@@ -67,13 +65,13 @@ const Settings = () => {
           <div className="mb-4">
             <label className="block mb-1 text-base">Currency</label>
             <select
-              value={selectedCurrency}
-              onChange={(e) => setSelectedCurrency(e.target.value)}
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
               className="w-full p-2 rounded-lg border border-gray-300 text-base"
             >
-              {currencies.map((cur) => (
-                <option key={cur} value={cur}>
-                  {cur}
+              {currencies.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.flag} {c.label} ({c.symbol})
                 </option>
               ))}
             </select>

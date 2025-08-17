@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   BarChart,
   Bar,
@@ -9,10 +9,14 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Header from "./Header";
+import { PreferencesContext } from "../context/PreferencesContext";
 
 const Analytics = () => {
   const [activeTab, setActiveTab] = useState("Weekly");
   const [subscriptions, setSubscriptions] = useState([]);
+
+  const { currency } = useContext(PreferencesContext);
+  const currencySymbols = { USD: "$", EUR: "€", INR: "₹", GBP: "£" };
 
   useEffect(() => {
     const subs = [];
@@ -164,43 +168,35 @@ const Analytics = () => {
 
   // Calculate top subscriptions by spend in the current period
   function getTopSubscriptions(period) {
-    // Aggregate spend per subscription for the period
     const spendMap = {};
+
+    const now = new Date();
+    let periodStart, periodEnd;
+
+    if (period === "Weekly") {
+      const curr = new Date(now);
+      const diff = curr.getDate() - curr.getDay() + 1; // Monday
+      periodStart = new Date(curr.setDate(diff));
+      periodStart.setHours(0, 0, 0, 0);
+      periodEnd = new Date(periodStart);
+      periodEnd.setDate(periodEnd.getDate() + 7);
+    } else if (period === "Monthly") {
+      periodStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    } else if (period === "Yearly") {
+      periodStart = new Date(now.getFullYear(), 0, 1);
+      periodEnd = new Date(now.getFullYear() + 1, 0, 1);
+    }
+
     subscriptions.forEach((sub) => {
       if (!sub.startDate || !sub.price) return;
-      const d = new Date(sub.startDate);
-      let inPeriod = false;
-      const now = new Date();
-      if (period === "Weekly") {
-        // Check if in current week
-        const curr = new Date(now);
-        const diff = curr.getDate() - curr.getDay() + 1;
-        const weekStart = new Date(curr.setDate(diff));
-        weekStart.setHours(0, 0, 0, 0);
-        const weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekEnd.getDate() + 7);
-        if (d >= weekStart && d < weekEnd) inPeriod = true;
-      } else if (period === "Monthly") {
-        const curr = new Date(now);
-        if (
-          d.getFullYear() === curr.getFullYear() &&
-          d.getMonth() === curr.getMonth()
-        )
-          inPeriod = true;
-      } else if (period === "Yearly") {
-        const curr = new Date(now);
-        if (d.getFullYear() === curr.getFullYear()) inPeriod = true;
-      }
-      if (inPeriod) {
-        if (!spendMap[sub.name]) {
-          spendMap[sub.name] = {
-            ...sub,
-            totalSpend: 0,
-          };
-        }
-        spendMap[sub.name].totalSpend += parseFloat(sub.price) || 0;
-      }
+      const occurrences = getOccurrences(sub, periodStart, periodEnd);
+      const totalSpend = occurrences.reduce((acc, curr) => acc + curr.amount, 0);
+
+      if (!spendMap[sub.name]) spendMap[sub.name] = { ...sub, totalSpend: 0 };
+      spendMap[sub.name].totalSpend += totalSpend;
     });
+
     return Object.values(spendMap)
       .sort((a, b) => b.totalSpend - a.totalSpend)
       .slice(0, 3);
@@ -236,7 +232,7 @@ const Analytics = () => {
       {/* Average */}
       <div className="flex justify-between items-center px-4 mx-4 mt-4 bg-white rounded-lg shadow-sm py-2">
         <p>
-          Average: <span className="font-bold">₹ {average.toFixed(2)}</span>
+          Average: <span className="font-bold">{currencySymbols[currency] || ""} {average.toFixed(2)}</span>
         </p>
         <select className="text-sm border rounded px-2">
           <option>
@@ -260,8 +256,8 @@ const Analytics = () => {
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
+              <YAxis tickFormatter={(val) => `${currencySymbols[currency] || ""}${val}`} />
+              <Tooltip formatter={(value) => [`${currencySymbols[currency] || ""}${value}`, "Amount"]} />
               <Bar dataKey="amount" fill="#000" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -286,7 +282,7 @@ const Analytics = () => {
                 <p className="text-xs text-gray-500">{sub.startDate}</p>
               </div>
             </div>
-            <p className="font-medium">₹ {sub.price}</p>
+            <p className="font-medium">{currencySymbols[currency] || ""} {sub.price}</p>
           </div>
         ))}
       </div>
@@ -308,7 +304,7 @@ const Analytics = () => {
               {sub.name}
             </span>
             <span>
-              ₹{" "}
+              {currencySymbols[currency] || ""}{" "}
               {sub.totalSpend
                 ? sub.totalSpend.toFixed(2)
                 : (parseFloat(sub.price) || 0).toFixed(2)}

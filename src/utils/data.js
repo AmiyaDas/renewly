@@ -89,7 +89,12 @@ const durations = [
 ];
 
 const languages = ["English", "Spanish", "French", "German"];
-const currencies = ["USD", "EUR", "INR", "GBP"];
+const currencies = [
+  { code: "USD", label: "US Dollar", symbol: "$", flag: "🇺🇸" },
+  { code: "EUR", label: "Euro", symbol: "€", flag: "🇪🇺" },
+  { code: "INR", label: "Indian Rupee", symbol: "₹", flag: "🇮🇳" },
+  { code: "GBP", label: "British Pound", symbol: "£", flag: "🇬🇧" },
+];
 export {
   streamingApps,
   musicApps,

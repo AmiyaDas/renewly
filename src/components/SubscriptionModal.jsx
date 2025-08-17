@@ -1,8 +1,12 @@
 import { IoClose } from "react-icons/io5";
 import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { PreferencesContext } from "../context/PreferencesContext";
 
 export default function SubscriptionModal({ isOpen, onClose, subscription }) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const { currency } = useContext(PreferencesContext);
+  const currencySymbols = { USD: "$", EUR: "€", INR: "₹", GBP: "£" };
   if (!isOpen || !subscription) return null;
 
   const onDeleteSubscription = () => {
@@ -54,7 +58,9 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
           />
           <div>
             <h2 className="text-xl font-semibold">{subscription.name}</h2>
-            <p className="text-green-600 text-lg">{`₹` + subscription.price}</p>
+            <p className="text-green-600 text-lg">
+              {currencySymbols[currency] || ""}{subscription.price}
+            </p>
           </div>
         </div>
 
