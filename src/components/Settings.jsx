@@ -5,17 +5,19 @@ import { FaShareAlt, FaStar, FaEnvelope } from "react-icons/fa";
 import { PreferencesContext } from "../context/PreferencesContext";
 
 const supportLinks = [
-  { name: "Rate Us", icon: <FaStar/>, action: "rate" },
-  { name: "Share App", icon: <FaShareAlt/>, action: "share" },
-  { name: "Contact Support", icon: <FaEnvelope/>, action: "contact" },
+  { name: "Rate Us", icon: <FaStar />, action: "rate" },
+  { name: "Share App", icon: <FaShareAlt />, action: "share" },
+  { name: "Contact Support", icon: <FaEnvelope />, action: "contact" },
 ];
 
 const Settings = () => {
-  const { language, setLanguage, currency, setCurrency, notificationsEnabled, setNotificationsEnabled } = useContext(PreferencesContext);
+  const { language, currency, notificationsEnabled, updatePreference } =
+    useContext(PreferencesContext);
   const [saved, setSaved] = useState(false);
 
-  // Save preferences (simulate API/localStorage)
+  // Save preferences
   const handleSavePreferences = () => {
+    // Actually, state updates already persist via context
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -23,7 +25,10 @@ const Settings = () => {
   // Support actions
   const handleSupportClick = (action) => {
     if (action === "rate") {
-      window.open("https://play.google.com/store/apps/details?id=com.renewly", "_blank");
+      window.open(
+        "https://play.google.com/store/apps/details?id=com.renewly",
+        "_blank"
+      );
     } else if (action === "share") {
       if (navigator.share) {
         navigator.share({
@@ -36,7 +41,8 @@ const Settings = () => {
         alert("App link copied to clipboard!");
       }
     } else if (action === "contact") {
-      window.location.href = "mailto:support@renewly.com?subject=Support%20Request";
+      window.location.href =
+        "mailto:support@renewly.com?subject=Support%20Request";
     }
   };
 
@@ -48,11 +54,13 @@ const Settings = () => {
       <div className="aspect-3/2 p-4">
         <div className="bg-white rounded-xl p-4 shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Preferences</h3>
+
+          {/* Language */}
           <div className="mb-4">
             <label className="block mb-1 text-base">Language</label>
             <select
               value={language}
-              onChange={(e) => setLanguage(e.target.value)}
+              onChange={(e) => updatePreference("language", e.target.value)}
               className="w-full p-2 rounded-lg border border-gray-300 text-base"
             >
               {languages.map((lang) => (
@@ -62,11 +70,13 @@ const Settings = () => {
               ))}
             </select>
           </div>
+
+          {/* Currency */}
           <div className="mb-4">
             <label className="block mb-1 text-base">Currency</label>
             <select
               value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
+              onChange={(e) => updatePreference("currency", e.target.value)}
               className="w-full p-2 rounded-lg border border-gray-300 text-base"
             >
               {currencies.map((c) => (
@@ -76,15 +86,23 @@ const Settings = () => {
               ))}
             </select>
           </div>
+
+          {/* Notifications */}
           <div className="mb-4 flex items-center">
             <label className="text-base mr-4">Notifications</label>
             <input
               type="checkbox"
               checked={notificationsEnabled}
-              onChange={() => setNotificationsEnabled(!notificationsEnabled)}
+              onChange={() =>
+                updatePreference(
+                  "notificationsEnabled",
+                  !notificationsEnabled
+                )
+              }
               className="w-5 h-5"
             />
           </div>
+
           <button
             onClick={handleSavePreferences}
             className="w-full bg-blue-500 text-white py-2 rounded-lg mt-2 font-semibold hover:bg-blue-600 transition"
@@ -118,9 +136,11 @@ const Settings = () => {
           </ul>
         </div>
       </div>
+
       <footer className="w-full bg-white py-4 mt-auto shadow-inner">
         <div className="text-center text-gray-500 text-sm">
-          &copy; {new Date().getFullYear()} Renewly &middot; All rights reserved
+          &copy; {new Date().getFullYear()} Renewly &middot; All rights
+          reserved
         </div>
         <div className="text-center mt-1">
           <a

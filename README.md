@@ -32,8 +32,8 @@ If you are developing a production application, we recommend using TypeScript wi
 - Calendar ✅
   - make events and remonders
 - View Subs ✅
-- Edit subs
-- Some animation for home
+- Edit subs 
+- Some animation for home ✅
 - Settings ✅
 - text color ✅
 - make app logo
