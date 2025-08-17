@@ -1,7 +1,34 @@
 import { IoClose } from "react-icons/io5";
+import { useState, useEffect } from "react";
 
 export default function SubscriptionModal({ isOpen, onClose, modalData }) {
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   if (!isOpen) return null;
+
+  const onDeleteSubscription = () => {
+    localStorage.removeItem(`subscription_${modalData.name}`);
+    onClose();
+  };
+
+  const deletConfirmBox = (
+    <div className="bg-white p-4 rounded-lg text-lg shadow-xl border border-gray-200 z-10 position-fixed">
+      <p>Are you sure you want to delete this subscription?</p>
+      <div className="flex justify-between">
+        <button
+          onClick={onDeleteSubscription}
+          className="mt-2 bg-red-600 text-white px-4 py-2 rounded-lg"
+        >
+          Yes, Delete
+        </button>
+        <button
+          onClick={() => setShowConfirmDelete(false)}
+          className="mt-2 bg-black text-white px-4 py-2 rounded-lg"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -17,13 +44,13 @@ export default function SubscriptionModal({ isOpen, onClose, modalData }) {
         {/* Header */}
         <div className="flex items-center space-x-3 mb-6">
           <img
-            src="https://upload.wikimedia.org/wikipedia/commons/7/75/Netflix_icon.svg"
+            src={modalData.icon}
             alt="Netflix"
             className="w-12 h-12 rounded-full"
           />
           <div>
             <h2 className="text-xl font-semibold">{modalData.name}</h2>
-            <p className="text-gray-600 text-sm">{`₹` + modalData.price}</p>
+            <p className="text-green-600 text-lg">{`₹` + modalData.price}</p>
           </div>
         </div>
 
@@ -46,13 +73,18 @@ export default function SubscriptionModal({ isOpen, onClose, modalData }) {
             <span className="font-medium">{modalData.category}</span>
           </div>
         </div>
+        {/* Confirmation box */}
+        {showConfirmDelete && deletConfirmBox}
 
         {/* Action buttons */}
         <div className="mt-6 flex flex-col gap-3">
           <button className="w-full bg-black text-white py-2 rounded-xl font-medium hover:bg-gray-800 transition">
             Mark as Cancelled
           </button>
-          <button className="w-full text-red-600 font-medium hover:underline">
+          <button
+            className="w-full text-red-600 font-medium hover:underline"
+            onClick={() => setShowConfirmDelete(true)}
+          >
             Delete Subscription
           </button>
         </div>

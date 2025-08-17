@@ -35,3 +35,6 @@ If you are developing a production application, we recommend using TypeScript wi
 - Some animation for home
 - Settings ✅
 - text color ✅
+- make app logo
+- make placeholder logo for custom subscriptions
+- logic for cancellation

@@ -2,13 +2,14 @@ import Header from "./Header";
 import FooterTab from "./FooterTab";
 import { FaChevronRight } from "react-icons/fa";
 import HomeChart from "./HomeChart";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import NoData from "./NoData";
 import { Link } from "react-router-dom";
 import SubscriptionCard from "./SubscriptionCard";
 import SubscriptionModal from "./SubscriptionModal";
 
 const Home = () => {
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
   const [subscriptions, setSubscriptions] = useState([]);
   const [open, setOpen] = useState(false);
   const [currentModalData, setCurrentModalData] = useState({
@@ -32,6 +33,12 @@ const Home = () => {
       price: sub.price,
     });
     setOpen(true);
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+    // forceUpdate();
+    // needs logic to refresh the subscriptions list
   };
 
   useEffect(() => {
@@ -138,7 +145,7 @@ const Home = () => {
       )}
       <SubscriptionModal
         isOpen={open}
-        onClose={() => setOpen(false)}
+        onClose={closeModal}
         modalData={currentModalData}
       />
     </div>
