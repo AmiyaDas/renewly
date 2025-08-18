@@ -1,5 +1,7 @@
 import Header from "./Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { categoryColorMap } from "../utils/data";
+import CalendarEvent from "./CalendarEvent";
 
 const days = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -38,6 +40,33 @@ const events = [
 
 const Calendar = () => {
   const [currentDate] = useState(new Date(2020, 0, 9));
+  const [subscriptions, setSubscriptions] = useState([]);
+
+  useEffect(() => {
+    const subs = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.startsWith("subscription_")) {
+        try {
+          const sub = JSON.parse(localStorage.getItem(key));
+          subs.push(sub);
+        } catch (e) {
+          // ignore parsing errors
+        }
+      }
+    }
+    const arrangedSubs = subs.map((sub) => {
+      let color = categoryColorMap[sub.category] || "border-gray-400";
+      return {
+        // id: sub.id,
+        title: sub.name,
+        time: sub.renewalDate,
+        price: sub.price,
+        color: color,
+      };
+    });
+    setSubscriptions(arrangedSubs);
+  }, []);
 
   const month = currentDate.toLocaleString("default", { month: "long" });
   const year = currentDate.getFullYear();
@@ -78,14 +107,17 @@ const Calendar = () => {
   );
 
   const eventsList = (
-    <div className="space-y-3">
-      {events.map((event, i) => (
-        <div key={i} className={`pl-2 border-l-4 ${event.color}`}>
-          <div className="text-xs text-gray-400">{event.time}</div>
-          <div className="text-sm font-semibold">{event.title}</div>
-          <div className="text-xs text-gray-400">{event.location}</div>
-        </div>
-      ))}
+    <div className="px-4 py-2">
+      <div className="text-lg font-bold py-2">Upcoming renewals</div>
+      <div className="">
+        {subscriptions.map((event) => (
+          <CalendarEvent
+            key={event.id}
+            title={event.title}
+            price={event.price}
+          />
+        ))}
+      </div>
     </div>
   );
   return (

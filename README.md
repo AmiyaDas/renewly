@@ -38,5 +38,10 @@ If you are developing a production application, we recommend using TypeScript wi
 - text color ✅
 - make app logo
 - make placeholder logo for custom subscriptions
-- logic for cancellation 
-- Language JSON update for all keywords
+- logic for cancellation
+- Language JSON update for all keywords ✅
+
+## Bugs
+
+- currency symbol missing in AllSubscriptions
+- few language keywords are missing in charts and calendar

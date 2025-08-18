@@ -76,10 +76,23 @@ const categories = [
   "News",
   "Education",
   "Productivity",
-  "Health & Fitness",
+  "Health",
   "Lifestyle",
   "Finance",
 ];
+
+const categoryColorMap = {
+  Streaming: "border-red-400",
+  Music: "border-green-400",
+  Gaming: "border-yellow-400",
+  Entertainment: "border-purple-400",
+  News: "border-pink-400",
+  Education: "border-blue-400",
+  Productivity: "border-teal-400",
+  Health: "border-orange-400",
+  Lifestyle: "border-gray-400",
+  Finance: "border-cyan-400",
+};
 
 const durations = [
   { key: "day", value: "Every day" },
@@ -98,7 +111,7 @@ const languages = [
   { code: "ja", label: "Japanese" },
   { code: "ko", label: "Korean" },
   { code: "ru", label: "Russian" },
-  { code: "pt", label: "Portuguese" }
+  { code: "pt", label: "Portuguese" },
 ];
 const currencies = [
   { code: "USD", label: "US Dollar", symbol: "$", flag: "🇺🇸" },
@@ -115,5 +128,6 @@ export {
   currentSubscriptions,
   durations,
   languages,
-  currencies
+  currencies,
+  categoryColorMap,
 };

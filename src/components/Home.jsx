@@ -1,7 +1,7 @@
 import Header from "./Header";
 import FooterTab from "./FooterTab";
 import { FaChevronRight } from "react-icons/fa";
-import { useState, useEffect, useReducer, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { PreferencesContext } from "../context/PreferencesContext";
 import NoData from "./NoData";
 import SubscriptionCard from "./SubscriptionCard";
@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 const Home = () => {
   const { t } = useTranslation();
   const { currency } = useContext(PreferencesContext);
-  const [, forceUpdate] = useReducer((x) => x + 1, 0);
   const [subscriptions, setSubscriptions] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedSub, setSelectedSub] = useState(null);
@@ -105,7 +104,9 @@ const Home = () => {
 
   // Lookup currency symbol
   const currencySymbols = { USD: "$", EUR: "€", INR: "₹", GBP: "£" };
-  const totalYearlyFormatted = `${currencySymbols[currency] || ""} ${totalYearly.toFixed(2)}`;
+  const totalYearlyFormatted = `${
+    currencySymbols[currency] || ""
+  } ${totalYearly.toFixed(2)}`;
 
   const totaSummary = (
     <div className="summary-header">
@@ -138,7 +139,10 @@ const Home = () => {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     const options = { year: "numeric", month: "short", day: "numeric" };
     const dateStr = renew.toLocaleDateString(undefined, options);
-    return t("renews_on", { date: dateStr, daysLeft: diffDays >= 0 ? diffDays + " days left" : "Expired" });
+    return t("renews_on", {
+      date: dateStr,
+      daysLeft: diffDays >= 0 ? diffDays + " days left" : "Expired",
+    });
   };
 
   const currentSubscriptionsList = (
@@ -171,7 +175,9 @@ const Home = () => {
                 renewDate={sub.renewalDate}
                 daysLeft={daysLeft}
                 icon={sub.icon}
-                price={`${currencySymbols[currency] || ""}${sub.price} ${formatBillingCycle(sub.billingCycle)}`}
+                price={`${currencySymbols[currency] || ""}${
+                  sub.price
+                } ${formatBillingCycle(sub.billingCycle)}`}
                 onClick={() => openModal(sub)}
               />
             </motion.div>
@@ -198,12 +204,19 @@ const Home = () => {
                   className="inline-block min-w-[150px] bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg p-4 shadow cursor-pointer"
                 >
                   <div className="flex items-center space-x-2 mb-2">
-                    <img src={sub.icon} alt={sub.name} className="w-8 h-8 rounded" />
+                    <img
+                      src={sub.icon}
+                      alt={sub.name}
+                      className="w-8 h-8 rounded"
+                    />
                     <span className="font-semibold">{sub.name}</span>
                   </div>
-                  <p className="text-xs truncate max-w-[120px]">{renderRenewInfo(sub.renewalDate)}</p>
+                  <p className="text-xs truncate max-w-[120px]">
+                    {renderRenewInfo(sub.renewalDate)}
+                  </p>
                   <p className="text-sm font-bold mt-1">
-                    {currencySymbols[currency] || ""}{sub.price}
+                    {currencySymbols[currency] || ""}
+                    {sub.price}
                   </p>
                 </div>
               ))}
@@ -211,13 +224,18 @@ const Home = () => {
           </div>
 
           <div className="px-4 py-4">
-            <h3 className="text-lg font-semibold mb-3">{t("most_expensive")}</h3>
+            <h3 className="text-lg font-semibold mb-3">
+              {t("most_expensive")}
+            </h3>
             <div className="grid gap-4">
               {subscriptions
                 .slice()
                 .sort((a, b) => {
                   const normalize = (sub) => {
-                    const price = parseFloat(sub.price.toString().replace(/[^0-9.]/g, "")) || 0;
+                    const price =
+                      parseFloat(
+                        sub.price.toString().replace(/[^0-9.]/g, "")
+                      ) || 0;
                     if (sub.billingCycle === "monthly") return price * 12;
                     if (sub.billingCycle === "weekly") return price * 52;
                     return price;
@@ -226,15 +244,27 @@ const Home = () => {
                 })
                 .slice(0, 1)
                 .map((sub) => (
-                  <div key={sub.id} className="flex items-center bg-white rounded-lg shadow p-3">
-                    <img src={sub.icon} alt={sub.name} className="w-10 h-10 rounded mr-3" />
+                  <div
+                    key={sub.id}
+                    className="flex items-center bg-white rounded-lg shadow p-3"
+                  >
+                    <img
+                      src={sub.icon}
+                      alt={sub.name}
+                      className="w-10 h-10 rounded mr-3"
+                    />
                     <div className="flex-1">
                       <p className="font-medium">{sub.name}</p>
-                      <p className="text-sm text-gray-500">{renderRenewInfo(sub.renewalDate)}</p>
+                      <p className="text-sm text-gray-500">
+                        {renderRenewInfo(sub.renewalDate)}
+                      </p>
                     </div>
                     <span className="font-bold">
-                      {currencySymbols[currency] || ""}{sub.price}
-                      <span className="ml-1 text-xs text-gray-400">/{sub.billingCycle}</span>
+                      {currencySymbols[currency] || ""}
+                      {sub.price}
+                      <span className="ml-1 text-xs text-gray-400">
+                        /{sub.billingCycle}
+                      </span>
                     </span>
                   </div>
                 ))}

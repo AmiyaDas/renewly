@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import SubscriptionCard from "./SubscriptionCard";
 import { useTranslation } from "react-i18next";
 
+// list of all current subscriptions
 const AllSubscriptions = () => {
   const { t } = useTranslation();
   const [subscriptions, setSubscriptions] = useState([]);
@@ -38,7 +39,11 @@ const AllSubscriptions = () => {
   );
   return (
     <div className="w-screen min-h-screen viewport">
-      <Header showNavBack={true} title={t("all_subscriptions")} showIcons={true} />
+      <Header
+        showNavBack={true}
+        title={t("all_subscriptions")}
+        showIcons={true}
+      />
       <div className="subscriptions">{allSubs}</div>
     </div>
   );
