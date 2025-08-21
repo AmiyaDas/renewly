@@ -7,6 +7,7 @@ import SubscriptionDetails from "./components/SubscriptionDetails";
 import Settings from "./components/Settings";
 import AllSubscriptions from "./components/AllSubscriptions";
 import Calendar from "./components/Calendar";
+import Privacy from "./components/Privacy";
 
 const Analytics = React.lazy(() => import("./components/Analytics"));
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/subscriptions" element={<AllSubscriptions />} />
         <Route path="/calendar" element={<Calendar />} />
+        <Route path="/privacy" element={<Privacy />} />
       </Routes>
     </Router>
   );
