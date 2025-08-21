@@ -13,7 +13,7 @@
   - header ✅
 - calendar
 - Add subscription ✅
-- edit subscription
+- edit subscription ✅
 - Settings ✅
 - analytics ✅
 

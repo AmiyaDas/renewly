@@ -39,7 +39,7 @@ const events = [
 ];
 
 const Calendar = () => {
-  const [currentDate] = useState(new Date(2020, 0, 9));
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [subscriptions, setSubscriptions] = useState([]);
 
   useEffect(() => {
@@ -55,16 +55,25 @@ const Calendar = () => {
         }
       }
     }
-    const arrangedSubs = subs.map((sub) => {
-      let color = categoryColorMap[sub.category] || "border-gray-400";
-      return {
-        // id: sub.id,
-        title: sub.name,
-        time: sub.renewalDate,
-        price: sub.price,
-        color: color,
-      };
-    });
+    const arrangedSubs = subs
+      .filter((sub) => {
+        const renewal = new Date(sub.renewalDate);
+        const now = new Date();
+        const nextYear = new Date();
+        nextYear.setFullYear(nextYear.getFullYear() + 1);
+        return renewal >= now && renewal <= nextYear;
+      })
+      .map((sub) => {
+        let color = categoryColorMap[sub.category] || "border-gray-400";
+        return {
+          id: sub.id,
+          title: sub.name,
+          time: sub.renewalDate,
+          price: sub.price,
+          color: color,
+          icon: sub.icon
+        };
+      });
     setSubscriptions(arrangedSubs);
   }, []);
 
@@ -89,34 +98,66 @@ const Calendar = () => {
       </div>
 
       <div className="grid grid-cols-7 gap-2 text-center mb-4 px-4">
-        {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((day) => (
-          <div
-            key={day}
-            className={`flex items-center justify-center w-8 h-8 rounded-full text-sm cursor-pointer
-              ${
-                day === currentDate.getDate()
-                  ? "bg-red-400 text-white"
-                  : "text-gray-700"
-              }`}
-          >
-            {day}
-          </div>
-        ))}
+        {[
+          // Empty slots for days before first day of month
+          ...Array(new Date(year, currentDate.getMonth(), 1).getDay()).fill(null),
+          // Actual days in month
+          ...Array.from({ length: daysInMonth }, (_, i) => i + 1)
+        ].map((day, index) =>
+          day === null ? (
+            <div key={`empty-${index}`} className="w-8 h-8" />
+          ) : (
+            <div
+              key={day}
+              onClick={() =>
+                setCurrentDate(new Date(year, currentDate.getMonth(), day))
+              }
+              className={`flex items-center justify-center w-8 h-8 rounded-full text-sm cursor-pointer
+                ${
+                  day === currentDate.getDate()
+                    ? "bg-red-400 text-white"
+                    : subscriptions.some((event) => {
+                        const d = new Date(event.time);
+                        return (
+                          d.getDate() === day &&
+                          d.getMonth() === currentDate.getMonth() &&
+                          d.getFullYear() === year
+                        );
+                      })
+                    ? "bg-green-200 text-black"
+                    : "text-gray-700"
+                }`}
+            >
+              {day}
+            </div>
+          )
+        )}
       </div>
     </>
   );
+
+  const filteredEvents = subscriptions.filter(event => {
+    const eventDate = new Date(event.time);
+    return (
+      eventDate.getMonth() === currentDate.getMonth() &&
+      eventDate.getFullYear() === currentDate.getFullYear()
+    );
+  });
 
   const eventsList = (
     <div className="px-4 py-2">
       <div className="text-lg font-bold py-2">Upcoming renewals</div>
       <div className="">
-        {subscriptions.map((event) => (
-          <CalendarEvent
-            key={event.id}
-            title={event.title}
-            price={event.price}
-          />
-        ))}
+        {filteredEvents
+          .sort((a, b) => new Date(a.time) - new Date(b.time))
+          .map((event) => (
+            <CalendarEvent
+              key={event.id}
+              title={event.title}
+              price={event.price}
+              icon={event.icon}
+            />
+          ))}
       </div>
     </div>
   );
@@ -128,6 +169,31 @@ const Calendar = () => {
         isAppTitle={true}
         showIcons={true}
       />
+      <div className="flex justify-between items-center px-4 py-2">
+        <button
+          className="px-3 py-1 rounded bg-gray-200"
+          onClick={() =>
+            setCurrentDate(
+              new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
+            )
+          }
+        >
+          Prev
+        </button>
+        <h2 className="font-bold text-lg">
+          {month} {year}
+        </h2>
+        <button
+          className="px-3 py-1 rounded bg-gray-200"
+          onClick={() =>
+            setCurrentDate(
+              new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
+            )
+          }
+        >
+          Next
+        </button>
+      </div>
       {calendarGrid}
 
       {eventsList}

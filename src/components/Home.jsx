@@ -25,6 +25,7 @@ const Home = () => {
     category: "",
     price: "",
   });
+  const [removingId, setRemovingId] = useState(null);
 
   const openModal = (sub) => {
     setCurrentModalData({
@@ -40,10 +41,25 @@ const Home = () => {
     setOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (deleted, deletedId) => {
     setOpen(false);
-    // forceUpdate();
-    // needs logic to refresh the subscriptions list
+    setSelectedSub(null);
+    if (deleted && deletedId) {
+      setRemovingId(deletedId);
+      setTimeout(() => {
+        const updatedSubs = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key.startsWith("subscription_")) {
+            try {
+              updatedSubs.push(JSON.parse(localStorage.getItem(key)));
+            } catch {}
+          }
+        }
+        setSubscriptions(updatedSubs);
+        setRemovingId(null);
+      }, 300); // match animation duration
+    }
   };
 
   const formatBillingCycle = (cycle) => {
@@ -69,7 +85,9 @@ const Home = () => {
       if (key.startsWith("subscription_")) {
         try {
           const sub = JSON.parse(localStorage.getItem(key));
-          subs.push(sub);
+          if (!sub.status || sub.status !== "cancelled") {
+            subs.push(sub);
+          }
         } catch (e) {
           // ignore parsing errors
         }
@@ -80,25 +98,19 @@ const Home = () => {
 
   const totalYearly = subscriptions.reduce((total, sub) => {
     let yearlyPrice = 0;
-    if (typeof sub.price === "string") {
-      // Remove currency symbol and commas, parse float
-      const priceNum = parseFloat(sub.price.replace(/[^0-9.]/g, ""));
-      if (sub.billingCycle === "monthly") {
-        yearlyPrice = priceNum * 12;
-      } else if (sub.billingCycle === "yearly") {
-        yearlyPrice = priceNum;
-      } else {
-        yearlyPrice = priceNum;
-      }
-    } else if (typeof sub.price === "number") {
-      if (sub.billingCycle === "monthly") {
-        yearlyPrice = sub.price * 12;
-      } else if (sub.billingCycle === "yearly") {
-        yearlyPrice = sub.price;
-      } else {
-        yearlyPrice = sub.price;
-      }
+    const cycle = (sub.billingCycle || "").toLowerCase();
+    const priceNum = parseFloat(sub.price.toString().replace(/[^0-9.]/g, "")) || 0;
+
+    if (cycle.includes("month")) {
+      yearlyPrice = priceNum * 12;
+    } else if (cycle.includes("year")) {
+      yearlyPrice = priceNum;
+    } else if (cycle.includes("week")) {
+      yearlyPrice = priceNum * 52;
+    } else {
+      yearlyPrice = priceNum;
     }
+
     return total + yearlyPrice;
   }, 0);
 
@@ -169,16 +181,16 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.2, duration: 0.5 }}
+              className={sub.status === "cancelled" ? "opacity-50 grayscale" : ""}
             >
               <SubscriptionCard
                 name={sub.name}
                 renewDate={sub.renewalDate}
                 daysLeft={daysLeft}
                 icon={sub.icon}
-                price={`${currencySymbols[currency] || ""}${
-                  sub.price
-                } ${formatBillingCycle(sub.billingCycle)}`}
+                price={`${currencySymbols[currency] || ""}${sub.price} ${formatBillingCycle(sub.billingCycle)}`}
                 onClick={() => openModal(sub)}
+                isRemoving={removingId === sub.id}
               />
             </motion.div>
           );
@@ -201,7 +213,9 @@ const Home = () => {
                 <div
                   key={sub.id}
                   onClick={() => openModal(sub)}
-                  className="inline-block min-w-[150px] bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg p-4 shadow cursor-pointer"
+                  className={`inline-block min-w-[150px] bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg p-4 shadow cursor-pointer ${
+                    sub.status === "cancelled" ? "opacity-50 grayscale" : ""
+                  }`}
                 >
                   <div className="flex items-center space-x-2 mb-2">
                     <img
@@ -232,12 +246,10 @@ const Home = () => {
                 .slice()
                 .sort((a, b) => {
                   const normalize = (sub) => {
-                    const price =
-                      parseFloat(
-                        sub.price.toString().replace(/[^0-9.]/g, "")
-                      ) || 0;
-                    if (sub.billingCycle === "monthly") return price * 12;
-                    if (sub.billingCycle === "weekly") return price * 52;
+                    const price = parseFloat(sub.price.toString().replace(/[^0-9.]/g, "")) || 0;
+                    const cycle = (sub.billingCycle || "").toLowerCase();
+                    if (cycle.includes("month")) return price * 12;
+                    if (cycle.includes("week")) return price * 52;
                     return price;
                   };
                   return normalize(b) - normalize(a);
@@ -278,7 +290,7 @@ const Home = () => {
       )}
       <SubscriptionModal
         isOpen={open}
-        onClose={closeModal}
+        onClose={(deleted) => closeModal(deleted, selectedSub?.id)}
         subscription={selectedSub}
       />
     </div>

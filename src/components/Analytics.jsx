@@ -12,6 +12,8 @@ import Header from "./Header";
 import { PreferencesContext } from "../context/PreferencesContext";
 import { useTranslation } from "react-i18next";
 
+const formatLabel = (label) => label ? label.charAt(0).toUpperCase() + label.slice(1) : '';
+
 const Analytics = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("Weekly");
@@ -73,12 +75,21 @@ const Analytics = () => {
   };
 
   const getDataForPeriod = (period) => {
+    const basePeriod = period.replace("Last", "");
     let labels = [];
     let labelMap = {};
     let now = new Date();
 
-    if (period === "Weekly") {
-      labels = [t("weekly_mon"), t("weekly_tue"), t("weekly_wed"), t("weekly_thu"), t("weekly_fri"), t("weekly_sat"), t("weekly_sun")];
+    if (basePeriod === "Weekly") {
+      labels = [
+        t("weekly_mon", { defaultValue: "Mon" }),
+        t("weekly_tue", { defaultValue: "Tue" }),
+        t("weekly_wed", { defaultValue: "Wed" }),
+        t("weekly_thu", { defaultValue: "Thu" }),
+        t("weekly_fri", { defaultValue: "Fri" }),
+        t("weekly_sat", { defaultValue: "Sat" }),
+        t("weekly_sun", { defaultValue: "Sun" })
+      ];
       labels.forEach((label) => (labelMap[label] = 0));
       subscriptions.forEach((sub) => {
         if (!sub.startDate || !sub.price) return;
@@ -89,39 +100,77 @@ const Analytics = () => {
         weekStart.setHours(0, 0, 0, 0);
         const weekEnd = new Date(weekStart);
         weekEnd.setDate(weekEnd.getDate() + 7);
+        if (period.startsWith("Last")) {
+          weekStart.setDate(weekStart.getDate() - 7);
+          weekEnd.setDate(weekEnd.getDate() - 7);
+        }
         if (d >= weekStart && d < weekEnd) {
           const label = labels[(d.getDay() + 6) % 7];
           if (label) labelMap[label] += parsePrice(sub.price);
         }
       });
-    } else if (period === "Monthly") {
-      labels = [t("monthly_week1"), t("monthly_week2"), t("monthly_week3"), t("monthly_week4")];
-      labels.forEach((label) => (labelMap[label] = 0));
-      subscriptions.forEach((sub) => {
-        if (!sub.startDate || !sub.price) return;
-        const d = new Date(sub.startDate);
-        const curr = new Date(now);
-        if (d.getFullYear() === curr.getFullYear() && d.getMonth() === curr.getMonth()) {
-          const week = Math.floor((d.getDate() - 1) / 7);
-          const label = labels[week];
-          if (label) labelMap[label] += parsePrice(sub.price);
-        }
-      });
-    } else if (period === "Yearly") {
+    } else if (basePeriod === "Monthly") {
       labels = [
-        t("yearly_jan"), t("yearly_feb"), t("yearly_mar"), t("yearly_apr"), t("yearly_may"), t("yearly_jun"),
-        t("yearly_jul"), t("yearly_aug"), t("yearly_sep"), t("yearly_oct"), t("yearly_nov"), t("yearly_dec")
+        t("monthly_week1", { defaultValue: "Week 1" }),
+        t("monthly_week2", { defaultValue: "Week 2" }),
+        t("monthly_week3", { defaultValue: "Week 3" }),
+        t("monthly_week4", { defaultValue: "Week 4" })
       ];
       labels.forEach((label) => (labelMap[label] = 0));
       subscriptions.forEach((sub) => {
         if (!sub.startDate || !sub.price) return;
         const d = new Date(sub.startDate);
         const curr = new Date(now);
+        if (period.startsWith("Last")) {
+          curr.setMonth(curr.getMonth() - 1);
+        }
+        if (d.getFullYear() === curr.getFullYear() && d.getMonth() === curr.getMonth()) {
+          const week = Math.floor((d.getDate() - 1) / 7);
+          const label = labels[week];
+          if (label) labelMap[label] += parsePrice(sub.price);
+        }
+      });
+    } else if (basePeriod === "Yearly") {
+      labels = [
+        t("yearly_jan", { defaultValue: "Jan" }),
+        t("yearly_feb", { defaultValue: "Feb" }),
+        t("yearly_mar", { defaultValue: "Mar" }),
+        t("yearly_apr", { defaultValue: "Apr" }),
+        t("yearly_may", { defaultValue: "May" }),
+        t("yearly_jun", { defaultValue: "Jun" }),
+        t("yearly_jul", { defaultValue: "Jul" }),
+        t("yearly_aug", { defaultValue: "Aug" }),
+        t("yearly_sep", { defaultValue: "Sep" }),
+        t("yearly_oct", { defaultValue: "Oct" }),
+        t("yearly_nov", { defaultValue: "Nov" }),
+        t("yearly_dec", { defaultValue: "Dec" })
+      ];
+      labels.forEach((label) => (labelMap[label] = 0));
+      subscriptions.forEach((sub) => {
+        if (!sub.startDate || !sub.price) return;
+        const d = new Date(sub.startDate);
+        const curr = new Date(now);
+        if (period.startsWith("Last")) {
+          curr.setFullYear(curr.getFullYear() - 1);
+        }
         if (d.getFullYear() === curr.getFullYear()) {
           const label = labels[d.getMonth()];
           if (label) labelMap[label] += parsePrice(sub.price);
         }
       });
+    } else if (period === "AllYear") {
+      // Aggregate all subscriptions from the start of the year or all data
+      const yearStart = new Date(now.getFullYear(), 0, 1);
+      let total = 0;
+      subscriptions.forEach((sub) => {
+        if (!sub.startDate || !sub.price) return;
+        const d = new Date(sub.startDate);
+        if (d >= yearStart) {
+          total += parsePrice(sub.price);
+        }
+      });
+      labels = [t("all_time", { defaultValue: "All Time" })];
+      labelMap[labels[0]] = total;
     }
 
     return labels.map((label) => ({ day: label, amount: labelMap[label] || 0 }));
@@ -153,19 +202,23 @@ const Analytics = () => {
       <div className="flex-1">
         {/* Tabs */}
         <div className="flex bg-white rounded-xl mx-4 mt-3 overflow-hidden sticky top-14 z-20">
-          {[t("weekly"), t("monthly"), t("yearly")].map((tab) => (
+          {[t("analytics_period_week"), t("analytics_period_month"), t("analytics_period_year")].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(
-                tab === t("weekly") ? "Weekly" : tab === t("monthly") ? "Monthly" : "Yearly"
+                tab === t("analytics_period_week") ? "Weekly" :
+                tab === t("analytics_period_month") ? "Monthly" :
+                "Yearly"
               )}
               className={`flex-1 py-2 mr-2 text-sm font-medium ${
-                activeTab === (tab === t("weekly") ? "Weekly" : tab === t("monthly") ? "Monthly" : "Yearly")
+                (tab === t("analytics_period_week") && activeTab.includes("Weekly")) ||
+                (tab === t("analytics_period_month") && activeTab.includes("Monthly")) ||
+                (tab === t("analytics_period_year") && (activeTab.includes("Yearly") || activeTab === "AllYear"))
                   ? "text-black border-b-2 border-black"
                   : "text-gray-400"
               } transition-colors duration-200 hover:bg-gray-200`}
             >
-              {tab}
+              {formatLabel(tab)}
             </button>
           ))}
         </div>
@@ -175,14 +228,39 @@ const Analytics = () => {
           <p>
             {t("average")}: <span className="font-bold">{currencySymbol}{average.toFixed(2)}</span>
           </p>
-          <select className="text-sm border rounded px-2">
-            <option>
-              {activeTab === "Weekly"
-                ? t("current_week")
-                : activeTab === "Monthly"
-                ? t("current_month")
-                : t("current_year")}
-            </option>
+          <select
+            className="text-sm border rounded px-2"
+            value={
+              activeTab.includes("Weekly") ? (activeTab.includes("Last") ? activeTab : "Weekly") :
+              activeTab.includes("Monthly") ? (activeTab.includes("Last") ? activeTab : "Monthly") :
+              (activeTab.includes("Yearly") || activeTab === "AllYear") ? activeTab : "Yearly"
+            }
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value.includes("Weekly")) setActiveTab(value);
+              else if (value.includes("Monthly")) setActiveTab(value);
+              else if (value.includes("Yearly") || value === "AllYear") setActiveTab(value);
+            }}
+          >
+            {activeTab.includes("Weekly") && (
+              <>
+                <option value="Weekly">{t("current_week", { defaultValue: "Current Week" })}</option>
+                <option value="LastWeekly">{t("last_week", { defaultValue: "Last Week" })}</option>
+              </>
+            )}
+            {activeTab.includes("Monthly") && (
+              <>
+                <option value="Monthly">{t("current_month", { defaultValue: "Current Month" })}</option>
+                <option value="LastMonthly">{t("last_month", { defaultValue: "Last Month" })}</option>
+              </>
+            )}
+            {activeTab.includes("Yearly") || activeTab === "AllYear" ? (
+              <>
+                <option value="Yearly">{t("current_year", { defaultValue: "Current Year" })}</option>
+                <option value="LastYearly">{t("last_year", { defaultValue: "Last Year" })}</option>
+                <option value="AllYear">{t("all_time", { defaultValue: "All Time" })}</option>
+              </>
+            ) : null}
           </select>
         </div>
 

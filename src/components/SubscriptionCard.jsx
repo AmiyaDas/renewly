@@ -8,10 +8,11 @@ const SubscriptionCard = ({
   icon,
   price,
   onClick,
+  isRemoving,
 }) => {
   const { t } = useTranslation();
   return (
-    <div className="subscription-card" onClick={onClick}>
+    <div className={`subscription-card ${isRemoving ? 'fade-out-card' : ''}`} onClick={onClick}>
       <div className="sub-left">
         <div className="logo-wrapper">
           <img src={icon} alt={name} />
