@@ -6,6 +6,7 @@ import { PreferencesContext } from "../context/PreferencesContext";
 import { currencySymbols, formatBillingCycle } from "../utils/utils";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { generateRenewalEvents } from "../utils/utils";
 
 const days = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -45,8 +46,9 @@ const events = [
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [subscriptions, setSubscriptions] = useState([]);
-  const { currency } = useContext(PreferencesContext);
-  const { t } = useTranslation();
+  const [viewType, setViewType] = useState("month"); // "month" or "year"
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedEvents, setSelectedEvents] = useState([]);
 
   useEffect(() => {
     const subs = [];
@@ -61,27 +63,25 @@ const Calendar = () => {
         }
       }
     }
-    const arrangedSubs = subs
-      .filter((sub) => {
-        const renewal = new Date(sub.renewalDate);
-        const now = new Date();
-        const nextYear = new Date();
-        nextYear.setFullYear(nextYear.getFullYear() + 1);
-        return renewal >= now && renewal <= nextYear;
-      })
-      .map((sub) => {
-        let color = categoryColorMap[sub.category] || "border-gray-400";
-        return {
-          id: sub.id,
-          title: sub.name,
-          time: sub.renewalDate,
-          price: sub.price,
-          color: color,
-          icon: sub.icon,
-          billingCycle: sub.billingCycle,
-        };
-      });
+    const arrangedSubs = subs.flatMap((sub) => generateRenewalEvents(sub, categoryColorMap, viewType === "year"));
     setSubscriptions(arrangedSubs);
+    window.addEventListener("storage", () => {
+      const subs = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith("subscription_")) {
+          try {
+            const sub = JSON.parse(localStorage.getItem(key));
+            subs.push(sub);
+          } catch (e) {}
+        }
+      }
+      const updatedSubs = subs.flatMap((sub) =>
+        generateRenewalEvents(sub, categoryColorMap, viewType === "year")
+      );
+      setSubscriptions(updatedSubs);
+    });
+    return () => window.removeEventListener("storage", () => {});
   }, []);
 
   const month = currentDate.toLocaleString("default", { month: "long" });
@@ -118,9 +118,20 @@ const Calendar = () => {
           ) : (
             <div
               key={day}
-              onClick={() =>
-                setCurrentDate(new Date(year, currentDate.getMonth(), day))
-              }
+              onClick={() => {
+                const clickedDate = new Date(year, currentDate.getMonth(), day);
+                setCurrentDate(clickedDate);
+                setSelectedDate(clickedDate);
+                const eventsForDate = subscriptions.filter(e => {
+                  const d = new Date(e.time);
+                  return (
+                    d.getDate() === clickedDate.getDate() &&
+                    d.getMonth() === clickedDate.getMonth() &&
+                    d.getFullYear() === clickedDate.getFullYear()
+                  );
+                });
+                setSelectedEvents(eventsForDate);
+              }}
               className={`flex items-center justify-center w-8 h-8 rounded-full text-sm cursor-pointer
                 ${
                   day === currentDate.getDate()
@@ -147,10 +158,13 @@ const Calendar = () => {
 
   const filteredEvents = subscriptions.filter((event) => {
     const eventDate = new Date(event.time);
-    return (
-      eventDate.getMonth() === currentDate.getMonth() &&
-      eventDate.getFullYear() === currentDate.getFullYear()
-    );
+    if (viewType === "month") {
+      return (
+        eventDate.getMonth() === currentDate.getMonth() &&
+        eventDate.getFullYear() === currentDate.getFullYear()
+      );
+    }
+    return eventDate.getFullYear() === currentDate.getFullYear();
   });
 
   const eventsList = (
@@ -168,10 +182,12 @@ const Calendar = () => {
               key={event.id}
               title={event.title}
               icon={event.icon}
-              daysLeft={7}
-              price={`${currencySymbols[currency] || ""}${
-                event.price
-              } ${formatBillingCycle(event.billingCycle)}`}
+              daysLeft={
+                (() => {
+                  const diffDays = Math.ceil((new Date(event.time) - new Date()) / (1000 * 60 * 60 * 24));
+                  return diffDays < 0 ? -1 : diffDays;
+                })()
+              }
             />
           ))}
       </div>
@@ -185,6 +201,21 @@ const Calendar = () => {
         isAppTitle={true}
         showIcons={true}
       />
+      <div className="flex justify-center gap-4 py-2">
+        <button
+          className={`px-3 py-1 rounded ${viewType === "month" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+          onClick={() => setViewType("month")}
+        >
+          Month View
+        </button>
+        <button
+          className={`px-3 py-1 rounded ${viewType === "year" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+          onClick={() => setViewType("year")}
+        >
+          Year View
+        </button>
+      </div>
+      {viewType === "month" && (
       <div className="flex justify-between items-center px-4 py-2">
         <button
           className="px-3 py-1 rounded bg-gray-200 bg-transparent"
@@ -210,9 +241,65 @@ const Calendar = () => {
           <FaChevronRight />
         </button>
       </div>
-      {calendarGrid}
-
-      {eventsList}
+      )}
+      {viewType === "month" ? (
+        <>
+          {calendarGrid}
+          {selectedEvents.length > 0 && (
+            <div className="fixed inset-0 backdrop-blur-sm bg-transparent flex justify-center items-center z-50">
+              <div className="bg-white p-4 rounded w-80 max-h-[80vh] overflow-y-auto">
+                <h3 className="font-bold mb-2">
+                  Subscriptions for {selectedDate.toLocaleDateString()}
+                </h3>
+                <ul className="flex flex-col gap-2">
+                  {selectedEvents.map(ev => (
+                    <li key={ev.id} className="border p-2 rounded flex items-center gap-2">
+                      {ev.icon && <img src={ev.icon} alt={ev.title} className="w-6 h-6" />}
+                      <div>
+                        <div className="font-semibold">{ev.title}</div>
+                        <div>Price: {ev.price}</div>
+                        <div>Renewal Date: {new Date(ev.time).toLocaleDateString()}</div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  className="mt-2 px-3 py-1 rounded bg-gray-200"
+                  onClick={() => setSelectedEvents([])}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
+          {eventsList}
+        </>
+      ) : (
+        <div className="grid grid-cols-3 gap-4 px-4">
+          {Array.from({ length: 12 }, (_, m) => (
+            <div key={m} className="p-2 border rounded">
+              <h4 className="text-sm font-bold text-center">
+                {new Date(0, m).toLocaleString("default", { month: "short" })}
+              </h4>
+              <ul className="mt-2 text-xs">
+                {Array.from(
+                  new Map(
+                    subscriptions
+                      .filter(e => new Date(e.time).getMonth() === m)
+                      .sort((a,b)=> new Date(a.time) - new Date(b.time))
+                      .map(e => [e.id, e])
+                  ).values()
+                ).map(e => (
+                  <li key={e.id} className="flex items-center gap-2">
+                    {e.icon && <img src={e.icon} alt={e.title} className="w-4 h-4" />}
+                    {e.title} - {e.price}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

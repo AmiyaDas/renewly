@@ -12,7 +12,9 @@ const CalendarEvent = ({ title, renewDate, daysLeft, icon, price }) => {
         </div>
         <div className="sub-details">
           <span className="sub-name">{title}</span>
-          <span className="sub-info">{t("renew_info", { daysLeft })}</span>
+          <span className="sub-info">
+            {daysLeft < 0 ? t("renew_overdue") : t("renew_info", { daysLeft })}
+          </span>
         </div>
       </div>
       <div className="sub-right">

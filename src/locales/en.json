@@ -19,6 +19,7 @@
   "most_expensive": "💸 Most Expensive",
   "all_subscriptions": "All Subscriptions",
   "renew_info": "Renew in next {{daysLeft}} days",
+  "renew_overdue": "Renewal overdue",
   "no_renewal_date": "No renewal date",
   "invalid_date": "Invalid date",
   "renews_on": "Renews on {{date}} ({{daysLeft}})",
