@@ -36,7 +36,7 @@
 ## Bugs
 
 - currency symbol missing in AllSubscriptions ✅
-- few language keywords are missing in charts and calendar
+- few language keywords are missing in charts and calendar ✅
 - text color for dark mode
 - future entries autpmatically
 - cancellation logic
