@@ -9,6 +9,11 @@ import SubscriptionModal from "./SubscriptionModal";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import {
+  currencySymbols,
+  totalYearlyFormatted,
+  formatBillingCycle,
+} from "../utils/utils";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -62,22 +67,6 @@ const Home = () => {
     }
   };
 
-  const formatBillingCycle = (cycle) => {
-    switch (cycle.toLowerCase()) {
-      case "monthly":
-      case "every month":
-        return "per month";
-      case "yearly":
-      case "every year":
-        return "per year";
-      case "weekly":
-      case "every week":
-        return "per week";
-      default:
-        return cycle;
-    }
-  };
-
   useEffect(() => {
     const subs = [];
     for (let i = 0; i < localStorage.length; i++) {
@@ -95,31 +84,7 @@ const Home = () => {
     }
     setSubscriptions(subs);
   }, []);
-
-  const totalYearly = subscriptions.reduce((total, sub) => {
-    let yearlyPrice = 0;
-    const cycle = (sub.billingCycle || "").toLowerCase();
-    const priceNum =
-      parseFloat(sub.price.toString().replace(/[^0-9.]/g, "")) || 0;
-
-    if (cycle.includes("month")) {
-      yearlyPrice = priceNum * 12;
-    } else if (cycle.includes("year")) {
-      yearlyPrice = priceNum;
-    } else if (cycle.includes("week")) {
-      yearlyPrice = priceNum * 52;
-    } else {
-      yearlyPrice = priceNum;
-    }
-
-    return total + yearlyPrice;
-  }, 0);
-
-  // Lookup currency symbol
-  const currencySymbols = { USD: "$", EUR: "€", INR: "₹", GBP: "£" };
-  const totalYearlyFormatted = `${
-    currencySymbols[currency] || ""
-  } ${totalYearly.toFixed(2)}`;
+  const totalYearlyValue = totalYearlyFormatted(currency, subscriptions);
 
   const totaSummary = (
     <div className="summary-header">
@@ -127,7 +92,7 @@ const Home = () => {
         <span className="stats-icon">💰</span>
         <div className="stats-text">
           <div className="stats-label">{t("total_yearly")}</div>
-          <div className="stats-value">{totalYearlyFormatted}</div>
+          <div className="stats-value">{totalYearlyValue}</div>
         </div>
       </div>
 

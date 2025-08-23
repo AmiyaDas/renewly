@@ -3,49 +3,13 @@ import { useState, useEffect, useContext } from "react";
 import SubscriptionCard from "./SubscriptionCard";
 import { useTranslation } from "react-i18next";
 import { PreferencesContext } from "../context/PreferencesContext";
+import { currencySymbols, formatBillingCycle } from "../utils/utils";
 
 // list of all current subscriptions
 const AllSubscriptions = () => {
   const { t } = useTranslation();
   const [subscriptions, setSubscriptions] = useState([]);
   const { currency } = useContext(PreferencesContext);
-
-  // Lookup currency symbol
-  const currencySymbols = { USD: "$", EUR: "€", INR: "₹", GBP: "£" };
-  const totalYearly = subscriptions.reduce((total, sub) => {
-    let yearlyPrice = 0;
-    const cycle = (sub.billingCycle || "").toLowerCase();
-    const priceNum =
-      parseFloat(sub.price.toString().replace(/[^0-9.]/g, "")) || 0;
-
-    if (cycle.includes("month")) {
-      yearlyPrice = priceNum * 12;
-    } else if (cycle.includes("year")) {
-      yearlyPrice = priceNum;
-    } else if (cycle.includes("week")) {
-      yearlyPrice = priceNum * 52;
-    } else {
-      yearlyPrice = priceNum;
-    }
-
-    return total + yearlyPrice;
-  }, 0);
-
-  const formatBillingCycle = (cycle) => {
-    switch (cycle.toLowerCase()) {
-      case "monthly":
-      case "every month":
-        return "per month";
-      case "yearly":
-      case "every year":
-        return "per year";
-      case "weekly":
-      case "every week":
-        return "per week";
-      default:
-        return cycle;
-    }
-  };
 
   useEffect(() => {
     const subs = [];
