@@ -37,12 +37,12 @@
 
 - currency symbol missing in AllSubscriptions ✅
 - few language keywords are missing in charts and calendar ✅
-- text color for dark mode
+- text color for dark mode ✅
 - future entries autpmatically
 - cancellation logic
-- spacing the entries in calendar
+- spacing the entries in calendar ✅
 - reminders using push notification
 - free trial (count money only after trial ends)
-- languages update
+- languages update ✅
 - mm dd yy not showing
 - make swipe in calendar

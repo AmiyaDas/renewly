@@ -231,16 +231,18 @@ const Calendar = () => {
         <h2 className="font-bold text-lg">
           {month} {year}
         </h2>
-        <button
+        <Link to="/test">
+          {/* <button
           className="px-3 py-1 rounded bg-gray-200 bg-transparent"
           onClick={() =>
             setCurrentDate(
               new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
             )
           }
-        >
+        > */}
           <FaChevronRight />
-        </button>
+          {/* </button> */}
+        </Link>
       </div>
       )}
       {viewType === "month" ? (
