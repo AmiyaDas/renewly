@@ -158,6 +158,7 @@ const Calendar = () => {
               title={event.title}
               price={event.price}
               icon={event.icon}
+              daysLeft={7}
             />
           ))}
       </div>
