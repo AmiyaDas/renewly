@@ -45,11 +45,15 @@ export const PreferencesProvider = ({ children }) => {
     setPreferences((prev) => ({ ...prev, [key]: value }));
   }, [preferences]);
 
+  const [user, setUser] = useState(null); // stores signed-in user info
+
   return (
     <PreferencesContext.Provider
       value={{
         ...preferences,
         updatePreference,
+        user,
+        setUser,
       }}
     >
       {children}

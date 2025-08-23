@@ -44,6 +44,7 @@ const events = [
 ];
 
 const Calendar = () => {
+  const { t } = useTranslation();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [subscriptions, setSubscriptions] = useState([]);
   const [viewType, setViewType] = useState("month"); // "month" or "year"
@@ -92,68 +93,68 @@ const Calendar = () => {
   const daysInMonth = getDaysInMonth(year, currentDate.getMonth());
 
   const calendarGrid = (
-    <>
-      <div className="grid grid-cols-7 text-center mb-4 px-4 mt-8">
-        {days.map((d, i) => (
-          <div
-            key={i}
-            className="flex items-center justify-center w-8 h-8 rounded-full text-gray-400 text-sm"
-          >
-            {d}
-          </div>
-        ))}
-      </div>
+    <div className="grid grid-cols-7 gap-1.5 p-4 mx-2 my-2 bg-white/30 backdrop-blur-md rounded-lg shadow-lg">
+      {/* Weekday headers */}
+      {days.map((d, i) => (
+        <div
+          key={i}
+          className="flex items-center justify-center h-10 text-gray-500 font-medium"
+        >
+          {d}
+        </div>
+      ))}
 
-      <div className="grid grid-cols-7 gap-2 text-center mb-4 px-4">
-        {[
-          // Empty slots for days before first day of month
-          ...Array(new Date(year, currentDate.getMonth(), 1).getDay()).fill(
-            null
-          ),
-          // Actual days in month
-          ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
-        ].map((day, index) =>
-          day === null ? (
-            <div key={`empty-${index}`} className="w-8 h-8" />
-          ) : (
-            <div
-              key={day}
-              onClick={() => {
-                const clickedDate = new Date(year, currentDate.getMonth(), day);
-                setCurrentDate(clickedDate);
-                setSelectedDate(clickedDate);
-                const eventsForDate = subscriptions.filter(e => {
-                  const d = new Date(e.time);
-                  return (
-                    d.getDate() === clickedDate.getDate() &&
-                    d.getMonth() === clickedDate.getMonth() &&
-                    d.getFullYear() === clickedDate.getFullYear()
-                  );
-                });
-                setSelectedEvents(eventsForDate);
-              }}
-              className={`flex items-center justify-center w-8 h-8 rounded-full text-sm cursor-pointer
-                ${
-                  day === currentDate.getDate()
-                    ? "bg-red-400 text-white"
-                    : subscriptions.some((event) => {
-                        const d = new Date(event.time);
-                        return (
-                          d.getDate() === day &&
-                          d.getMonth() === currentDate.getMonth() &&
-                          d.getFullYear() === year
-                        );
-                      })
-                    ? "bg-green-200 text-black"
-                    : "text-gray-700"
-                }`}
-            >
-              {day}
-            </div>
-          )
-        )}
-      </div>
-    </>
+      {/* Empty slots for days before first day of month */}
+      {Array(new Date(year, currentDate.getMonth(), 1).getDay())
+        .fill(null)
+        .map((_, idx) => (
+          <div key={`empty-${idx}`} />
+        ))}
+
+      {/* Actual days in month */}
+      {Array.from({ length: daysInMonth }, (_, i) => {
+        const day = i + 1;
+        const isToday =
+          day === currentDate.getDate() &&
+          currentDate.getMonth() === new Date().getMonth() &&
+          year === new Date().getFullYear();
+
+        const hasEvent = subscriptions.some((event) => {
+          const d = new Date(event.time);
+          return (
+            d.getDate() === day &&
+            d.getMonth() === currentDate.getMonth() &&
+            d.getFullYear() === year
+          );
+        });
+
+        return (
+          <div
+            key={day}
+            onClick={() => {
+              const clickedDate = new Date(year, currentDate.getMonth(), day);
+              setCurrentDate(clickedDate);
+              setSelectedDate(clickedDate);
+              const eventsForDate = subscriptions.filter(e => {
+                const d = new Date(e.time);
+                return (
+                  d.getDate() === clickedDate.getDate() &&
+                  d.getMonth() === clickedDate.getMonth() &&
+                  d.getFullYear() === clickedDate.getFullYear()
+                );
+              });
+              setSelectedEvents(eventsForDate);
+            }}
+            className={`flex flex-col items-center justify-center h-12 w-12 rounded-lg cursor-pointer transition-transform transform
+              ${isToday ? "bg-blue-500 text-white scale-110" : ""}
+              ${hasEvent && !isToday ? "bg-green-100 text-gray-900" : ""}
+              hover:scale-105`}
+          >
+            <span className="text-sm font-medium">{day}</span>
+          </div>
+        );
+      })}
+    </div>
   );
 
   const filteredEvents = subscriptions.filter((event) => {
@@ -275,29 +276,47 @@ const Calendar = () => {
           {eventsList}
         </>
       ) : (
-        <div className="grid grid-cols-3 gap-4 px-4">
-          {Array.from({ length: 12 }, (_, m) => (
-            <div key={m} className="p-2 border rounded">
-              <h4 className="text-sm font-bold text-center">
-                {new Date(0, m).toLocaleString("default", { month: "short" })}
-              </h4>
-              <ul className="mt-2 text-xs">
-                {Array.from(
-                  new Map(
-                    subscriptions
-                      .filter(e => new Date(e.time).getMonth() === m)
-                      .sort((a,b)=> new Date(a.time) - new Date(b.time))
-                      .map(e => [e.id, e])
-                  ).values()
-                ).map(e => (
-                  <li key={e.id} className="flex items-center gap-2">
-                    {e.icon && <img src={e.icon} alt={e.title} className="w-4 h-4" />}
-                    {e.title} - {e.price}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        <div>
+          <h2 className="text-center font-bold text-lg mb-4">{year}</h2>
+          <div className="grid grid-cols-3 gap-4 px-4">
+            {Array.from({ length: 12 }, (_, m) => {
+              const monthEvents = subscriptions
+                .filter(e => new Date(e.time).getMonth() === m && new Date(e.time).getFullYear() === year)
+                .sort((a, b) => new Date(a.time) - new Date(b.time));
+
+              return (
+                <div
+                  key={m}
+                  className="p-3 border rounded-lg cursor-pointer hover:shadow-md hover:bg-white/20 transition"
+                  onClick={() => {
+                    setViewType("month");
+                    setCurrentDate(new Date(year, m, 1));
+                  }}
+                >
+                  <h4 className="text-sm font-bold text-center mb-2">
+                    {new Date(0, m).toLocaleString("default", { month: "short" })}
+                  </h4>
+                  <ul className="mt-2 text-xs flex flex-col gap-1 min-h-[3rem]">
+                    {monthEvents.length > 0 ? (
+                      <>
+                        {monthEvents.slice(0, 3).map(e => (
+                          <li key={e.id} className="flex items-center gap-2">
+                            {e.icon && <img src={e.icon} alt={e.title} className="w-4 h-4" />}
+                            <span>{e.title} - {e.price}</span>
+                          </li>
+                        ))}
+                        {monthEvents.length > 3 && (
+                          <li className="text-gray-500 text-xs">+{monthEvents.length - 3} more</li>
+                        )}
+                      </>
+                    ) : (
+                      <li className="text-gray-400 italic text-center">No subscriptions</li>
+                    )}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

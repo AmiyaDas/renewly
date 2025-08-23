@@ -22,7 +22,8 @@ const SubscriptionCard = ({
         </div>
         <div className="sub-details">
           <span className="sub-name">{name}</span>
-          <span className="sub-info">{t("renew_info", { daysLeft })}</span>
+          <span className="sub-info">{daysLeft < 0 ? t("renew_overdue") : t("renew_info", { daysLeft })}</span>
+          
           {renewDate && <span className="sub-info">{renewDate}</span>}
         </div>
       </div>

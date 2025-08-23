@@ -1,3 +1,4 @@
+import { FaUserCircle } from "react-icons/fa";
 import { FiBarChart } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaChevronLeft } from "react-icons/fa";
@@ -30,8 +31,13 @@ const Header = ({
             <Link to="/settings">
               <IoSettingsOutline />
             </Link>
+            <Link to="/user-profile">
+              <FaUserCircle />
+            </Link>
           </div>
         )}
+        {/* User profile icon */}
+        
       </div>
     </header>
   );
