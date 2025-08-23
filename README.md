@@ -44,3 +44,5 @@
 - reminders using push notification
 - free trial (count money only after trial ends)
 - languages update
+- mm dd yy not showing
+- make swipe in calendar

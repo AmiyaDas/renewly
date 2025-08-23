@@ -99,7 +99,8 @@ const Home = () => {
   const totalYearly = subscriptions.reduce((total, sub) => {
     let yearlyPrice = 0;
     const cycle = (sub.billingCycle || "").toLowerCase();
-    const priceNum = parseFloat(sub.price.toString().replace(/[^0-9.]/g, "")) || 0;
+    const priceNum =
+      parseFloat(sub.price.toString().replace(/[^0-9.]/g, "")) || 0;
 
     if (cycle.includes("month")) {
       yearlyPrice = priceNum * 12;
@@ -181,14 +182,18 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.2, duration: 0.5 }}
-              className={sub.status === "cancelled" ? "opacity-50 grayscale" : ""}
+              className={
+                sub.status === "cancelled" ? "opacity-50 grayscale" : ""
+              }
             >
               <SubscriptionCard
                 name={sub.name}
-                renewDate={sub.renewalDate}
+                // renewDate={sub.renewalDate}
                 daysLeft={daysLeft}
                 icon={sub.icon}
-                price={`${currencySymbols[currency] || ""}${sub.price} ${formatBillingCycle(sub.billingCycle)}`}
+                price={`${currencySymbols[currency] || ""}${
+                  sub.price
+                } ${formatBillingCycle(sub.billingCycle)}`}
                 onClick={() => openModal(sub)}
                 isRemoving={removingId === sub.id}
               />
@@ -246,7 +251,10 @@ const Home = () => {
                 .slice()
                 .sort((a, b) => {
                   const normalize = (sub) => {
-                    const price = parseFloat(sub.price.toString().replace(/[^0-9.]/g, "")) || 0;
+                    const price =
+                      parseFloat(
+                        sub.price.toString().replace(/[^0-9.]/g, "")
+                      ) || 0;
                     const cycle = (sub.billingCycle || "").toLowerCase();
                     if (cycle.includes("month")) return price * 12;
                     if (cycle.includes("week")) return price * 52;

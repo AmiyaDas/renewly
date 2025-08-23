@@ -71,7 +71,7 @@ const Calendar = () => {
           time: sub.renewalDate,
           price: sub.price,
           color: color,
-          icon: sub.icon
+          icon: sub.icon,
         };
       });
     setSubscriptions(arrangedSubs);
@@ -100,9 +100,11 @@ const Calendar = () => {
       <div className="grid grid-cols-7 gap-2 text-center mb-4 px-4">
         {[
           // Empty slots for days before first day of month
-          ...Array(new Date(year, currentDate.getMonth(), 1).getDay()).fill(null),
+          ...Array(new Date(year, currentDate.getMonth(), 1).getDay()).fill(
+            null
+          ),
           // Actual days in month
-          ...Array.from({ length: daysInMonth }, (_, i) => i + 1)
+          ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
         ].map((day, index) =>
           day === null ? (
             <div key={`empty-${index}`} className="w-8 h-8" />
@@ -136,7 +138,7 @@ const Calendar = () => {
     </>
   );
 
-  const filteredEvents = subscriptions.filter(event => {
+  const filteredEvents = subscriptions.filter((event) => {
     const eventDate = new Date(event.time);
     return (
       eventDate.getMonth() === currentDate.getMonth() &&
@@ -147,7 +149,7 @@ const Calendar = () => {
   const eventsList = (
     <div className="px-4 py-2">
       <div className="text-lg font-bold py-2">Upcoming renewals</div>
-      <div className="">
+      <div className="flex flex-col gap-3">
         {filteredEvents
           .sort((a, b) => new Date(a.time) - new Date(b.time))
           .map((event) => (
