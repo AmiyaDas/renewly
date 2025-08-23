@@ -17,7 +17,10 @@ const CalendarEvent = ({ title, renewDate, daysLeft, icon, price }) => {
       </div>
       <div className="sub-right">
         <span className="sub-price">{price}</span>
-        <FaChevronRight size={20} />
+        {
+          // later add this to enable delete and cancelled operations from here as well
+          /* <FaChevronRight size={20} /> */
+        }
       </div>
     </div>
   );

@@ -3,12 +3,12 @@ import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { PreferencesContext } from "../context/PreferencesContext";
 import { useNavigate } from "react-router-dom";
+import { currencySymbols } from "../utils/utils";
 
 export default function SubscriptionModal({ isOpen, onClose, subscription }) {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
   const { currency } = useContext(PreferencesContext);
-  const currencySymbols = { USD: "$", EUR: "€", INR: "₹", GBP: "£" };
   const navigate = useNavigate();
   if (!isOpen || !subscription) return null;
 
@@ -26,7 +26,10 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
 
   const onMarkCancelled = () => {
     const updatedSub = { ...subscription, status: "cancelled" };
-    localStorage.setItem(`subscription_${subscription.name}`, JSON.stringify(updatedSub));
+    localStorage.setItem(
+      `subscription_${subscription.name}`,
+      JSON.stringify(updatedSub)
+    );
     onClose(true); // trigger refresh in parent
   };
 
@@ -56,7 +59,11 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className={`bg-white w-[90%] max-w-md rounded-2xl shadow-xl relative p-6 transition-all duration-300 ${isRemoving ? 'fade-out-modal' : 'animate-modal-enter'}`}>
+      <div
+        className={`bg-white w-[90%] max-w-md rounded-2xl shadow-xl relative p-6 transition-all duration-300 ${
+          isRemoving ? "fade-out-modal" : "animate-modal-enter"
+        }`}
+      >
         <button
           onClick={onEditSubscription}
           aria-label="Edit Subscription"
@@ -81,7 +88,8 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
           <div>
             <h2 className="text-xl font-semibold">{subscription.name}</h2>
             <p className="text-green-600 text-lg">
-              {currencySymbols[currency] || ""}{subscription.price}
+              {currencySymbols[currency] || ""}
+              {subscription.price}
             </p>
           </div>
         </div>
@@ -110,9 +118,10 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
 
         {/* Action buttons */}
         <div className="mt-6 flex flex-col gap-3">
-          <button 
+          <button
             onClick={onMarkCancelled}
-            className="w-full bg-yellow-500 text-white py-2 rounded-xl font-medium hover:bg-yellow-600 transition">
+            className="w-full bg-yellow-500 text-white py-2 rounded-xl font-medium hover:bg-yellow-600 transition"
+          >
             Mark as Cancelled
           </button>
           <button

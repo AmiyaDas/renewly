@@ -1,7 +1,11 @@
 import Header from "./Header";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { categoryColorMap } from "../utils/data";
 import CalendarEvent from "./CalendarEvent";
+import { PreferencesContext } from "../context/PreferencesContext";
+import { currencySymbols, formatBillingCycle } from "../utils/utils";
+import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const days = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -41,6 +45,8 @@ const events = [
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [subscriptions, setSubscriptions] = useState([]);
+  const { currency } = useContext(PreferencesContext);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const subs = [];
@@ -72,6 +78,7 @@ const Calendar = () => {
           price: sub.price,
           color: color,
           icon: sub.icon,
+          billingCycle: sub.billingCycle,
         };
       });
     setSubscriptions(arrangedSubs);
@@ -148,7 +155,11 @@ const Calendar = () => {
 
   const eventsList = (
     <div className="px-4 py-2">
-      <div className="text-lg font-bold py-2">Upcoming renewals</div>
+      <div className="text-lg font-bold py-2">
+        {filteredEvents.length
+          ? t("upcoming_renewals")
+          : "☹️ " + t("no_upcoming_renewals")}
+      </div>
       <div className="flex flex-col gap-3">
         {filteredEvents
           .sort((a, b) => new Date(a.time) - new Date(b.time))
@@ -156,9 +167,11 @@ const Calendar = () => {
             <CalendarEvent
               key={event.id}
               title={event.title}
-              price={event.price}
               icon={event.icon}
               daysLeft={7}
+              price={`${currencySymbols[currency] || ""}${
+                event.price
+              } ${formatBillingCycle(event.billingCycle)}`}
             />
           ))}
       </div>
@@ -174,27 +187,27 @@ const Calendar = () => {
       />
       <div className="flex justify-between items-center px-4 py-2">
         <button
-          className="px-3 py-1 rounded bg-gray-200"
+          className="px-3 py-1 rounded bg-gray-200 bg-transparent"
           onClick={() =>
             setCurrentDate(
               new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
             )
           }
         >
-          Prev
+          <FaChevronLeft />
         </button>
         <h2 className="font-bold text-lg">
           {month} {year}
         </h2>
         <button
-          className="px-3 py-1 rounded bg-gray-200"
+          className="px-3 py-1 rounded bg-gray-200 bg-transparent"
           onClick={() =>
             setCurrentDate(
               new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
             )
           }
         >
-          Next
+          <FaChevronRight />
         </button>
       </div>
       {calendarGrid}
