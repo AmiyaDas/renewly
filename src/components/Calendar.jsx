@@ -7,6 +7,7 @@ import { currencySymbols, formatBillingCycle } from "../utils/utils";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { generateRenewalEvents } from "../utils/utils";
+import { Link } from "react-router-dom";
 
 const days = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -64,7 +65,9 @@ const Calendar = () => {
         }
       }
     }
-    const arrangedSubs = subs.flatMap((sub) => generateRenewalEvents(sub, categoryColorMap, viewType === "year"));
+    const arrangedSubs = subs.flatMap((sub) =>
+      generateRenewalEvents(sub, categoryColorMap, viewType === "year")
+    );
     setSubscriptions(arrangedSubs);
     window.addEventListener("storage", () => {
       const subs = [];
@@ -135,7 +138,7 @@ const Calendar = () => {
               const clickedDate = new Date(year, currentDate.getMonth(), day);
               setCurrentDate(clickedDate);
               setSelectedDate(clickedDate);
-              const eventsForDate = subscriptions.filter(e => {
+              const eventsForDate = subscriptions.filter((e) => {
                 const d = new Date(e.time);
                 return (
                   d.getDate() === clickedDate.getDate() &&
@@ -183,12 +186,12 @@ const Calendar = () => {
               key={event.id}
               title={event.title}
               icon={event.icon}
-              daysLeft={
-                (() => {
-                  const diffDays = Math.ceil((new Date(event.time) - new Date()) / (1000 * 60 * 60 * 24));
-                  return diffDays < 0 ? -1 : diffDays;
-                })()
-              }
+              daysLeft={(() => {
+                const diffDays = Math.ceil(
+                  (new Date(event.time) - new Date()) / (1000 * 60 * 60 * 24)
+                );
+                return diffDays < 0 ? -1 : diffDays;
+              })()}
             />
           ))}
       </div>
@@ -204,35 +207,43 @@ const Calendar = () => {
       />
       <div className="flex justify-center gap-4 py-2">
         <button
-          className={`px-3 py-1 rounded ${viewType === "month" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded ${
+            viewType === "month" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
           onClick={() => setViewType("month")}
         >
           Month View
         </button>
         <button
-          className={`px-3 py-1 rounded ${viewType === "year" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded ${
+            viewType === "year" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
           onClick={() => setViewType("year")}
         >
           Year View
         </button>
       </div>
       {viewType === "month" && (
-      <div className="flex justify-between items-center px-4 py-2">
-        <button
-          className="px-3 py-1 rounded bg-gray-200 bg-transparent"
-          onClick={() =>
-            setCurrentDate(
-              new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
-            )
-          }
-        >
-          <FaChevronLeft />
-        </button>
-        <h2 className="font-bold text-lg">
-          {month} {year}
-        </h2>
-        <Link to="/test">
-          {/* <button
+        <div className="flex justify-between items-center px-4 py-2">
+          <button
+            className="px-3 py-1 rounded bg-gray-200 bg-transparent"
+            onClick={() =>
+              setCurrentDate(
+                new Date(
+                  currentDate.getFullYear(),
+                  currentDate.getMonth() - 1,
+                  1
+                )
+              )
+            }
+          >
+            <FaChevronLeft />
+          </button>
+          <h2 className="font-bold text-lg">
+            {month} {year}
+          </h2>
+          <Link to="/test">
+            {/* <button
           className="px-3 py-1 rounded bg-gray-200 bg-transparent"
           onClick={() =>
             setCurrentDate(
@@ -240,10 +251,10 @@ const Calendar = () => {
             )
           }
         > */}
-          <FaChevronRight />
-          {/* </button> */}
-        </Link>
-      </div>
+            <FaChevronRight />
+            {/* </button> */}
+          </Link>
+        </div>
       )}
       {viewType === "month" ? (
         <>
@@ -255,13 +266,20 @@ const Calendar = () => {
                   Subscriptions for {selectedDate.toLocaleDateString()}
                 </h3>
                 <ul className="flex flex-col gap-2">
-                  {selectedEvents.map(ev => (
-                    <li key={ev.id} className="border p-2 rounded flex items-center gap-2">
-                      {ev.icon && <img src={ev.icon} alt={ev.title} className="w-6 h-6" />}
+                  {selectedEvents.map((ev) => (
+                    <li
+                      key={ev.id}
+                      className="border p-2 rounded flex items-center gap-2"
+                    >
+                      {ev.icon && (
+                        <img src={ev.icon} alt={ev.title} className="w-6 h-6" />
+                      )}
                       <div>
                         <div className="font-semibold">{ev.title}</div>
                         <div>Price: {ev.price}</div>
-                        <div>Renewal Date: {new Date(ev.time).toLocaleDateString()}</div>
+                        <div>
+                          Renewal Date: {new Date(ev.time).toLocaleDateString()}
+                        </div>
                       </div>
                     </li>
                   ))}
@@ -283,7 +301,11 @@ const Calendar = () => {
           <div className="grid grid-cols-3 gap-4 px-4">
             {Array.from({ length: 12 }, (_, m) => {
               const monthEvents = subscriptions
-                .filter(e => new Date(e.time).getMonth() === m && new Date(e.time).getFullYear() === year)
+                .filter(
+                  (e) =>
+                    new Date(e.time).getMonth() === m &&
+                    new Date(e.time).getFullYear() === year
+                )
                 .sort((a, b) => new Date(a.time) - new Date(b.time));
 
               return (
@@ -296,23 +318,37 @@ const Calendar = () => {
                   }}
                 >
                   <h4 className="text-sm font-bold text-center mb-2">
-                    {new Date(0, m).toLocaleString("default", { month: "short" })}
+                    {new Date(0, m).toLocaleString("default", {
+                      month: "short",
+                    })}
                   </h4>
                   <ul className="mt-2 text-xs flex flex-col gap-1 min-h-[3rem]">
                     {monthEvents.length > 0 ? (
                       <>
-                        {monthEvents.slice(0, 3).map(e => (
+                        {monthEvents.slice(0, 3).map((e) => (
                           <li key={e.id} className="flex items-center gap-2">
-                            {e.icon && <img src={e.icon} alt={e.title} className="w-4 h-4" />}
-                            <span>{e.title} - {e.price}</span>
+                            {e.icon && (
+                              <img
+                                src={e.icon}
+                                alt={e.title}
+                                className="w-4 h-4"
+                              />
+                            )}
+                            <span>
+                              {e.title} - {e.price}
+                            </span>
                           </li>
                         ))}
                         {monthEvents.length > 3 && (
-                          <li className="text-gray-500 text-xs">+{monthEvents.length - 3} more</li>
+                          <li className="text-gray-500 text-xs">
+                            +{monthEvents.length - 3} more
+                          </li>
                         )}
                       </>
                     ) : (
-                      <li className="text-gray-400 italic text-center">No subscriptions</li>
+                      <li className="text-gray-400 italic text-center">
+                        No subscriptions
+                      </li>
                     )}
                   </ul>
                 </div>
