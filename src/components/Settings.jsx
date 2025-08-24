@@ -108,7 +108,18 @@ const Settings = () => {
               className="w-5 h-5"
             />
           </div>
-
+          {/* Theme */}
+          <div className="mb-4">
+            <label className="block mb-1 text-base">{t("theme")}</label>
+            <select
+              value={localStorage.getItem("theme") || "light"}
+              onChange={(e) => updatePreference("theme", e.target.value)}
+              className="w-full p-2 rounded-lg border border-gray-300 text-base"
+            >
+              <option value="light">{t("light")}</option>
+              <option value="dark">{t("dark")}</option>
+            </select>
+          </div>
           <button
             onClick={handleSavePreferences}
             className="w-full bg-blue-500 text-white py-2 rounded-lg mt-2 font-semibold hover:bg-blue-600 transition"

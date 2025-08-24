@@ -8,6 +8,7 @@ export const PreferencesProvider = ({ children }) => {
     language: "en", // default i18n code
     currency: "INR",
     notificationsEnabled: true,
+    theme: "light", // 'light' or 'dark'
   };
 
   // Load saved preferences safely
@@ -21,6 +22,7 @@ export const PreferencesProvider = ({ children }) => {
           saved.notificationsEnabled !== undefined
             ? saved.notificationsEnabled
             : defaultPrefs.notificationsEnabled,
+        theme: saved.theme || defaultPrefs.theme,
       };
     } catch (err) {
       console.warn("Preferences in localStorage are invalid, using defaults.");
@@ -29,10 +31,18 @@ export const PreferencesProvider = ({ children }) => {
   };
 
   const [preferences, setPreferences] = useState(loadPreferences);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  const updateTheme = (value) => {
+    setTheme(value);
+    localStorage.setItem("theme", value);
+    document.body.classList.toggle("dark", value === "dark");
+  };
 
   // Save preferences to localStorage whenever they change
   useEffect(() => {
     i18n.changeLanguage(preferences.language);
+    updateTheme(preferences.theme);
     localStorage.setItem("preferences", JSON.stringify(preferences));
   }, [preferences]);
 
@@ -41,6 +51,9 @@ export const PreferencesProvider = ({ children }) => {
     if (!preferences.hasOwnProperty(key)) return;
     if (key === "language") {
       i18n.changeLanguage(value);
+    }
+    if (key === "theme") {
+      updateTheme(value);
     }
     setPreferences((prev) => ({ ...prev, [key]: value }));
   }, [preferences]);

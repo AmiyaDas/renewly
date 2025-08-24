@@ -22,6 +22,8 @@ function App() {
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.classList.toggle('dark', savedTheme === 'dark');
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) setUser(firebaseUser);
       setCheckingAuth(false);

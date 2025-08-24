@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { PreferencesContext } from '../context/PreferencesContext';
 import { auth, googleProvider, facebookProvider, appleProvider } from '../firebase';
-import { signInWithRedirect, getRedirectResult } from 'firebase/auth';
+import { signInWithRedirect, signInWithPopup, getRedirectResult } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebook, FaApple, FaUserAlt, FaUserPlus } from 'react-icons/fa';
 import LoadingScreen from './LoadingScreen';
@@ -24,7 +24,21 @@ const SocialSignInPage = ({ guestSignIn }) => {
 
   const handleSignIn = (provider) => {
     setLoading(true);
-    signInWithRedirect(auth, provider);
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      signInWithRedirect(auth, provider);
+    } else {
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          if (result && result.user) {
+            setUser(result.user);
+          }
+        })
+        .catch((err) => {
+          console.error('Popup sign-in error:', err);
+          setLoading(false);
+        });
+    }
   };
 
   const handleGuest = () => {

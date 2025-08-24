@@ -1,4 +1,6 @@
 @import "tailwindcss";
+
+/* Global / fallback variables */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -8,9 +10,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --color-primary: #000;
-  --color-primary-hover: #000;
-  --color-background: #f6f0ea; /* matches beige tone */
+  /* Fallbacks */
+  --color-primary: #000000;
+  --color-primary-hover: #000000;
+  --color-background: #f6f0ea; /* beige fallback */
+  --color-surface: #ffffff;
+  --color-on-primary: #ffffff;
+  --color-on-surface: #000000;
+  --color-shadow: rgba(0, 0, 0, 0.1);
 }
 
 html,
@@ -27,9 +34,75 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+/* ======================== */
+/* Dark Theme - Material3    */
+/* ======================== */
+body.dark {
+  --color-primary: #BB86FC;
+  --color-primary-hover: #9B5DE5;
+  --color-background: #121212;
+  --color-surface: #1E1E1E;
+  --color-on-primary: #FFFFFF;
+  --color-on-surface: #E0E0E0;
+  --color-shadow: rgba(0, 0, 0, 0.7);
+
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  backdrop-filter: blur(3px);
+}
+
+/* Dark Theme Card */
+body.dark .card {
+  background: var(--color-surface);
+  border-radius: 16px;
+  border: 1px solid rgba(187, 134, 252, 0.3);
+  box-shadow: 0 4px 12px var(--color-shadow);
+  padding: 16px;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark .card:hover {
+  box-shadow: 0 6px 20px rgba(187, 134, 252, 0.5);
+  border-color: var(--color-primary-hover);
+}
+
+/* ======================== */
+/* Light Theme - Material3   */
+/* ======================== */
+body.light {
+  --color-primary: #6750A4;
+  --color-primary-hover: #7F57C9;
+  --color-background: #FFFFFF;
+  --color-surface: #F5F5F5;
+  --color-on-primary: #FFFFFF;
+  --color-on-surface: #1C1B1F;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+}
+
+/* Light Theme Card */
+body.light .card {
+  background: var(--color-surface);
+  border-radius: 16px;
+  border: 1px solid rgba(103, 80, 164, 0.2);
+  box-shadow: 0 2px 8px var(--color-shadow);
+  padding: 16px;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.light .card:hover {
+  box-shadow: 0 4px 12px rgba(103, 80, 164, 0.3);
+  border-color: var(--color-primary-hover);
 }

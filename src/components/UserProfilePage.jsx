@@ -7,14 +7,14 @@ const UserProfilePage = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen w-screen flex items-center justify-center bg-gradient-to-br from-purple-200 via-pink-200 to-blue-200 px-4 overflow-x-hidden">
+      <div className="min-h-screen w-screen flex items-center justify-center px-4 overflow-x-hidden">
         <p className="text-gray-600 text-lg">No user information available.</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen w-screen flex flex-col items-center bg-gradient-to-br from-purple-200 via-pink-200 to-blue-200 overflow-x-hidden">
+    <div className="min-h-screen w-screen flex flex-col items-center overflow-x-hidden">
       <Header title="User Profile" showNavBack={true} className="w-screen fixed top-0 left-0 z-10" />
       <div className="flex-1 flex items-center justify-center w-screen">
         <div className="w-full max-w-md p-6 bg-white/90 backdrop-blur-md rounded-xl shadow-lg flex flex-col items-center mx-4">
