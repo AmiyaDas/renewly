@@ -41,7 +41,7 @@
 - future entries autpmatically
 - cancellation logic
 - spacing the entries in calendar ✅
-- reminders using push notification
+- reminders using push notification (need to change in native-app code)
 - free trial (count money only after trial ends)
 - languages update ✅
 - mm dd yy not showing
