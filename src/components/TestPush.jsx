@@ -2,11 +2,6 @@ import { sendNotification } from "../services/PushHandler";
 
 function TestPush() {
   const handlePushNotification = () => {
-    sendNotification("Test Notification", {
-      body: "This is a test notification",
-      icon: "/renewly/logo_xl.ico",
-    });
-
     //for native app
     if (window.ReactNativeWebView) {
       window.ReactNativeWebView.postMessage(
@@ -16,6 +11,11 @@ function TestPush() {
         })
       );
     }
+
+    sendNotification("Test Notification", {
+      body: "This is a test notification",
+      icon: "/renewly/logo_xl.ico",
+    });
   };
   return (
     <div className="App">
