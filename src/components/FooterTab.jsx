@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 
 const FooterTab = () => {
   return (
-    <footer className="footer">
+    <footer className="footer rounded-xl">
       <div className="footer-icon active">
         <GoHomeFill />
       </div>
       <div className="plus-btn">
         <Link to="/add">
-          <FaPlus size={28} strokeWidth={2.5} color="white" />
+          <FaPlus size={28} strokeWidth={2.5} />
         </Link>
       </div>
       <div className="footer-icon">

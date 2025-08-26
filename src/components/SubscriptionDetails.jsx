@@ -14,10 +14,16 @@ const SubscriptionDetails = () => {
   const app = location.state?.subscription || location.state || {};
   const [id, setId] = useState(app.id || Date.now());
   const [startDate, setStartDate] = useState(app.startDate || today);
-  const [billingCycle, setBillingCycle] = useState(app.billingCycle || "Every month");
+  const [billingCycle, setBillingCycle] = useState(
+    app.billingCycle || "Every month"
+  );
   const [category, setCategory] = useState(app.category || "Streaming");
-  const [notificationDays, setNotificationDays] = useState(app.notificationDays || "1 day before");
-  const [notificationTime, setNotificationTime] = useState(app.notificationTime || "09:00");
+  const [notificationDays, setNotificationDays] = useState(
+    app.notificationDays || "1 day before"
+  );
+  const [notificationTime, setNotificationTime] = useState(
+    app.notificationTime || "09:00"
+  );
   const [price, setPrice] = useState(app.price || "");
   const [renewalDate, setRenewalDate] = useState(app.renewalDate || "");
   const [errors, setErrors] = useState({});
@@ -28,7 +34,10 @@ const SubscriptionDetails = () => {
     const subscriptionData = {
       id,
       name,
-      icon: app.icon || JSON.parse(localStorage.getItem(`subscription_${name}`) || "{}").icon || "",
+      icon:
+        app.icon ||
+        JSON.parse(localStorage.getItem(`subscription_${name}`) || "{}").icon ||
+        "",
       startDate,
       billingCycle,
       category,
@@ -37,14 +46,18 @@ const SubscriptionDetails = () => {
       price,
       renewalDate,
     };
-    localStorage.setItem(`subscription_${name}`, JSON.stringify(subscriptionData));
+    localStorage.setItem(
+      `subscription_${name}`,
+      JSON.stringify(subscriptionData)
+    );
     navigate("/");
   };
 
   const handleSave = () => {
     let tempErrors = {};
     if (!startDate) tempErrors.startDate = "Start date is required";
-    if (!price || isNaN(price) || parseFloat(price) <= 0) tempErrors.price = "Valid price is required";
+    if (!price || isNaN(price) || parseFloat(price) <= 0)
+      tempErrors.price = "Valid price is required";
     if (!renewalDate) tempErrors.renewalDate = "Renewal date is required";
     if (!billingCycle) tempErrors.billingCycle = "Billing cycle is required";
     if (!category) tempErrors.category = "Category is required";
@@ -66,9 +79,8 @@ const SubscriptionDetails = () => {
     saveSubscription();
   };
 
-  
   return (
-    <div className="w-screen h-screen bg-[#f8f4f1] flex flex-col">
+    <div className="w-screen h-screen flex flex-col">
       {/* Header */}
       <Header showNavBack={true} title="Add Subscription" />
 
@@ -99,7 +111,9 @@ const SubscriptionDetails = () => {
                 onChange={(e) => setStartDate(e.target.value)}
               />
             </div>
-            {errors.startDate && <p className="text-red-500 text-xs mt-1">{errors.startDate}</p>}
+            {errors.startDate && (
+              <p className="text-red-500 text-xs mt-1">{errors.startDate}</p>
+            )}
           </div>
           <div className="flex flex-col py-2 border-b border-gray-200">
             <div className="flex justify-between items-center">
@@ -113,7 +127,9 @@ const SubscriptionDetails = () => {
                 onChange={(e) => setPrice(e.target.value)}
               />
             </div>
-            {errors.price && <p className="text-red-500 text-xs mt-1">{errors.price}</p>}
+            {errors.price && (
+              <p className="text-red-500 text-xs mt-1">{errors.price}</p>
+            )}
           </div>
           <div className="flex flex-col py-2 border-b border-gray-200">
             <div className="flex justify-between items-center">
@@ -125,7 +141,9 @@ const SubscriptionDetails = () => {
                 onChange={(e) => setRenewalDate(e.target.value)}
               />
             </div>
-            {errors.renewalDate && <p className="text-red-500 text-xs mt-1">{errors.renewalDate}</p>}
+            {errors.renewalDate && (
+              <p className="text-red-500 text-xs mt-1">{errors.renewalDate}</p>
+            )}
           </div>
           <div className="flex flex-col py-2 border-b border-gray-200">
             <div className="flex justify-between items-center">
@@ -142,7 +160,9 @@ const SubscriptionDetails = () => {
                 ))}
               </select>
             </div>
-            {errors.billingCycle && <p className="text-red-500 text-xs mt-1">{errors.billingCycle}</p>}
+            {errors.billingCycle && (
+              <p className="text-red-500 text-xs mt-1">{errors.billingCycle}</p>
+            )}
           </div>
           <div className="flex justify-between items-center py-2">
             <span>Free Trial</span>
@@ -167,7 +187,9 @@ const SubscriptionDetails = () => {
                 ))}
               </select>
             </div>
-            {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category}</p>}
+            {errors.category && (
+              <p className="text-red-500 text-xs mt-1">{errors.category}</p>
+            )}
           </div>
           <div className="flex justify-between items-center py-2 border-b border-gray-200">
             <span>Notifications</span>
@@ -204,12 +226,14 @@ const SubscriptionDetails = () => {
       </div>
       <button
         onClick={handleSave}
-        className={`bg-black text-white px-4 py-1 mb-4 rounded-lg save-button ${isShaking ? 'animate-shake' : ''}`}
+        className={`bg-black text-white px-4 py-1 mb-4 rounded-lg save-button ${
+          isShaking ? "animate-shake" : ""
+        }`}
       >
         Save
       </button>
       <style>
-      {`
+        {`
         @keyframes shake {
           0% { transform: translateX(0); }
           25% { transform: translateX(-4px); }
@@ -239,7 +263,9 @@ const SubscriptionDetails = () => {
         <div className="fixed inset-0 bg-opacity-10 backdrop-blur-xs flex items-center justify-center z-50 transition-opacity duration-300 ease-out">
           <div className="bg-white rounded-lg p-6 shadow-md max-w-md w-full transform transition-all duration-300 scale-95 opacity-70 animate-modal-enter">
             <h3 className="text-lg font-semibold mb-4">Subscription Exists</h3>
-            <p className="mb-4">This subscription already exists. Do you want to update it?</p>
+            <p className="mb-4">
+              This subscription already exists. Do you want to update it?
+            </p>
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => {

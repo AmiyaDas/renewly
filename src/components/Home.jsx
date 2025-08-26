@@ -193,7 +193,9 @@ const Home = () => {
                       alt={sub.name}
                       className="w-8 h-8 rounded"
                     />
-                    <span className="font-semibold">{sub.name}</span>
+                    <span className="font-semibold overflow-hidden">
+                      {sub.name}
+                    </span>
                   </div>
                   <p className="text-xs truncate max-w-[120px]">
                     {renderRenewInfo(sub.renewalDate)}

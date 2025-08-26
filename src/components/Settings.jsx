@@ -54,7 +54,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="w-screen h-screen bg-[#f8f4f1] flex flex-col">
+    <div className="w-screen h-screen flex flex-col">
       <Header showNavBack={true} title={t("settings")} />
 
       {/* Preferences */}
@@ -83,9 +83,7 @@ const Settings = () => {
             <label className="block mb-1 text-base">{t("currency")}</label>
             <select
               value={currency}
-              onChange={(e) =>
-                updatePreference("currency", e.target.value)
-              }
+              onChange={(e) => updatePreference("currency", e.target.value)}
               className="w-full p-2 rounded-lg border border-gray-300 text-base"
             >
               {currencies.map((c) => (
@@ -122,7 +120,7 @@ const Settings = () => {
           </div>
           <button
             onClick={handleSavePreferences}
-            className="w-full bg-blue-500 text-white py-2 rounded-lg mt-2 font-semibold hover:bg-blue-600 transition"
+            className="w-full bg-[var(--color-primary)] text-white py-2 rounded-lg mt-2 font-semibold hover:bg-blue-600 transition"
           >
             {t("save_preferences")}
           </button>
@@ -157,8 +155,7 @@ const Settings = () => {
 
       <footer className="w-full bg-white py-4 mt-auto shadow-inner">
         <div className="text-center text-gray-500 text-sm">
-          &copy; {new Date().getFullYear()} Renewly &middot; All rights
-          reserved
+          &copy; {new Date().getFullYear()} Renewly &middot; All rights reserved
         </div>
         <div className="text-center mt-1">
           <a

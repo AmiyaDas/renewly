@@ -199,11 +199,9 @@ const Analytics = () => {
   const currencySymbol = currencySymbols[currency] || "";
 
   return (
-    <div className="w-screen min-h-screen bg-[#f8f4f1] flex flex-col">
+    <div className="w-screen min-h-screen  flex flex-col">
       {/* Header */}
-      <div className="sticky top-0 z-30 bg-[#f8f4f1]">
-        <Header showNavBack={true} title={t("analytics")} />
-      </div>
+      <Header showNavBack={true} title={t("analytics")} />
 
       <div className="flex-1">
         {/* Tabs */}

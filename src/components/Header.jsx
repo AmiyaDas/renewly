@@ -37,7 +37,6 @@ const Header = ({
           </div>
         )}
         {/* User profile icon */}
-        
       </div>
     </header>
   );

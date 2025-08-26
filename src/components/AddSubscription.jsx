@@ -74,7 +74,7 @@ const AddSubscription = () => {
     <>
       {loading && <LoadingScreen loading={loading} />}
       {!loading && (
-        <div className="w-screen h-screen bg-[#f8f4f1] flex flex-col">
+        <div className="w-screen h-screen flex flex-col">
           <Header showNavBack={true} title={t("add_subscription")} />
 
           {/* Search */}
@@ -84,12 +84,12 @@ const AddSubscription = () => {
               placeholder={t("search_apps")}
               value={search}
               onChange={(e) => filterSubscriptions(e.target.value)}
-              className="w-full p-2 rounded-lg border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full p-2 bg-white rounded-lg border border-gray-300 text-base focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
 
           {/* List (scrollable) */}
-          <div className="flex-1 overflow-y-auto pb-6">
+          <div className="flex-1 overflow-y-auto pb-6 bg-white">
             {streamingAppsList.length ? (
               renderList(t("streaming"), streamingAppsList)
             ) : (

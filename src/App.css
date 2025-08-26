@@ -42,8 +42,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  background-color: var(--color-background); /* matches beige tone */
+  background-color: var(--color-primary); /* matches beige tone */
   font-size: 18pt;
+  color: var(--color-primarty-text);
 }
 .header .center.title {
   font-weight: 600;
@@ -121,11 +122,16 @@
   justify-content: space-around;
   align-items: center;
   padding: 0.8rem 0;
-  background-color: var(--color-background); /* matches light background */
+  color: var(--color-primarty-text);
+  background-color: var(--color-primary); /* matches light background */
   border-top: 1px solid #eaeaea;
   position: fixed;
   width: 100%;
   bottom: 0;
+}
+
+.footer svg {
+  color: var(--color-primarty-text);
 }
 
 .footer-icon {
@@ -140,14 +146,14 @@
   content: "";
   width: 16px;
   height: 2px;
-  background-color: black;
+  background-color: var(--color-primarty-text);
   border-radius: 1px;
   position: absolute;
   bottom: -6px;
 }
 
 .plus-btn {
-  background-color: black;
+  background-color: var(--color-primarty-text);
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -156,6 +162,10 @@
   justify-content: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+}
+
+.plus-btn svg {
+  color: var(--color-primary);
 }
 
 /* subscriptions */
@@ -188,11 +198,12 @@
   border: 1px solid #ddd;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.9),
     rgba(255, 228, 228, 0.4)
-  );
+  ); */
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), #059db82e);
   padding: 0.8rem 1rem;
   border-radius: 12px;
 }
