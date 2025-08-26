@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { streamingApps, musicApps, gameApps, otherApps } from "../utils/data";
 import Header from "./Header";
 import { useTranslation } from "react-i18next";
-import LoadingScreen from "./LoadingScreen";
+const LoadingScreen = React.lazy(() => import("./LoadingScreen"));
 
 const allApps = [...streamingApps, ...musicApps, ...gameApps];
 
@@ -95,9 +95,21 @@ const AddSubscription = () => {
             ) : (
               <></>
             )}
-            {musicAppsList.length ? renderList(t("music_apps"), musicAppsList) : <></>}
-            {gameAppsList.length ? renderList(t("game_apps"), gameAppsList) : <></>}
-            {otherAppsList.length ? renderList(t("other_apps"), otherAppsList) : <></>}
+            {musicAppsList.length ? (
+              renderList(t("music_apps"), musicAppsList)
+            ) : (
+              <></>
+            )}
+            {gameAppsList.length ? (
+              renderList(t("game_apps"), gameAppsList)
+            ) : (
+              <></>
+            )}
+            {otherAppsList.length ? (
+              renderList(t("other_apps"), otherAppsList)
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       )}

@@ -1,10 +1,19 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { PreferencesContext } from '../context/PreferencesContext';
-import { auth, googleProvider, facebookProvider, appleProvider } from '../firebase';
-import { signInWithRedirect, signInWithPopup, getRedirectResult } from 'firebase/auth';
-import { FcGoogle } from 'react-icons/fc';
-import { FaFacebook, FaApple, FaUserAlt, FaUserPlus } from 'react-icons/fa';
-import LoadingScreen from './LoadingScreen';
+import React, { useEffect, useState, useContext } from "react";
+import { PreferencesContext } from "../context/PreferencesContext";
+import {
+  auth,
+  googleProvider,
+  facebookProvider,
+  appleProvider,
+} from "../firebase";
+import {
+  signInWithRedirect,
+  signInWithPopup,
+  getRedirectResult,
+} from "firebase/auth";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook, FaApple, FaUserAlt, FaUserPlus } from "react-icons/fa";
+const LoadingScreen = React.lazy(() => import("./LoadingScreen"));
 
 const SocialSignInPage = ({ guestSignIn }) => {
   const { setUser } = useContext(PreferencesContext);
@@ -18,7 +27,7 @@ const SocialSignInPage = ({ guestSignIn }) => {
         }
       })
       .catch((err) => {
-        console.error('Redirect sign-in error:', err);
+        console.error("Redirect sign-in error:", err);
       });
   }, [setUser]);
 
@@ -35,7 +44,7 @@ const SocialSignInPage = ({ guestSignIn }) => {
           }
         })
         .catch((err) => {
-          console.error('Popup sign-in error:', err);
+          console.error("Popup sign-in error:", err);
           setLoading(false);
         });
     }
@@ -51,11 +60,12 @@ const SocialSignInPage = ({ guestSignIn }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-purple-200 via-pink-200 to-blue-200 px-4">
       <div className="w-full max-w-md bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-8 flex flex-col items-center mx-auto">
-        
         {/* Logo */}
         <img src="./logo_xl.ico" alt="Logo" className="w-24 h-24 mb-4" />
 
-        <h2 className="text-3xl font-bold mb-6 text-center">Sign in to Renewly</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center">
+          Sign in to Renewly
+        </h2>
 
         <h3 className="text-lg font-semibold mb-4">Sign in with</h3>
 

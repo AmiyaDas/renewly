@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
-import { PreferencesContext } from '../context/PreferencesContext';
-import Header from './Header';
+import React, { useContext } from "react";
+import { PreferencesContext } from "../context/PreferencesContext";
+import Header from "./Header";
+import { IoMail, IoCall, IoLockClosed } from "react-icons/io5";
 
 const UserProfilePage = () => {
   const { user } = useContext(PreferencesContext);
@@ -14,28 +15,54 @@ const UserProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen w-screen flex flex-col items-center overflow-x-hidden">
-      <Header title="User Profile" showNavBack={true} className="w-screen fixed top-0 left-0 z-10" />
-      <div className="flex-1 flex items-center justify-center w-screen">
-        <div className="w-full max-w-md p-6 bg-white/90 backdrop-blur-md rounded-xl shadow-lg flex flex-col items-center mx-4">
-          {user.photoURL ? (
-            <img src={user.photoURL} alt={user.displayName} className="w-28 h-28 rounded-full mb-4 border-4 border-white shadow-md" />
-          ) : (
-            <div className="w-28 h-28 bg-gray-300 rounded-full flex items-center justify-center mb-4 border-4 border-white shadow-md">
-              <span className="text-3xl font-bold">{user.displayName?.[0] || 'U'}</span>
-            </div>
-          )}
+    <div className="w-screen min-h-screen viewport">
+      {/* Header */}
+      <Header title="User Profile" showNavBack={true} />
 
-          <h2 className="text-2xl font-semibold mb-2 text-gray-800">{user.displayName || 'Guest User'}</h2>
-          <p className="text-gray-600 mb-1">Email: {user.email || 'Not Provided'}</p>
-          <p className="text-gray-600 mb-1">Phone: {user.phoneNumber || 'Not Provided'}</p>
+      {/* Profile Info */}
+      <div className="flex flex-col items-center mt-12">
+        <div className="w-24 h-24 rounded-full flex items-center justify-center">
+          <img
+            src={user.photoURL ? user.photoURL : "/renewly/user.png"}
+            alt="avatar"
+            className="w-20 h-20"
+          />
+        </div>
+        <h3 className="mt-4 text-xl font-semibold text-gray-800">
+          {user.displayName || "Guest User"}
+        </h3>
+      </div>
 
-          {/* Additional details placeholder */}
-          <div className="mt-4 w-full">
-            <p className="text-gray-700 mb-2 font-medium">Subscription Info</p>
-            <div className="bg-gray-100 rounded-lg p-3 w-full text-center text-gray-500">
-              No subscription data available.
-            </div>
+      {/* Details */}
+      <div className="p-6 space-y-4">
+        {/* Email */}
+        <div>
+          <label className="text-sm text-gray-500">Your Email</label>
+          <div className="flex items-center bg-gray-100 rounded-xl p-3 mt-1">
+            <span className="flex-1 text-gray-700">
+              {user.email || "Not Provided"}
+            </span>
+            <IoMail className="w-5 h-5 text-gray-400" />
+          </div>
+        </div>
+
+        {/* Phone */}
+        <div>
+          <label className="text-sm text-gray-500">Phone Number</label>
+          <div className="flex items-center bg-gray-100 rounded-xl p-3 mt-1">
+            <span className="flex-1 text-gray-700">
+              {user.phoneNumber || "Not Provided"}
+            </span>
+            <IoCall className="w-5 h-5 text-gray-400" />
+          </div>
+        </div>
+
+        {/* Password */}
+        <div>
+          <label className="text-sm text-gray-500">Password</label>
+          <div className="flex items-center bg-gray-100 rounded-xl p-3 mt-1">
+            <span className="flex-1 text-gray-700">***********</span>
+            <IoLockClosed className="w-5 h-5 text-gray-400" />
           </div>
         </div>
       </div>

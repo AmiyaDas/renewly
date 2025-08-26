@@ -4,9 +4,7 @@ import AddSubscription from "./components/AddSubscription";
 import Home from "./components/Home";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import SubscriptionDetails from "./components/SubscriptionDetails";
-import Settings from "./components/Settings";
 import AllSubscriptions from "./components/AllSubscriptions";
-import Calendar from "./components/Calendar";
 import Privacy from "./components/Privacy";
 import SocialSignInPage from "./components/SocialSignInPage";
 import UserProfilePage from "./components/UserProfilePage";
@@ -14,16 +12,17 @@ import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { PreferencesContext } from "./context/PreferencesContext";
 import TestPush from "./components/TestPush";
-
+const Settings = React.lazy(() => import("./components/Settings"));
 const Analytics = React.lazy(() => import("./components/Analytics"));
+const Calendar = React.lazy(() => import("./components/Calendar"));
 
 function App() {
   const { user, setUser } = useContext(PreferencesContext);
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.body.classList.toggle('dark', savedTheme === 'dark');
+    const savedTheme = localStorage.getItem("theme") || "light";
+    document.body.classList.toggle("dark", savedTheme === "dark");
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) setUser(firebaseUser);
       setCheckingAuth(false);
