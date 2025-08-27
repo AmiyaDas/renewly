@@ -183,7 +183,7 @@ const Home = () => {
                 <div
                   key={sub.id}
                   onClick={() => openModal(sub)}
-                  className={`inline-block min-w-[150px] bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg p-4 shadow cursor-pointer ${
+                  className={`inline-block min-w-[150px] home-tile rounded-lg p-4 shadow cursor-pointer ${
                     sub.status === "cancelled" ? "opacity-50 grayscale" : ""
                   }`}
                 >

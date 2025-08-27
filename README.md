@@ -49,6 +49,8 @@
 - logo change
 - theme - light and dark
 - user profile page fix
+- tile flip
+- cors issue in sign in
 - theme
   - light grey background
   - white cards with shadow

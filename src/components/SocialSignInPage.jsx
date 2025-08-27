@@ -34,7 +34,7 @@ const SocialSignInPage = ({ guestSignIn }) => {
   const handleSignIn = (provider) => {
     setLoading(true);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
+    if (!isMobile) {
       signInWithRedirect(auth, provider);
     } else {
       signInWithPopup(auth, provider)

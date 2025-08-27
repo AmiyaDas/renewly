@@ -12,9 +12,10 @@
 
   /* Fallbacks */
   --color-primary: #059db8;
+  --color-primary-light: color-mix(in srgb, var(--color-primary) 60%, white);
   --color-primarty-text: #fff;
   --color-primary-hover: #000000;
-  --color-background: #eee; /* beige fallback */
+  --color-background: #fff; /* beige fallback */
   /* --color-background: #f6f0ea; */
   --color-surface: #ffffff;
   --color-on-primary: #ffffff;
@@ -36,7 +37,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--color-background);
+  background: linear-gradient(to bottom, var(--color-background), #efefef);
   color: var(--color-on-surface);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -58,7 +59,11 @@ body.dark {
   --color-on-surface: #e0e0e0;
   --color-shadow: rgba(0, 0, 0, 0.7);
 
-  background-color: var(--color-background);
+  background: linear-gradient(
+    to bottom,
+    var(--color-background),
+    var(--color-surface)
+  );
   color: var(--color-on-surface);
   backdrop-filter: blur(3px);
 }
@@ -90,7 +95,7 @@ body.light {
   --color-on-surface: #1c1b1f;
   --color-shadow: rgba(0, 0, 0, 0.1);
 
-  background-color: var(--color-background);
+  background: linear-gradient(to bottom, var(--color-background), #efefef);
   color: var(--color-on-surface);
 }
 

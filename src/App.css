@@ -33,7 +33,7 @@
 }
 
 .viewport {
-  background: linear-gradient(to bottom, var(--color-background), white);
+  background: linear-gradient(to bottom, var(--color-background), #efefef);
   height: 100%;
 }
 /* header */
@@ -114,6 +114,10 @@
 .stats-value {
   font-weight: 700;
   font-size: 1rem;
+}
+
+.home-tile {
+  box-shadow: 1px 1px 5px 0 #999;
 }
 
 /* footer */
@@ -203,7 +207,11 @@
     rgba(255, 255, 255, 0.9),
     rgba(255, 228, 228, 0.4)
   ); */
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), #059db82e);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.5),
+    var(--color-primary-light)
+  );
   padding: 0.8rem 1rem;
   border-radius: 12px;
 }
@@ -278,9 +286,4 @@
 /* charts */
 .charts-container {
   margin-left: -1rem;
-}
-
-/* user */
-.userCard {
-  background-color: var(--color-background);
 }
