@@ -7,6 +7,7 @@ const sendNotification = (title, body, icon) => {
         payload: { title: title, body: body, icon: icon },
       })
     );
+    return "webview";
   } else {
     // for browser
     Notification.requestPermission().then((permission) => {
@@ -14,6 +15,7 @@ const sendNotification = (title, body, icon) => {
         new Notification(title, { body: body, icon: icon });
       }
     });
+    return "browser";
   }
 };
 
