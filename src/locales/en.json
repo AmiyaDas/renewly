@@ -99,6 +99,10 @@
   "subscription_deleted": "Subscription deleted successfully!",
   "error_occurred": "An error occurred. Please try again.",
   "no_notifications": "No notifications",
+  "no_user_info": "No user information available.",
+  "password": "Password",
+  "phone": "Phone Number",
+  "email": "Your Email",
   "notification_settings": "Notification Settings",
   "enable_notifications": "Enable Notifications",
   "disable_notifications": "Disable Notifications",
@@ -107,6 +111,7 @@
   "streaming": "Streaming",
   "music_apps": "Music Apps",
   "game_apps": "Game Apps",
+  "logout": "Logout",
   "languages": {
     "en": "English",
     "es": "Spanish",

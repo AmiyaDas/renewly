@@ -1,0 +1,6 @@
+<svg width="400" height="700" xmlns="http://www.w3.org/2000/svg">
+  <!-- Purple Circle -->
+  <circle cx="350" cy="45" r="195" fill="#6c7bd9" />
+  <!-- Light Blue Circle -->
+  <circle cx="100" cy="25" r="135" fill="#059db8" />
+</svg>

@@ -58,8 +58,8 @@ const SocialSignInPage = ({ guestSignIn }) => {
   if (loading) return <LoadingScreen loading={true} />;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-purple-200 via-pink-200 to-blue-200 px-4">
-      <div className="w-full max-w-md bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-8 flex flex-col items-center mx-auto">
+    <div className="fixed inset-0 flex items-center justify-center login-background">
+      <div className="w-full max-w-md bg-white fixed bottom-0 backdrop-blur-md rounded-t-3xl shadow-lg py-16 px-8 flex flex-col items-center mx-auto">
         {/* Logo */}
         <img src="./logo_xl.ico" alt="Logo" className="w-24 h-24 mb-4" />
 
@@ -69,17 +69,17 @@ const SocialSignInPage = ({ guestSignIn }) => {
 
         <h3 className="text-lg font-semibold mb-4">Sign in with</h3>
 
-        <div className="flex gap-4 mb-6 w-full justify-center">
+        <div className="flex gap-6 mb-6 w-full justify-center">
           <button
             onClick={() => handleSignIn(googleProvider)}
-            className="flex items-center justify-center px-6 py-3 bg-white hover:bg-gray-100 rounded-full gap-2"
+            className="flex items-center justify-center px-6 py-3 bg-white hover:bg-gray-100 rounded-full gap-4"
           >
             <FcGoogle size={24} />
           </button>
 
           <button
             onClick={() => handleSignIn(facebookProvider)}
-            className="flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full gap-2"
+            className="flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full gap-4"
           >
             <FaFacebook size={24} />
           </button>
@@ -87,7 +87,7 @@ const SocialSignInPage = ({ guestSignIn }) => {
           {appleProvider && (
             <button
               onClick={() => handleSignIn(appleProvider)}
-              className="flex items-center justify-center px-6 py-3 bg-black hover:bg-gray-900 text-white rounded-full gap-2"
+              className="flex items-center justify-center px-6 py-3 bg-black hover:bg-gray-900 text-white rounded-full gap-4"
             >
               <FaApple size={24} />
             </button>
@@ -97,7 +97,7 @@ const SocialSignInPage = ({ guestSignIn }) => {
         <div className="flex flex-col gap-3 w-full">
           <button
             onClick={handleGuest}
-            className="px-4 py-3 bg-gray-400 text-white rounded-lg hover:bg-gray-500 flex items-center justify-center gap-2"
+            className="px-4 py-3 bg-gray-400 text-white rounded-lg hover:bg-gray-500 flex mb-4 items-center justify-center gap-6"
           >
             <FaUserAlt size={20} />
             Continue as Guest
@@ -105,7 +105,7 @@ const SocialSignInPage = ({ guestSignIn }) => {
 
           <button
             onClick={() => {}}
-            className="px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 flex items-center justify-center gap-2"
+            className="px-4 py-3 bg-[var(--color-primary)] text-white rounded-lg hover:bg-green-600 flex items-center justify-center gap-6"
           >
             <FaUserPlus size={20} />
             Sign Up

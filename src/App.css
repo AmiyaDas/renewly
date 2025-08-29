@@ -287,3 +287,12 @@
 .charts-container {
   margin-left: -1rem;
 }
+
+/* login */
+.login-background {
+  background: url("/circles_home.svg"),
+    linear-gradient(135deg, var(--color-primary) 0%, #fff 100%);
+  background-repeat: no-repeat;
+  background-size: cover; /* scale svg to cover */
+  background-position: center;
+}
