@@ -4,8 +4,10 @@ import { useContext } from "react";
 import { PreferencesContext } from "../context/PreferencesContext";
 import { useNavigate } from "react-router-dom";
 import { currencySymbols } from "../utils/utils";
+import { useTranslation } from "react-i18next";
 
 export default function SubscriptionModal({ isOpen, onClose, subscription }) {
+  const { t, i18n } = useTranslation();
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
   const { currency } = useContext(PreferencesContext);
@@ -36,21 +38,19 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
   const deletConfirmBox = (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div className="bg-white p-6 rounded-xl text-lg shadow-2xl border border-gray-200 w-[90%] max-w-sm">
-        <p className="mb-4 text-center">
-          Are you sure you want to delete this subscription?
-        </p>
+        <p className="mb-4 text-center">{t("confirm_delete_subscription")}</p>
         <div className="flex justify-between">
           <button
             onClick={onDeleteSubscription}
             className="mt-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
           >
-            Yes, Delete
+            {t("delete")}
           </button>
           <button
             onClick={() => setShowConfirmDelete(false)}
             className="mt-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
           >
-            Cancel
+            {t("cancel")}
           </button>
         </div>
       </div>
@@ -97,19 +97,19 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
         {/* Info section */}
         <div className="space-y-3 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-500">Billing Cycle</span>
+            <span className="text-gray-500">{t("billing_cycle")}</span>
             <span className="font-medium">{subscription.billingCycle}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Next Payment</span>
+            <span className="text-gray-500">{t("next_payment")}</span>
             <span className="font-medium">{subscription.renewalDate}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Subscribed</span>
+            <span className="text-gray-500">{t("subscribed")}</span>
             <span className="font-medium">{subscription.startDate}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Category</span>
+            <span className="text-gray-500">{t("catgory")}</span>
             <span className="font-medium">{subscription.category}</span>
           </div>
         </div>
@@ -122,13 +122,13 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
             onClick={onMarkCancelled}
             className="w-full bg-yellow-500 text-white py-2 rounded-xl font-medium hover:bg-yellow-600 transition"
           >
-            Mark as Cancelled
+            {t("mark_cancel")}
           </button>
           <button
             className="w-full text-red-600 font-medium hover:underline"
             onClick={() => setShowConfirmDelete(true)}
           >
-            Delete Subscription
+            {t("delete_subscription")}
           </button>
         </div>
       </div>

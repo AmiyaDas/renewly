@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { categories, durations } from "../utils/data";
 import Header from "./Header";
+import { useTranslation } from "react-i18next";
+import { PreferencesContext } from "../context/PreferencesContext";
+import { currencySymbols } from "../utils/utils";
 
 const SubscriptionDetails = () => {
+  const { t, i18n } = useTranslation();
+  const { currency } = useContext(PreferencesContext);
   const { name } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -102,7 +107,7 @@ const SubscriptionDetails = () => {
         <div className="bg-white rounded-xl p-4 shadow-sm">
           <div className="flex flex-col py-2 border-b border-gray-200">
             <div className="flex justify-between items-center">
-              <span>Start Date</span>
+              <span>{t("start_date")}</span>
               <input
                 type="date"
                 className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
@@ -117,8 +122,8 @@ const SubscriptionDetails = () => {
           </div>
           <div className="flex flex-col py-2 border-b border-gray-200">
             <div className="flex justify-between items-center">
-              <span>Price</span>
-              <span>₹</span>
+              <span>{t("price")}</span>
+              <span>{currencySymbols[currency]}</span>
               <input
                 type="number"
                 placeholder="0.00"
@@ -147,7 +152,7 @@ const SubscriptionDetails = () => {
           </div>
           <div className="flex flex-col py-2 border-b border-gray-200">
             <div className="flex justify-between items-center">
-              <span>Billing Cycle</span>
+              <span>{t("billing_cycle")}</span>
               <select
                 className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
                 value={billingCycle}
@@ -165,7 +170,7 @@ const SubscriptionDetails = () => {
             )}
           </div>
           <div className="flex justify-between items-center py-2">
-            <span>Free Trial</span>
+            <span>{t("free_trial")}</span>
             <input type="checkbox" className="w-5 h-5 accent-blue-500" />
           </div>
         </div>
@@ -174,7 +179,7 @@ const SubscriptionDetails = () => {
         <div className="bg-white rounded-xl p-4 shadow-sm">
           <div className="flex flex-col py-2 border-b border-gray-200">
             <div className="flex justify-between items-center">
-              <span>Category</span>
+              <span>{t("category")}</span>
               <select
                 className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
                 value={category}
@@ -192,20 +197,20 @@ const SubscriptionDetails = () => {
             )}
           </div>
           <div className="flex justify-between items-center py-2 border-b border-gray-200">
-            <span>Notifications</span>
+            <span>{t("notifications")}</span>
             <select
               className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
               value={notificationDays}
               onChange={(e) => setNotificationDays(e.target.value)}
             >
-              <option value="1 day before">1 day before</option>
-              <option value="2 days before">2 days before</option>
-              <option value="1 week before">1 week before</option>
-              <option value="On the day">On the day</option>
+              <option value="1 day before">{t("days_before1")}</option>
+              <option value="2 days before">{t("days_before2")}</option>
+              <option value="1 week before">{t("week_before")}</option>
+              <option value="On the day">{t("on_due_date")}</option>
             </select>
           </div>
           <div className="flex justify-between items-center py-2">
-            <span>Notification Time</span>
+            <span>{t("notification_time")}</span>
             <input
               type="time"
               className="bg-gray-100 px-3 py-1 rounded-lg text-sm"
@@ -219,18 +224,20 @@ const SubscriptionDetails = () => {
         <div className="bg-orange-50 border border-orange-200 rounded-xl p-3 flex gap-2 items-start">
           <span className="text-blue-500 text-lg">🔔</span>
           <p className="text-sm text-gray-700">
-            You’ll be reminded about this subscription on September 14, 2025,
-            before it ends on September 15, 2025.
+            {t("reminder_msg", {
+              remindDate: "September 14",
+              dueDate: "September 15",
+            })}
           </p>
         </div>
       </div>
       <button
         onClick={handleSave}
-        className={`bg-black text-white px-4 py-1 mb-4 rounded-lg save-button ${
+        className={`bg-[var(--color-primary)] text-white px-4 py-1 mb-4 rounded-lg save-button ${
           isShaking ? "animate-shake" : ""
         }`}
       >
-        Save
+        {t("save_subscriptions")}
       </button>
       <style>
         {`
@@ -262,19 +269,19 @@ const SubscriptionDetails = () => {
       {showUpdateModal && (
         <div className="fixed inset-0 bg-opacity-10 backdrop-blur-xs flex items-center justify-center z-50 transition-opacity duration-300 ease-out">
           <div className="bg-white rounded-lg p-6 shadow-md max-w-md w-full transform transition-all duration-300 scale-95 opacity-70 animate-modal-enter">
-            <h3 className="text-lg font-semibold mb-4">Subscription Exists</h3>
-            <p className="mb-4">
-              This subscription already exists. Do you want to update it?
-            </p>
+            <h3 className="text-lg font-semibold mb-4">
+              {t("subscription_exists")}
+            </h3>
+            <p className="mb-4">{t("subscription_exists_msg")}</p>
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => {
                   saveSubscription();
                   setShowUpdateModal(false);
                 }}
-                className="bg-black text-white px-4 py-1 rounded-lg"
+                className="bg-[var(--color-primary)] text-white px-4 py-1 rounded-lg"
               >
-                Yes, Update
+                {t("subscription_update_yes")}
               </button>
               <button
                 onClick={() => {
@@ -283,7 +290,7 @@ const SubscriptionDetails = () => {
                 }}
                 className="bg-gray-200 text-black px-4 py-1 rounded-lg"
               >
-                No, Go Home
+                {t("subscription_update_no")}
               </button>
             </div>
           </div>
