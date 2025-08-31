@@ -1,7 +1,7 @@
 const streamingApps = [
   { name: "Netflix", icon: "/renewly/icons/netflix.png" },
   { name: "YouTube", icon: "/renewly/icons/youtube.png" },
-  { name: "Amazon Prime", icon: "/renewly/icons/prime.webp" },
+  { name: "Amazon Prime", icon: "/renewly/icons/prime.png" },
   { name: "JioHotstar", icon: "/renewly/icons/jiohotstar.png" },
   { name: "Zee5", icon: "/renewly/icons/zee5_icon.jpeg" },
   { name: "Sony Liv", icon: "/renewly/icons/sony_liv.png" },
@@ -30,15 +30,12 @@ const gameApps = [
 ];
 
 const otherApps = [
-  { name: "Adobe Creative Cloud", icon: "/renewly/icons/adobe_cc.png" },
+  { name: "Adobe Creative Cloud", icon: "/renewly/icons/adobe_cloud.png" },
   { name: "Microsoft 365", icon: "/renewly/icons/microsoft_365.png" },
-  { name: "Canva Pro", icon: "/renewly/icons/canva_pro.png" },
+  { name: "Canva Pro", icon: "/renewly/icons/canva.png" },
   { name: "Dropbox", icon: "/renewly/icons/dropbox.png" },
-  { name: "Evernote Premium", icon: "/renewly/icons/evernote_premium.png" },
-  { name: "Slack", icon: "/renewly/icons/slack.png" },
-  { name: "Zoom Pro", icon: "/renewly/icons/zoom_pro.png" },
   { name: "Google One", icon: "/renewly/icons/google_one.png" },
-  { name: "NordVPN", icon: "/renewly/icons/nordvpn.png" },
+  { name: "NordVPN", icon: "/renewly/icons/nord_vpn.png" },
 ];
 
 const currentSubscriptions = [

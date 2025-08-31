@@ -8,6 +8,10 @@ const FlipTile = ({ name, icon, renewalDate, price, status }) => {
   const { currency } = useContext(PreferencesContext);
   const [flipped, setFlipped] = useState(false);
 
+  const backgroundImage = {
+    "background-image": "url('" + icon + "')",
+  };
+
   return (
     <div
       onClick={() => setFlipped(!flipped)}
@@ -22,7 +26,8 @@ const FlipTile = ({ name, icon, renewalDate, price, status }) => {
       >
         {/* Front */}
         <div
-          className={`absolute w-full h-full [backface-visibility:hidden] bg-[url('${icon}')] bg-cover bg-center rounded-lg`}
+          style={backgroundImage}
+          className={`absolute w-full h-full [backface-visibility:hidden] bg-cover bg-center rounded-lg`}
         ></div>
 
         {/* Back */}
