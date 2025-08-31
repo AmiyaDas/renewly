@@ -73,7 +73,11 @@ const totalYearlyFormatted = (currency, subscriptions) => {
   ).toFixed(2)}`;
 };
 
-const generateRenewalEvents = (subscription, categoryColorMap, isYearView = false) => {
+const generateRenewalEvents = (
+  subscription,
+  categoryColorMap,
+  isYearView = false
+) => {
   const events = [];
   const nextYear = new Date();
   nextYear.setFullYear(nextYear.getFullYear() + 1);
@@ -89,7 +93,7 @@ const generateRenewalEvents = (subscription, categoryColorMap, isYearView = fals
     // Unique key: per month if year view, else per date
     const eventKey = isYearView
       ? `${subscription.id}-${start.getFullYear()}-${start.getMonth()}`
-      : `${subscription.id}-${start.toISOString().slice(0,10)}`;
+      : `${subscription.id}-${start.toISOString().slice(0, 10)}`;
 
     if (!seen.has(eventKey)) {
       events.push({
@@ -117,10 +121,26 @@ const generateRenewalEvents = (subscription, categoryColorMap, isYearView = fals
   return events;
 };
 
+const renewInfo = (renewDate) => {
+  if (!renewDate) return t("no_renewal_date");
+  const renew = new Date(renewDate);
+  if (isNaN(renew)) return t("invalid_date");
+  const today = new Date();
+  const diffTime = renew - today;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  const dateStr = renew.toLocaleDateString(undefined, options);
+  return {
+    date: dateStr,
+    daysLeft: diffDays >= 0 ? diffDays + " days left" : "Expired",
+  };
+};
+
 export {
   currencySymbols,
   totalYearly,
   totalYearlyFormatted,
   formatBillingCycle,
-  generateRenewalEvents
+  generateRenewalEvents,
+  renewInfo,
 };

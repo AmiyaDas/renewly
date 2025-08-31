@@ -13,7 +13,9 @@ import {
   currencySymbols,
   totalYearlyFormatted,
   formatBillingCycle,
+  renewInfo,
 } from "../utils/utils";
+import FlipTile from "./FlipTile";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -75,7 +77,7 @@ const Home = () => {
         try {
           const sub = JSON.parse(localStorage.getItem(key));
           // if (!sub.status || sub.status !== "cancelled") {
-            subs.push(sub);
+          subs.push(sub);
           // }
         } catch (e) {
           // ignore parsing errors
@@ -107,21 +109,6 @@ const Home = () => {
       </div>
     </div>
   );
-
-  const renderRenewInfo = (renewDate) => {
-    if (!renewDate) return t("no_renewal_date");
-    const renew = new Date(renewDate);
-    if (isNaN(renew)) return t("invalid_date");
-    const today = new Date();
-    const diffTime = renew - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    const dateStr = renew.toLocaleDateString(undefined, options);
-    return t("renews_on", {
-      date: dateStr,
-      daysLeft: diffDays >= 0 ? diffDays + " days left" : "Expired",
-    });
-  };
 
   const currentSubscriptionsList = (
     <div className="subscriptions">
@@ -180,35 +167,17 @@ const Home = () => {
           <div className="overflow-x-auto whitespace-nowrap px-4 py-2">
             <div className="flex space-x-4">
               {subscriptions.map((sub) => (
-                <div
+                <FlipTile
                   key={sub.id}
-                  onClick={() => openModal(sub)}
-                  className={`inline-block min-w-[150px] home-tile rounded-lg p-4 shadow cursor-pointer bg-white dark:bg-gray-900 ${
-                    sub.status === "cancelled" ? "opacity-50 grayscale" : ""
-                  }`}
-                >
-                  <div className="flex items-center space-x-2 mb-2">
-                    <img
-                      src={sub.icon}
-                      alt={sub.name}
-                      className="w-8 h-8 rounded"
-                    />
-                    <span className="font-semibold overflow-hidden text-gray-900 dark:text-gray-100">
-                      {sub.name}
-                    </span>
-                  </div>
-                  <p className="text-xs truncate max-w-[120px] text-gray-500 dark:text-gray-400">
-                    {renderRenewInfo(sub.renewalDate)}
-                  </p>
-                  <p className="text-sm font-bold mt-1 text-gray-900 dark:text-gray-100">
-                    {currencySymbols[currency] || ""}
-                    {sub.price}
-                  </p>
-                </div>
+                  name={sub.name}
+                  price={sub.price}
+                  renewalDate={sub.renewalDate}
+                  icon={sub.icon}
+                  status={sub.status}
+                />
               ))}
             </div>
           </div>
-
           <div className="px-4 py-4">
             <h3 className="text-lg font-semibold mb-3">
               {t("most_expensive")}
@@ -241,9 +210,9 @@ const Home = () => {
                       className="w-10 h-10 rounded mr-3"
                     />
                     <div className="flex-1">
-                      <p className="font-medium text-gray-900 dark:text-gray-100">{sub.name}</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {renderRenewInfo(sub.renewalDate)}
+                      <p className="font-medium">{sub.name}</p>
+                      <p className="text-sm text-gray-500">
+                        {t("renews_on", renewInfo(sub.renewalDate))}
                       </p>
                     </div>
                     <span className="font-bold text-gray-900 dark:text-gray-100">
