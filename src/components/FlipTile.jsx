@@ -21,9 +21,9 @@ const FlipTile = ({ name, icon, renewalDate, price, status }) => {
         }`}
       >
         {/* Front */}
-        <div className="absolute [backface-visibility:hidden] bg-[url('/your-image.jpg')] bg-cover bg-center">
-          {/* <img src={icon} alt={name} className="w-full h-full object-fill" /> */}
-        </div>
+        <div
+          className={`absolute w-full h-full [backface-visibility:hidden] bg-[url('${icon}')] bg-cover bg-center rounded-lg`}
+        ></div>
 
         {/* Back */}
         <div className="[transform:rotateY(180deg)] [backface-visibility:hidden] p-4">
