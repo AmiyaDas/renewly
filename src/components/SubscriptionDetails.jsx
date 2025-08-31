@@ -50,6 +50,8 @@ const SubscriptionDetails = () => {
       notificationTime,
       price,
       renewalDate,
+      status: "active",        // New field
+      cancelledDate: null  
     };
     localStorage.setItem(
       `subscription_${name}`,

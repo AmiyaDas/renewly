@@ -59,8 +59,10 @@ const Settings = () => {
 
       {/* Preferences */}
       <div className="aspect-3/2 p-4">
-        <div className="bg-white rounded-xl p-4 shadow-sm">
-          <h3 className="text-lg font-semibold mb-2">{t("preferences")}</h3>
+        <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 shadow-sm">
+          <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
+            {t("preferences")}
+          </h3>
 
           {/* Language */}
           <div className="mb-4">
@@ -68,7 +70,7 @@ const Settings = () => {
             <select
               value={language}
               onChange={(e) => handleLanguageChange(e.target.value)}
-              className="w-full p-2 rounded-lg border border-gray-300 text-base"
+              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700 text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             >
               {languages.map((lang) => (
                 <option key={lang.code} value={lang.code}>
@@ -84,7 +86,7 @@ const Settings = () => {
             <select
               value={currency}
               onChange={(e) => updatePreference("currency", e.target.value)}
-              className="w-full p-2 rounded-lg border border-gray-300 text-base"
+              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700 text-base"
             >
               {currencies.map((c) => (
                 <option key={c.code} value={c.code}>
@@ -112,7 +114,7 @@ const Settings = () => {
             <select
               value={localStorage.getItem("theme") || "light"}
               onChange={(e) => updatePreference("theme", e.target.value)}
-              className="w-full p-2 rounded-lg border border-gray-300 text-base"
+              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700 text-base"
             >
               <option value="light">{t("light")}</option>
               <option value="dark">{t("dark")}</option>
@@ -120,13 +122,13 @@ const Settings = () => {
           </div>
           <button
             onClick={handleSavePreferences}
-            className="w-full bg-[var(--color-primary)] text-white py-2 rounded-lg mt-2 font-semibold hover:bg-blue-600 transition"
+            className="w-full bg-[var(--color-primary)] hover:bg-blue-600 dark:bg-blue-700 text-white py-2 rounded-lg mt-2 font-semibold transition"
           >
             {t("save_preferences")}
           </button>
 
           {saved && (
-            <div className="text-green-600 text-center mt-2 font-medium">
+            <div className="text-green-600 dark:text-green-400 text-center mt-2 font-medium">
               {t("preferences_saved")}
             </div>
           )}
@@ -135,26 +137,32 @@ const Settings = () => {
 
       {/* Support Us */}
       <div className="aspect-3/2 p-4 shadow mt-2">
-        <div className="bg-white rounded-xl p-4 shadow-sm">
-          <h3 className="text-lg font-semibold mb-2">{t("support_us")}</h3>
+        <div className="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm">
+          <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
+            {t("support_us")}
+          </h3>
           <ul className="list-none p-0">
             {supportLinks(t).map((item) => (
               <li
                 key={item.name}
-                className="flex items-center px-4 py-3 border-b border-gray-200 cursor-pointer hover:bg-gray-100 transition"
+                className="flex items-center px-4 py-3 border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                 onClick={() => handleSupportClick(item.action)}
               >
                 <span className="mr-2">{item.icon}</span>
-                <span className="flex-1 text-base">{item.name}</span>
-                <span className="text-2xl text-gray-400">&rsaquo;</span>
+                <span className="flex-1 text-base text-gray-900 dark:text-gray-100">
+                  {item.name}
+                </span>
+                <span className="text-2xl text-gray-400 dark:text-gray-500">
+                  &rsaquo;
+                </span>
               </li>
             ))}
           </ul>
         </div>
       </div>
 
-      <footer className="w-full bg-white py-4 mt-auto shadow-inner">
-        <div className="text-center text-gray-500 text-sm">
+      <footer className="w-full bg-white dark:bg-gray-900 py-4 mt-auto shadow-inner">
+        <div className="text-center text-gray-500 dark:text-gray-400 text-sm">
           &copy; {new Date().getFullYear()} Renewly &middot; All rights reserved
         </div>
         <div className="text-center mt-1">
@@ -162,7 +170,7 @@ const Settings = () => {
             href="https://renewly.com/privacy"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:underline mx-2"
+            className="text-blue-500 dark:text-blue-400 hover:underline mx-2"
           >
             {t("privacy_policy")}
           </a>
@@ -170,7 +178,7 @@ const Settings = () => {
             href="https://renewly.com/terms"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:underline mx-2"
+            className="text-blue-500 dark:text-blue-400 hover:underline mx-2"
           >
             {t("terms_of_service")}
           </a>

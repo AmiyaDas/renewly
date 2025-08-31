@@ -27,7 +27,7 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
   };
 
   const onMarkCancelled = () => {
-    const updatedSub = { ...subscription, status: "cancelled" };
+    const updatedSub = { ...subscription, status: "cancelled", cancelledDate: new Date().toISOString() };
     localStorage.setItem(
       `subscription_${subscription.name}`,
       JSON.stringify(updatedSub)
@@ -35,10 +35,18 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
     onClose(true); // trigger refresh in parent
   };
 
+  const onMarkActiveubscription = () => {
+    const updatedSub = { ...subscription, status: "active", cancelledDate: null };
+    localStorage.setItem(
+      `subscription_${subscription.name}`,
+      JSON.stringify(updatedSub)
+    );
+    onClose(true); // trigger refresh in parent
+  };
   const deletConfirmBox = (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="bg-white p-6 rounded-xl text-lg shadow-2xl border border-gray-200 w-[90%] max-w-sm">
-        <p className="mb-4 text-center">{t("confirm_delete_subscription")}</p>
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-xl text-lg shadow-2xl border border-gray-200 dark:border-gray-800 w-[90%] max-w-sm">
+        <p className="mb-4 text-center text-gray-900 dark:text-gray-100">{t("confirm_delete_subscription")}</p>
         <div className="flex justify-between">
           <button
             onClick={onDeleteSubscription}
@@ -48,7 +56,7 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
           </button>
           <button
             onClick={() => setShowConfirmDelete(false)}
-            className="mt-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
+            className="mt-2 bg-black dark:bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800"
           >
             {t("cancel")}
           </button>
@@ -60,20 +68,20 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div
-        className={`bg-white w-[90%] max-w-md rounded-2xl shadow-xl relative p-6 transition-all duration-300 ${
+        className={`bg-white dark:bg-gray-900 w-[90%] max-w-md rounded-2xl shadow-xl relative p-6 transition-all duration-300 ${
           isRemoving ? "fade-out-modal" : "animate-modal-enter"
         }`}
       >
         <button
           onClick={onEditSubscription}
           aria-label="Edit Subscription"
-          className="absolute top-4 right-12 text-gray-500 hover:text-gray-800"
+          className="absolute top-4 right-12 text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
         >
           <IoCreate size={24} />
         </button>
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+          className="absolute top-4 right-4 text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
         >
           <IoClose size={24} />
         </button>
@@ -86,8 +94,8 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
             className="w-12 h-12 rounded-full"
           />
           <div>
-            <h2 className="text-xl font-semibold">{subscription.name}</h2>
-            <p className="text-green-600 text-lg">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{subscription.name}</h2>
+            <p className="text-green-600 dark:text-green-400 text-lg">
               {currencySymbols[currency] || ""}
               {subscription.price}
             </p>
@@ -97,20 +105,20 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
         {/* Info section */}
         <div className="space-y-3 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-500">{t("billing_cycle")}</span>
-            <span className="font-medium">{subscription.billingCycle}</span>
+            <span className="text-gray-500 dark:text-gray-400">{t("billing_cycle")}</span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">{subscription.billingCycle}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">{t("next_payment")}</span>
-            <span className="font-medium">{subscription.renewalDate}</span>
+            <span className="text-gray-500 dark:text-gray-400">{t("next_payment")}</span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">{subscription.renewalDate}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">{t("subscribed")}</span>
-            <span className="font-medium">{subscription.startDate}</span>
+            <span className="text-gray-500 dark:text-gray-400">{t("subscribed")}</span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">{subscription.startDate}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">{t("catgory")}</span>
-            <span className="font-medium">{subscription.category}</span>
+            <span className="text-gray-500 dark:text-gray-400">{t("catgory")}</span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">{subscription.category}</span>
           </div>
         </div>
         {/* Confirmation box */}
@@ -118,14 +126,24 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
 
         {/* Action buttons */}
         <div className="mt-6 flex flex-col gap-3">
+          {subscription.status === "active" ? (
           <button
             onClick={onMarkCancelled}
-            className="w-full bg-yellow-500 text-white py-2 rounded-xl font-medium hover:bg-yellow-600 transition"
+            className="w-full bg-yellow-500 dark:bg-yellow-600 text-white py-2 rounded-xl font-medium hover:bg-yellow-600 dark:hover:bg-yellow-700 transition"
+            disabled={subscription.status === "cancelled"}
           >
             {t("mark_cancel")}
           </button>
+          ) : (
           <button
-            className="w-full text-red-600 font-medium hover:underline"
+            className="w-full text-white bg-green-400 dark:bg-green-700 font-medium hover:underline py-2 rounded-xl font-medium hover:bg-green-600 dark:hover:bg-green-800 transition"
+            onClick={onMarkActiveubscription}
+          >
+            {t("mark_active")}
+          </button>
+          )}
+          <button
+            className="w-full text-red-600 dark:text-red-400 font-medium hover:underline"
             onClick={() => setShowConfirmDelete(true)}
           >
             {t("delete_subscription")}

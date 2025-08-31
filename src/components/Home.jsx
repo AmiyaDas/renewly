@@ -74,9 +74,9 @@ const Home = () => {
       if (key.startsWith("subscription_")) {
         try {
           const sub = JSON.parse(localStorage.getItem(key));
-          if (!sub.status || sub.status !== "cancelled") {
+          // if (!sub.status || sub.status !== "cancelled") {
             subs.push(sub);
-          }
+          // }
         } catch (e) {
           // ignore parsing errors
         }
@@ -183,7 +183,7 @@ const Home = () => {
                 <div
                   key={sub.id}
                   onClick={() => openModal(sub)}
-                  className={`inline-block min-w-[150px] home-tile rounded-lg p-4 shadow cursor-pointer ${
+                  className={`inline-block min-w-[150px] home-tile rounded-lg p-4 shadow cursor-pointer bg-white dark:bg-gray-900 ${
                     sub.status === "cancelled" ? "opacity-50 grayscale" : ""
                   }`}
                 >
@@ -193,14 +193,14 @@ const Home = () => {
                       alt={sub.name}
                       className="w-8 h-8 rounded"
                     />
-                    <span className="font-semibold overflow-hidden">
+                    <span className="font-semibold overflow-hidden text-gray-900 dark:text-gray-100">
                       {sub.name}
                     </span>
                   </div>
-                  <p className="text-xs truncate max-w-[120px]">
+                  <p className="text-xs truncate max-w-[120px] text-gray-500 dark:text-gray-400">
                     {renderRenewInfo(sub.renewalDate)}
                   </p>
-                  <p className="text-sm font-bold mt-1">
+                  <p className="text-sm font-bold mt-1 text-gray-900 dark:text-gray-100">
                     {currencySymbols[currency] || ""}
                     {sub.price}
                   </p>
@@ -233,7 +233,7 @@ const Home = () => {
                 .map((sub) => (
                   <div
                     key={sub.id}
-                    className="flex items-center bg-white rounded-lg shadow p-3"
+                    className="flex items-center bg-white dark:bg-gray-900 rounded-lg shadow p-3"
                   >
                     <img
                       src={sub.icon}
@@ -241,15 +241,15 @@ const Home = () => {
                       className="w-10 h-10 rounded mr-3"
                     />
                     <div className="flex-1">
-                      <p className="font-medium">{sub.name}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="font-medium text-gray-900 dark:text-gray-100">{sub.name}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
                         {renderRenewInfo(sub.renewalDate)}
                       </p>
                     </div>
-                    <span className="font-bold">
+                    <span className="font-bold text-gray-900 dark:text-gray-100">
                       {currencySymbols[currency] || ""}
                       {sub.price}
-                      <span className="ml-1 text-xs text-gray-400">
+                      <span className="ml-1 text-xs text-gray-400 dark:text-gray-500">
                         /{sub.billingCycle}
                       </span>
                     </span>

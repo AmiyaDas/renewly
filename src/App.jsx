@@ -23,10 +23,20 @@ function App() {
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
     document.body.classList.toggle("dark", savedTheme === "dark");
+      // Check for saved guest session
+    const guestUser = JSON.parse(localStorage.getItem("guestUser"));
+    if (guestUser) {
+      setUser(guestUser);
+      setCheckingAuth(false);
+      return;
+    }
+    
+    // Firebase Auth Check
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) setUser(firebaseUser);
       setCheckingAuth(false);
     });
+    
     return () => unsubscribe();
   }, [setUser]);
 

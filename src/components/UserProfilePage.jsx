@@ -16,6 +16,7 @@ const UserProfilePage = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      localStorage.removeItem("guestUser");
       console.log("Signed out successfully");
       navigate("/");
       window.location.reload();

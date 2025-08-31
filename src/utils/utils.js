@@ -17,22 +17,52 @@ const formatBillingCycle = (cycle) => {
 // Lookup currency symbol
 const currencySymbols = { USD: "$", EUR: "€", INR: "₹", GBP: "£" };
 const totalYearly = (subscriptions) => {
+  const currentYear = new Date().getFullYear();
+
   return subscriptions.reduce((total, sub) => {
     let yearlyPrice = 0;
     const cycle = (sub.billingCycle || "").toLowerCase();
     const priceNum =
-      parseFloat(sub.price.toString().replace(/[^0-9.]/g, "")) || 0;
+      parseFloat(sub.price?.toString().replace(/[^0-9.]/g, "")) || 0;
+
+    // Determine if subscription is cancelled and cut forecast accordingly
+    const startDate = new Date(sub.startDate);
+    const cancelledDate = sub.status === "cancelled" && sub.cancelledDate
+      ? new Date(sub.cancelledDate)
+      : null;
+
+    // Ensure calculation is only for months/weeks within current year
+    let activeStart = startDate.getFullYear() < currentYear
+      ? new Date(currentYear, 0, 1)
+      : startDate;
+
+    let activeEnd = cancelledDate
+      ? (cancelledDate.getFullYear() > currentYear
+          ? new Date(currentYear, 11, 31)
+          : cancelledDate)
+      : new Date(currentYear, 11, 31);
+
+    if (activeEnd < activeStart) return total; // No active time in current year
+
+    let periods = 0;
 
     if (cycle.includes("month")) {
-      yearlyPrice = priceNum * 12;
-    } else if (cycle.includes("year")) {
-      yearlyPrice = priceNum;
+      const months =
+        (activeEnd.getFullYear() - activeStart.getFullYear()) * 12 +
+        (activeEnd.getMonth() - activeStart.getMonth()) + 1;
+      periods = Math.max(0, months);
     } else if (cycle.includes("week")) {
-      yearlyPrice = priceNum * 52;
+      const diffDays = Math.ceil(
+        (activeEnd - activeStart) / (1000 * 60 * 60 * 24)
+      );
+      periods = Math.max(0, Math.ceil(diffDays / 7));
+    } else if (cycle.includes("year")) {
+      periods = activeStart.getFullYear() === currentYear ? 1 : 0;
     } else {
-      yearlyPrice = priceNum;
+      periods = 1;
     }
 
+    yearlyPrice = priceNum * periods;
     return total + yearlyPrice;
   }, 0);
 };

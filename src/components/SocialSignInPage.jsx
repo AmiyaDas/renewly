@@ -51,7 +51,9 @@ const SocialSignInPage = ({ guestSignIn }) => {
   };
 
   const handleGuest = () => {
-    setUser({ guest: true });
+    const guestSession = { guest: true };
+    setUser(guestSession);
+    localStorage.setItem("guestUser", JSON.stringify(guestSession));
     guestSignIn && guestSignIn();
   };
 
