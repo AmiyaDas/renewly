@@ -92,7 +92,7 @@ const SubscriptionDetails = () => {
       <Header showNavBack={true} title="Add Subscription" />
 
       {/* App Info */}
-      <div className="flex items-center gap-4 p-4">
+      <div className="app-info flex items-center gap-4 p-4">
         {app?.icon && (
           <img
             src={app.icon}
@@ -106,7 +106,7 @@ const SubscriptionDetails = () => {
       {/* Form Sections */}
       <div className="flex flex-col gap-4 px-4">
         {/* First Box */}
-        <div className="bg-white rounded-xl p-4 shadow-sm">
+        <div className="subs bg-white rounded-xl p-4 shadow-sm">
           <div className="flex flex-col py-2 border-b border-gray-200">
             <div className="flex justify-between items-center">
               <span>{t("start_date")}</span>
@@ -178,7 +178,7 @@ const SubscriptionDetails = () => {
         </div>
 
         {/* Second Box */}
-        <div className="bg-white rounded-xl p-4 shadow-sm">
+        <div className="subs bg-white rounded-xl p-4 shadow-sm">
           <div className="flex flex-col py-2 border-b border-gray-200">
             <div className="flex justify-between items-center">
               <span>{t("category")}</span>

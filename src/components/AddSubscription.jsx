@@ -48,7 +48,7 @@ const AddSubscription = () => {
   };
 
   const renderList = (title, apps) => (
-    <div className="mt-6">
+    <div className="subs mt-6">
       <h3 className="text-lg font-semibold mb-2 px-4">{title}</h3>
       <ul className="list-none p-0">
         {apps.map((app) => (

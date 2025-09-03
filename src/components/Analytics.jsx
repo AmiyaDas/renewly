@@ -91,23 +91,24 @@ const Analytics = () => {
         t("weekly_sun", { defaultValue: "Sun" }),
       ];
       labels.forEach((label) => (labelMap[label] = 0));
+      const curr = new Date(now);
+      const diff = curr.getDate() - curr.getDay() + 1;
+      const weekStart = new Date(curr.setDate(diff));
+      weekStart.setHours(0, 0, 0, 0);
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 7);
+      if (period.startsWith("Last")) {
+        weekStart.setDate(weekStart.getDate() - 7);
+        weekEnd.setDate(weekEnd.getDate() - 7);
+      }
       subscriptions.forEach((sub) => {
         if (!sub.startDate || !sub.price) return;
-        const d = new Date(sub.startDate);
-        const curr = new Date(now);
-        const diff = curr.getDate() - curr.getDay() + 1;
-        const weekStart = new Date(curr.setDate(diff));
-        weekStart.setHours(0, 0, 0, 0);
-        const weekEnd = new Date(weekStart);
-        weekEnd.setDate(weekEnd.getDate() + 7);
-        if (period.startsWith("Last")) {
-          weekStart.setDate(weekStart.getDate() - 7);
-          weekEnd.setDate(weekEnd.getDate() - 7);
-        }
-        if (d >= weekStart && d < weekEnd) {
-          const label = labels[(d.getDay() + 6) % 7];
-          if (label) labelMap[label] += parsePrice(sub.price);
-        }
+        // Use getOccurrences to get all payments in this week
+        const occurrences = getOccurrences(sub, weekStart, weekEnd);
+        occurrences.forEach((occ) => {
+          const label = labels[(occ.date.getDay() + 6) % 7];
+          if (label) labelMap[label] += occ.amount;
+        });
       });
     } else if (basePeriod === "Monthly") {
       labels = [
@@ -117,21 +118,20 @@ const Analytics = () => {
         t("monthly_week4", { defaultValue: "Week 4" }),
       ];
       labels.forEach((label) => (labelMap[label] = 0));
+      const curr = new Date(now);
+      if (period.startsWith("Last")) {
+        curr.setMonth(curr.getMonth() - 1);
+      }
+      const monthStart = new Date(curr.getFullYear(), curr.getMonth(), 1);
+      const monthEnd = new Date(curr.getFullYear(), curr.getMonth() + 1, 1);
       subscriptions.forEach((sub) => {
         if (!sub.startDate || !sub.price) return;
-        const d = new Date(sub.startDate);
-        const curr = new Date(now);
-        if (period.startsWith("Last")) {
-          curr.setMonth(curr.getMonth() - 1);
-        }
-        if (
-          d.getFullYear() === curr.getFullYear() &&
-          d.getMonth() === curr.getMonth()
-        ) {
-          const week = Math.floor((d.getDate() - 1) / 7);
+        const occurrences = getOccurrences(sub, monthStart, monthEnd);
+        occurrences.forEach((occ) => {
+          const week = Math.floor((occ.date.getDate() - 1) / 7);
           const label = labels[week];
-          if (label) labelMap[label] += parsePrice(sub.price);
-        }
+          if (label) labelMap[label] += occ.amount;
+        });
       });
     } else if (basePeriod === "Yearly") {
       labels = [
@@ -149,16 +149,27 @@ const Analytics = () => {
         t("yearly_dec", { defaultValue: "Dec" }),
       ];
       labels.forEach((label) => (labelMap[label] = 0));
+      const curr = new Date(now);
+      if (period.startsWith("Last")) {
+        curr.setFullYear(curr.getFullYear() - 1);
+      }
+      const yearStart = new Date(curr.getFullYear(), 0, 1);
+      const yearEnd = new Date(curr.getFullYear() + 1, 0, 1);
       subscriptions.forEach((sub) => {
         if (!sub.startDate || !sub.price) return;
-        const d = new Date(sub.startDate);
-        const curr = new Date(now);
-        if (period.startsWith("Last")) {
-          curr.setFullYear(curr.getFullYear() - 1);
-        }
-        if (d.getFullYear() === curr.getFullYear()) {
-          const label = labels[d.getMonth()];
-          if (label) labelMap[label] += parsePrice(sub.price);
+        const occurrences = getOccurrences(sub, yearStart, yearEnd);
+        // For yearly subscriptions, only add price to the month of the occurrence
+        if (sub.billingCycle === "Yearly") {
+          occurrences.forEach((occ) => {
+            const label = labels[occ.date.getMonth()];
+            if (label) labelMap[label] += occ.amount;
+          });
+        } else {
+          // For monthly/weekly, distribute as before
+          occurrences.forEach((occ) => {
+            const label = labels[occ.date.getMonth()];
+            if (label) labelMap[label] += occ.amount;
+          });
         }
       });
     } else if (period === "AllYear") {
@@ -167,10 +178,10 @@ const Analytics = () => {
       let total = 0;
       subscriptions.forEach((sub) => {
         if (!sub.startDate || !sub.price) return;
-        const d = new Date(sub.startDate);
-        if (d >= yearStart) {
-          total += parsePrice(sub.price);
-        }
+        const occurrences = getOccurrences(sub, yearStart, now);
+        occurrences.forEach((occ) => {
+          total += occ.amount;
+        });
       });
       labels = [t("all_time", { defaultValue: "All Time" })];
       labelMap[labels[0]] = total;
@@ -205,7 +216,7 @@ const Analytics = () => {
 
       <div className="flex-1">
         {/* Tabs */}
-        <div className="flex bg-white rounded-xl mx-4 mt-3 overflow-hidden sticky top-14 z-20">
+        <div className="analytics-card flex bg-white rounded-xl mx-4 mt-3 overflow-hidden sticky top-14 z-20">
           {[
             t("analytics_period_week"),
             t("analytics_period_month"),
@@ -239,7 +250,7 @@ const Analytics = () => {
         </div>
 
         {/* Average */}
-        <div className="flex justify-between items-center px-4 mx-4 mt-4 bg-white rounded-lg shadow-sm py-2">
+        <div className="analytics-card flex justify-between items-center px-4 mx-4 mt-4 bg-white rounded-lg shadow-sm py-2">
           <p>
             {t("average")}:{" "}
             <span className="font-bold">

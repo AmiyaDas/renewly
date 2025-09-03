@@ -202,20 +202,20 @@ const Home = () => {
                 .map((sub) => (
                   <div
                     key={sub.id}
-                    className="flex items-center bg-white dark:bg-gray-900 rounded-lg shadow p-3"
+                    className="expensive-sub flex items-center bg-white dark:bg-gray-900 rounded-lg shadow p-3"
                   >
                     <img
                       src={sub.icon}
                       alt={sub.name}
                       className="w-10 h-10 rounded mr-3"
                     />
-                    <div className="flex-1">
-                      <p className="font-medium">{sub.name}</p>
-                      <p className="text-sm text-gray-500">
+                    <div className="expensive-sub-header flex-1">
+                      <p className="expensive-sub-header font-medium">{sub.name}</p>
+                      <p className="expensive-sub-header text-sm text-gray-500">
                         {t("renews_on", renewInfo(sub.renewalDate))}
                       </p>
                     </div>
-                    <span className="font-bold text-gray-900 dark:text-gray-100">
+                    <span className="expensive-sub-header font-bold text-gray-900 dark:text-gray-100">
                       {currencySymbols[currency] || ""}
                       {sub.price}
                       <span className="ml-1 text-xs text-gray-400 dark:text-gray-500">

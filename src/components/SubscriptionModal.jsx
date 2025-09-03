@@ -68,7 +68,7 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div
-        className={`bg-white dark:bg-gray-900 w-[90%] max-w-md rounded-2xl shadow-xl relative p-6 transition-all duration-300 ${
+        className={`subs bg-white dark:bg-gray-900 w-[90%] max-w-md rounded-2xl shadow-xl relative p-6 transition-all duration-300 ${
           isRemoving ? "fade-out-modal" : "animate-modal-enter"
         }`}
       >
@@ -87,7 +87,7 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
         </button>
 
         {/* Header */}
-        <div className="flex items-center space-x-3 mb-6">
+        <div className="app-info flex items-center space-x-3 mb-6">
           <img
             src={subscription.icon}
             alt={subscription.name}

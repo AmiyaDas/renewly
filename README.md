@@ -39,7 +39,7 @@
 - few language keywords are missing in charts and calendar ✅
 - text color for dark mode ✅
 - future entries autpmatically ✅
-- cancellation logic
+- cancellation logic ✅
 - spacing the entries in calendar ✅
 - reminders using push notification (need to change in native-app code)
 - free trial (count money only after trial ends)

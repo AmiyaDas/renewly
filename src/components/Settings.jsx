@@ -59,7 +59,7 @@ const Settings = () => {
 
       {/* Preferences */}
       <div className="aspect-3/2 p-4">
-        <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 shadow-sm">
+        <div className="settings-card bg-gray-50 dark:bg-gray-900 rounded-xl p-4 shadow-sm">
           <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
             {t("preferences")}
           </h3>
@@ -137,7 +137,7 @@ const Settings = () => {
 
       {/* Support Us */}
       <div className="aspect-3/2 p-4 shadow mt-2">
-        <div className="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm">
+        <div className="settings-card bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm">
           <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
             {t("support_us")}
           </h3>
@@ -149,10 +149,10 @@ const Settings = () => {
                 onClick={() => handleSupportClick(item.action)}
               >
                 <span className="mr-2">{item.icon}</span>
-                <span className="flex-1 text-base text-gray-900 dark:text-gray-100">
+                <span className="flex-1 text-base dark:text-gray-100">
                   {item.name}
                 </span>
-                <span className="text-2xl text-gray-400 dark:text-gray-500">
+                <span className="text-2xl dark:text-gray-500">
                   &rsaquo;
                 </span>
               </li>

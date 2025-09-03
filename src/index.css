@@ -54,13 +54,13 @@ h1 {
 body.dark {
   --color-primary: #2c5258;           /* Accent / Buttons / Links */
   --color-primary-hover: #7bacd2;     /* Hover effect on accent */
-  --color-background: #0f263d;        /* Darker background for immersive feel */
+  --color-background: #224950;        /* Darker background for immersive feel */
   --color-surface: #2f414edc;           /* Card / panels */
-  --color-on-primary: #f3ffff;         /* Text on buttons / links */
-  --color-on-surface: #ffffff;         /* Normal text */
+  --color-on-primary: #34d1d1;         /* Text on buttons / links */
+  --color-on-surface: #000000;         /* Normal text */
   --color-muted: #9c5757;             /* Secondary text / captions */
   --color-shadow: rgba(0, 0, 0, 0.8); /* Shadows */
-  --color-border: rgba(255, 255, 255, 0.05);
+  --color-border: rgba(7, 7, 7, 0.05);
 
   background: linear-gradient(
     180deg,
@@ -97,7 +97,7 @@ body.dark h3,
 body.dark h4, 
 body.dark h5, 
 body.dark h6 {
-  color: var(--color-on-surface);
+  color: var(--color-primarty-text);
 }
 
 /* Links */
@@ -129,9 +129,9 @@ body.dark button:hover {
 body.dark input, 
 body.dark textarea, 
 body.dark select {
-  background: #222222;
-  color: var(--color-on-surface);
-  border: 1px solid var(--color-border);
+  background: var(--color-background);
+  color: var(--color-primarty-text);
+  border: 1px solid var(--color-primarty-text);
   border-radius: 10px;
   padding: 8px 12px;
   transition: border-color 0.3s ease, background 0.3s ease;
@@ -154,6 +154,63 @@ body.dark::-webkit-scrollbar-thumb {
 body.dark::-webkit-scrollbar-track {
   background: var(--color-background);
 }
+
+/* Dark mode for summary-header */
+body.dark .summary-header {
+  background-color: var(--color-background);
+  color: var(--color-primarty-text);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+}
+
+body.dark .summary-header .stats-label{
+  background-color: var(--color-background);
+  color: var(--color-primarty-text);
+  /* box-shadow: 0 1px 6px rgba(0,0,0,0.15); */
+}
+
+/* Dark mode for icons inside header */
+
+body.dark .header .icons svg {
+  color: var(--color-primarty-text) !important;
+  stroke: var(--color-primarty-text) !important;
+  fill: var(--color-primarty-text) !important;
+}
+
+
+body.dark .expensive-sub {
+  background-color: var(--color-background);
+  color: var(--color-primarty-text);
+}
+
+body.dark .expensive-sub .expensive-sub-header {
+  /* background-color: var(--color-background); */
+  color: var(--color-primarty-text) !important;
+}
+
+body.dark .settings-card {
+  background-color: var(--color-background) !important;
+  color: var(--color-primarty-text) !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+}
+
+body.dark .subs {
+  background-color: var(--color-background) !important;
+  color: var(--color-primarty-text) !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+}
+
+body.dark .app-info {
+  /* background-color: var(--color-background) !important; */
+  color: var(--color-primarty-text) !important;
+  /* box-shadow: 0 1px 6px rgba(0,0,0,0.15); */
+}
+
+body.dark .analytics-card {
+  background-color: var(--color-background) !important;
+  color: var(--color-primarty-text) !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+} 
+
 /* ======================== */
 /* Light Theme - Material3   */
 /* ======================== */
