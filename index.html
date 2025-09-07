@@ -5,10 +5,20 @@
     <link rel="icon" href="/renewly/logo.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Renewly - Subscriptions Manager</title>
-    <script type="module" crossorigin src="/renewly/assets/index-DNyXqqgW.js"></script>
-    <link rel="stylesheet" crossorigin href="/renewly/assets/index-CMXaU8gx.css">
+    <script type="module" crossorigin src="/renewly/assets/index-LH_lEz_S.js"></script>
+    <link rel="stylesheet" crossorigin href="/renewly/assets/index-DssUUDYA.css">
   </head>
   <body>
     <div id="root"></div>
   </body>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+      } else {
+        document.body.classList.remove('dark');
+      }
+    })();
+  </script>
 </html>
