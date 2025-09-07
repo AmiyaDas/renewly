@@ -103,7 +103,6 @@ const Analytics = () => {
       }
       subscriptions.forEach((sub) => {
         if (!sub.startDate || !sub.price) return;
-        // Use getOccurrences to get all payments in this week
         const occurrences = getOccurrences(sub, weekStart, weekEnd);
         occurrences.forEach((occ) => {
           const label = labels[(occ.date.getDay() + 6) % 7];
@@ -158,22 +157,12 @@ const Analytics = () => {
       subscriptions.forEach((sub) => {
         if (!sub.startDate || !sub.price) return;
         const occurrences = getOccurrences(sub, yearStart, yearEnd);
-        // For yearly subscriptions, only add price to the month of the occurrence
-        if (sub.billingCycle === "Yearly") {
-          occurrences.forEach((occ) => {
-            const label = labels[occ.date.getMonth()];
-            if (label) labelMap[label] += occ.amount;
-          });
-        } else {
-          // For monthly/weekly, distribute as before
-          occurrences.forEach((occ) => {
-            const label = labels[occ.date.getMonth()];
-            if (label) labelMap[label] += occ.amount;
-          });
-        }
+        occurrences.forEach((occ) => {
+          const label = labels[occ.date.getMonth()];
+          if (label) labelMap[label] += occ.amount;
+        });
       });
     } else if (period === "AllYear") {
-      // Aggregate all subscriptions from the start of the year or all data
       const yearStart = new Date(now.getFullYear(), 0, 1);
       let total = 0;
       subscriptions.forEach((sub) => {
@@ -210,13 +199,13 @@ const Analytics = () => {
   const currencySymbol = currencySymbols[currency] || "";
 
   return (
-    <div className="w-screen min-h-screen  flex flex-col">
+    <div className="w-screen min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 analytics-viewport">
       {/* Header */}
       <Header showNavBack={true} title={t("analytics")} />
 
       <div className="flex-1">
         {/* Tabs */}
-        <div className="analytics-card flex bg-white rounded-xl mx-4 mt-3 overflow-hidden sticky top-14 z-20">
+        <div className="tabs flex bg-white dark:bg-gray-800 rounded-xl mx-4 mt-3 overflow-hidden top-14 z-20">
           {[
             t("analytics_period_week"),
             t("analytics_period_month"),
@@ -240,9 +229,9 @@ const Analytics = () => {
                   activeTab.includes("Monthly")) ||
                 (tab === t("analytics_period_year") &&
                   (activeTab.includes("Yearly") || activeTab === "AllYear"))
-                  ? "text-black border-b-2 border-black"
-                  : "text-gray-400"
-              } transition-colors duration-200 hover:bg-gray-200`}
+                  ? "text-black dark:text-white border-b-2 border-black active-tab"
+                  : "text-gray-400 dark:text-gray-500"
+              } transition-colors duration-200 hover:bg-gray-200 dark:hover:bg-gray-700`}
             >
               {formatLabel(tab)}
             </button>
@@ -250,7 +239,7 @@ const Analytics = () => {
         </div>
 
         {/* Average */}
-        <div className="analytics-card flex justify-between items-center px-4 mx-4 mt-4 bg-white rounded-lg shadow-sm py-2">
+        <div className="analytics-card flex justify-between items-center px-4 mx-4 mt-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm py-2">
           <p>
             {t("average")}:{" "}
             <span className="font-bold">
@@ -259,7 +248,7 @@ const Analytics = () => {
             </span>
           </p>
           <select
-            className="text-sm border rounded px-2"
+            className="analytics-card text-sm border rounded px-2 bg-white dark:bg-gray-700 dark:text-white"
             value={
               activeTab.includes("Weekly")
                 ? activeTab.includes("Last")
@@ -318,20 +307,27 @@ const Analytics = () => {
         </div>
 
         {/* Chart */}
-        <div className="px-4 py-4 bg-white rounded-lg shadow mt-4 mx-4">
+        <div className="analytics-card px-4 py-4 bg-white dark:bg-gray-800 rounded-lg shadow mt-4 mx-4">
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis tickFormatter={(val) => `${currencySymbol}${val}`} />
+                <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
+                <XAxis dataKey="day" stroke="currentColor" />
+                <YAxis
+                  tickFormatter={(val) => `${currencySymbol}${val}`}
+                  stroke="currentColor"
+                />
                 <Tooltip
                   formatter={(value) => [
                     `${currencySymbol}${value}`,
                     t("amount"),
                   ]}
+                  contentStyle={{
+                    backgroundColor: "var(--tw-prose-bg, #fff)",
+                    color: "inherit",
+                  }}
                 />
-                <Bar dataKey="amount" fill="#000" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="amount" fill="currentColor" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -342,7 +338,7 @@ const Analytics = () => {
           {subscriptions.map((sub) => (
             <div
               key={sub.name}
-              className="flex justify-between items-center py-3 px-4 bg-white rounded-lg shadow-sm hover:bg-gray-50 transition mb-2"
+              className="flex card justify-between items-center py-3 px-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition mb-2"
             >
               <div className="flex items-center gap-3">
                 <img
@@ -352,7 +348,9 @@ const Analytics = () => {
                 />
                 <div>
                   <p className="font-medium">{sub.name}</p>
-                  <p className="text-xs text-gray-500">{sub.startDate}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {sub.startDate}
+                  </p>
                 </div>
               </div>
               <p className="font-medium">
@@ -364,15 +362,17 @@ const Analytics = () => {
         </div>
 
         {/* Top Subscriptions */}
-        <div className="mt-6 mx-4 px-4 py-4 bg-white rounded-lg shadow">
-          <h3 className="text-base font-semibold mb-4 border-b pb-2">
+        <div className="mt-6 mx-4 px-4 py-4 bg-white dark:bg-gray-800 rounded-lg shadow subs">
+          <h3 className="text-base font-semibold mb-4 border-b pb-2 border-gray-200 dark:border-gray-700">
             {t("top_subscriptions_by_cost")}
           </h3>
           {topSubscriptions.map((sub, index) => (
             <div
               key={sub.name}
               className={`flex justify-between items-center text-sm py-2 ${
-                index !== topSubscriptions.length - 1 ? "border-b" : ""
+                index !== topSubscriptions.length - 1
+                  ? "border-b border-gray-200 dark:border-gray-700"
+                  : ""
               }`}
             >
               <span className="flex items-center">

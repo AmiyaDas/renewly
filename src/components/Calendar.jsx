@@ -242,42 +242,40 @@ const Calendar = () => {
           <h2 className="font-bold text-lg">
             {month} {year}
           </h2>
-          <Link to="/test">
-            {/* <button
+          {/* <Link to="/test"> */}
+            <button
           className="px-3 py-1 rounded bg-gray-200 bg-transparent"
           onClick={() =>
             setCurrentDate(
               new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
             )
           }
-        > */}
+        >
             <FaChevronRight />
-            {/* </button> */}
-          </Link>
+            </button>
+          {/* </Link> */}
         </div>
       )}
       {viewType === "month" ? (
         <>
           {calendarGrid}
           {selectedEvents.length > 0 && (
-            <div className="fixed inset-0 backdrop-blur-sm bg-transparent flex justify-center items-center z-50">
-              <div className="bg-white p-4 rounded w-80 max-h-[80vh] overflow-y-auto">
-                <h3 className="font-bold mb-2">
+            <div className="calendar-modal fixed inset-0 backdrop-blur-sm bg-black/30 flex justify-center items-center z-50">
+              <div className="modal-content bg-white dark:bg-gray-900 p-4 rounded w-80 max-h-[80vh] overflow-y-auto shadow-lg">
+                <h3 className="font-bold mb-2 text-gray-900 dark:text-white">
                   Subscriptions for {selectedDate.toLocaleDateString()}
                 </h3>
                 <ul className="flex flex-col gap-2">
                   {selectedEvents.map((ev) => (
                     <li
                       key={ev.id}
-                      className="border p-2 rounded flex items-center gap-2"
+                      className="border p-2 rounded flex items-center gap-2 border-gray-200 dark:border-white-700"
                     >
-                      {ev.icon && (
-                        <img src={ev.icon} alt={ev.title} className="w-6 h-6" />
-                      )}
+                      {ev.icon && <img src={ev.icon} alt={ev.title} className="w-6 h-6" />}
                       <div>
-                        <div className="font-semibold">{ev.title}</div>
-                        <div>Price: {ev.price}</div>
-                        <div>
+                        <div className="modal-text font-semibold text-gray-900">{ev.title}</div>
+                        <div className="modal-text text-gray-700 dark:!text-white">Price: {ev.price}</div>
+                        <div className="modal-text text-gray-700 dark:!text-white">
                           Renewal Date: {new Date(ev.time).toLocaleDateString()}
                         </div>
                       </div>
@@ -285,7 +283,7 @@ const Calendar = () => {
                   ))}
                 </ul>
                 <button
-                  className="mt-2 px-3 py-1 rounded bg-gray-200"
+                  className="mt-2 px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
                   onClick={() => setSelectedEvents([])}
                 >
                   Close

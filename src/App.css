@@ -296,3 +296,51 @@
   background-size: cover; /* scale svg to cover */
   background-position: center;
 }
+
+body.dark .analytics-viewport {
+  background: linear-gradient(to bottom, var(--color-background), #efefef);
+  min-height: 100vh;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.modal-content {
+  /* smooth transition for dark mode switch */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Specific dark mode tweaks */
+.dark .modal-content {
+  background-color: var(--color-background) !important;
+  color: var(--color-primarty-text) !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+  
+}
+
+.dark .modal-content li {
+    background-color: var(--color-background) !important;
+  color: var(--color-primarty-text) !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+}
+
+.dark .modal-content button {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.dark .modal-text {
+  color: var(--color-primarty-text)
+}
+
+body.dark .tabs {
+  background-color: var(--color-primary);
+}
+
+body.dark .active-tab {
+  /* background-color: var(--color-primary); */
+  border-bottom: 5px solid #fff !important;
+  border-radius: 0%;
+}

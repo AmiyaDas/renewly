@@ -86,6 +86,32 @@ const SubscriptionDetails = () => {
     saveSubscription();
   };
 
+  const calculateReminderDate = (renewalDate, notificationDays) => {
+    if (!renewalDate || !notificationDays) return ""; // return empty if not selected
+    const renewal = new Date(renewalDate);
+    let daysBefore = 0;
+
+    switch (notificationDays) {
+      case "1 day before":
+        daysBefore = 1;
+        break;
+      case "2 days before":
+        daysBefore = 2;
+        break;
+      case "1 week before":
+        daysBefore = 7;
+        break;
+      case "On the day":
+        daysBefore = 0;
+        break;
+      default:
+        daysBefore = 0;
+    }
+
+    renewal.setDate(renewal.getDate() - daysBefore);
+    return renewal.toLocaleDateString(undefined, { month: 'long', day: 'numeric' });
+  };
+
   return (
     <div className="w-screen h-screen flex flex-col">
       {/* Header */}
@@ -223,15 +249,17 @@ const SubscriptionDetails = () => {
         </div>
 
         {/* Reminder Message */}
+        {renewalDate && notificationDays ? (
         <div className="bg-orange-50 border border-orange-200 rounded-xl p-3 flex gap-2 items-start">
           <span className="text-blue-500 text-lg">🔔</span>
           <p className="text-sm text-gray-700">
             {t("reminder_msg", {
-              remindDate: "September 14",
-              dueDate: "September 15",
+              remindDate: calculateReminderDate(renewalDate, notificationDays),
+              dueDate: new Date(renewalDate).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }),
             })}
           </p>
         </div>
+      ) : null}
       </div>
       <button
         onClick={handleSave}

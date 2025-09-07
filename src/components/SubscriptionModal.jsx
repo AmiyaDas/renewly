@@ -75,7 +75,7 @@ export default function SubscriptionModal({ isOpen, onClose, subscription }) {
         <button
           onClick={onEditSubscription}
           aria-label="Edit Subscription"
-          className="absolute top-4 right-12 text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+          className="absolute top-4 right-20 text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
         >
           <IoCreate size={24} />
         </button>

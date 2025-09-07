@@ -15,6 +15,7 @@ import TestPush from "./components/TestPush";
 const Settings = React.lazy(() => import("./components/Settings"));
 const Analytics = React.lazy(() => import("./components/Analytics"));
 const Calendar = React.lazy(() => import("./components/Calendar"));
+import useAppBackHandler from "./hooks/useAppBackHandler";
 
 function App() {
   const { user, setUser } = useContext(PreferencesContext);
@@ -48,33 +49,42 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        {checkingAuth ? null : !user ? (
-          <Route
-            path="*"
-            element={
-              <SocialSignInPage guestSignIn={() => setUser({ guest: true })} />
-            }
-          />
-        ) : (
-          <>
-            <Route path="/" element={<Home />} />
-            <Route path="/add" element={<AddSubscription />} />
-            <Route
-              path="/subscription/:name"
-              element={<SubscriptionDetails />}
-            />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/subscriptions" element={<AllSubscriptions />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/user-profile" element={<UserProfilePage />} />
-            <Route path="/test" element={<TestPush />} />
-          </>
-        )}
-      </Routes>
+      {/* ✅ Back handler hook must live inside Router */}
+      <BackHandlerWrapper checkingAuth={checkingAuth} user={user} setUser={setUser} />
     </Router>
+  );
+}
+
+function BackHandlerWrapper({ checkingAuth, user, setUser }) {
+  useAppBackHandler(); // ✅ now inside Router context
+
+  return (
+    <Routes>
+      {checkingAuth ? null : !user ? (
+        <Route
+          path="*"
+          element={
+            <SocialSignInPage guestSignIn={() => setUser({ guest: true })} />
+          }
+        />
+      ) : (
+        <>
+          <Route path="/" element={<Home />} />
+          <Route path="/add" element={<AddSubscription />} />
+          <Route
+            path="/subscription/:name"
+            element={<SubscriptionDetails />}
+          />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/subscriptions" element={<AllSubscriptions />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/user-profile" element={<UserProfilePage />} />
+          <Route path="/test" element={<TestPush />} />
+        </>
+      )}
+    </Routes>
   );
 }
 

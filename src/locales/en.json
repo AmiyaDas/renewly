@@ -113,6 +113,8 @@
   "game_apps": "Game Apps",
   "logout": "Logout",
   "mark_active": "Mark as Active",
+  "light":"Light",
+  "dark":"Dark",
   "languages": {
     "en": "English",
     "es": "Spanish",
