@@ -115,6 +115,8 @@
   "mark_active": "Mark as Active",
   "light":"Light",
   "dark":"Dark",
+  "privacy_policy": "Privacy Policy",
+  "terms_of_service": "Terms of Service",
   "languages": {
     "en": "English",
     "es": "Spanish",

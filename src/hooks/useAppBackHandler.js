@@ -1,48 +1,45 @@
-// hooks/useAppBackHandler.js
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import toast from "react-hot-toast"; // or your toast library
+import { toast } from "react-hot-toast";
 
 export default function useAppBackHandler() {
   const navigate = useNavigate();
   const location = useLocation();
+  const lastBackPress = useRef(0);
 
   useEffect(() => {
-    let lastBackPress = 0;
-
-    const handleBack = (event) => {
+    const handleBackButton = (event) => {
       event.preventDefault();
 
       if (location.pathname === "/") {
-        // Double-press back to exit (for PWA + browser swipe)
+        // Home screen → double press to exit
         const now = Date.now();
-        if (now - lastBackPress < 1500) {
-          window.history.go(-2); // exit the app/browser tab
+        if (now - lastBackPress.current < 2000) {
+          navigator.app?.exitApp?.();
         } else {
-          toast("Press back again to exit", {
-            position: "bottom-center",
-          });
-          lastBackPress = now;
+          lastBackPress.current = now;
+          toast.dismiss();
+          toast("Press back again to exit");
         }
       } else {
-        // Navigate one step back if not on home
+        // Any other page → navigate back
         navigate(-1);
       }
     };
 
-    // ✅ For browser swipe / back button
-    window.addEventListener("popstate", handleBack);
-
-    // ✅ For Android hardware back in standalone PWA
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") {
-        handleBack(new Event("popstate"));
-      }
-    });
+    document.addEventListener("backbutton", handleBackButton, false);
 
     return () => {
-      window.removeEventListener("popstate", handleBack);
-      document.removeEventListener("visibilitychange", handleBack);
+      document.removeEventListener("backbutton", handleBackButton, false);
     };
-  }, [navigate, location]);
+  }, [location, navigate]);
+
+  // Reset double-press state when app resumes
+  useEffect(() => {
+    const resetBackPress = () => {
+      lastBackPress.current = 0;
+    };
+    document.addEventListener("resume", resetBackPress, false);
+    return () => document.removeEventListener("resume", resetBackPress, false);
+  }, []);
 }
